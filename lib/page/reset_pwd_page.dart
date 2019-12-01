@@ -55,9 +55,10 @@ class _ResetCodePageState extends State<ResetCodePage> {
     super.initState();
     _seconds = widget.countdown;
   }
+  StreamSubscription _phoneSubscription;
   ///监听Bus events
   void _listen() {
-    eventBus.on<UserNumInEvent>().listen((event) {
+    _phoneSubscription= eventBus.on<UserNumInEvent>().listen((event) {
       setState(() {
         widget.phoneNum=event.num;
       });
@@ -149,6 +150,7 @@ class _ResetCodePageState extends State<ResetCodePage> {
     // TODO: implement dispose
     super.dispose();
     _cancelTimer();
+    _phoneSubscription.cancel();
   }
 
 }

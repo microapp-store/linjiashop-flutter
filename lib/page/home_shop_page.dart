@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage>
     AppSize.init(context);
     final screenWidth = ScreenUtil.screenWidth;
     if(myTabs.length>0) {
-      width=(screenWidth / (myTabs.length*2))  - 10;
+      width=(screenWidth / (myTabs.length*2))  - 45;
     }
     return Scaffold(
       appBar: MyAppBar(

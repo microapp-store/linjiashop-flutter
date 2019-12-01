@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/cart_query_dao.dart';
@@ -117,10 +119,12 @@ class _CartPageState extends State<CartPage> {
 
 
   }
+  StreamSubscription _failSubscription;
+  StreamSubscription _clearSubscription;
 
   ///监听Bus events
   void _listen() {
-    eventBus.on<UserLoggedInEvent>().listen((event) {
+    _failSubscription=eventBus.on<UserLoggedInEvent>().listen((event) {
 
       if("fail"==event.text&&!AppConfig.isUser) {
         AppConfig.isUser=true;
@@ -134,7 +138,7 @@ class _CartPageState extends State<CartPage> {
       }
     });
 
-    eventBus.on<GoodsNumInEvent>().listen((event) {
+    _clearSubscription= eventBus.on<GoodsNumInEvent>().listen((event) {
       if(mounted) {
         if ('clear' == event.event) {
           setState(() {
@@ -157,5 +161,14 @@ class _CartPageState extends State<CartPage> {
 
     });
   }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _failSubscription.cancel();
+    _clearSubscription.cancel();
+  }
 
 }
+

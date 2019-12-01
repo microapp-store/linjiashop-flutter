@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,9 +107,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     );
 
   }
-  getToken()async{
 
-  }
   final pageController = PageController();
   _getPageBody(BuildContext context){
     return PageView(
@@ -117,15 +117,22 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
       physics: NeverScrollableScrollPhysics(), // 禁止滑动
     );
   }
+  StreamSubscription _indexSubscription;
 
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
   void _listen() {
-    eventBus.on<IndexInEvent>().listen((event) {
+    _indexSubscription = eventBus.on<IndexInEvent>().listen((event) {
       int index = int.parse(event.index);
       this.currentIndex = index;
       pageController.jumpToPage(index);
     });
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _indexSubscription.cancel();
   }
 }

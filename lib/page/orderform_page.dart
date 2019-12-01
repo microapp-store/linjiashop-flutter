@@ -58,10 +58,6 @@ class _OrderFormPageState extends State<OrderFormPage> with AutomaticKeepAliveCl
   @override
   void initState() {
     _initTabView();
-
-
-
-//    loadData();
     mController = TabController(
       length: myTabs.length,
       vsync: this,
@@ -80,7 +76,7 @@ class _OrderFormPageState extends State<OrderFormPage> with AutomaticKeepAliveCl
     AppSize.init(context);
     final screenWidth = ScreenUtil.screenWidth;
     if(myTabs.length>0) {
-      width=(screenWidth / (myTabs.length*2))  - 10;
+      width=(screenWidth / (myTabs.length*2))  - 65;
     }
     return Scaffold(
       appBar: MyAppBar(
