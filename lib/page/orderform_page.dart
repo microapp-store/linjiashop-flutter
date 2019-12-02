@@ -250,12 +250,9 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
             page++;
             getOrder();
           },
-          child:
-          ListView(
-            children: <Widget>[
-              OrderCard(orderModleDataList: listData)
 
-            ],
+          child:SingleChildScrollView(
+            child:  OrderCard(orderModleDataList: listData),
           )
 
       ),
