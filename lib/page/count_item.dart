@@ -26,16 +26,16 @@ class CartCount extends StatelessWidget {
       ),
       child: Row(
         children: <Widget>[
-          _reduceBtn(context),
+          _reduceBtn(),
           _countArea(),
-          _addBtn(context),
+          _addBtn(),
         ],
       ),
 
     );
   }
   // 减少按钮
-  Widget _reduceBtn(context){
+  Widget _reduceBtn(){
     return InkWell(
       onTap: (){
         loadReduce(item.orderId,item.countNum-1,AppConfig.token);
@@ -70,7 +70,7 @@ class CartCount extends StatelessWidget {
   }
 
   //添加按钮
-  Widget _addBtn(context){
+  Widget _addBtn(){
     return InkWell(
       onTap: (){
         addCart(item.id,1,AppConfig.token);

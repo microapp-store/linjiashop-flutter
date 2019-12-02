@@ -7,7 +7,8 @@ class OrderEntity {
   OrderEntity.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       orderModel = new List<OrderModel>();
-      (json['data']['records'] as List).forEach((v) {
+      List<Map> dataList= (json['data']['records'] as List).cast();
+      dataList.forEach((v) {
         orderModel.add(new OrderModel.fromJson(v));
       });
 
@@ -32,7 +33,8 @@ class OrderModel {
     statusName = json['statusName'];
     status =json['status'];
     goods=List<GoodsListModel> ();
-    (json['items'] as List).forEach((v) {
+    List<Map> dataList= (json['items']as List).cast();
+   dataList.forEach((v) {
       goods.add(new GoodsListModel.fromJson(v));
     });
 

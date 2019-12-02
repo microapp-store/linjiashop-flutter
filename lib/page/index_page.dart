@@ -92,7 +92,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
             items: bottomBar),
         body: _getPageBody(context),
       ) ,
-        onWillPop: () async {
+        onWillPop:  ()async{
           // 点击返回键的操作
           if (lastPopTime == null ||
               DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
@@ -101,15 +101,22 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
           } else {
             lastPopTime = DateTime.now();
             // 退出app
-            await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+           return await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
           }
-        },
+        }
     );
 
   }
 
+
+
+
+
+
+
   final pageController = PageController();
-  _getPageBody(BuildContext context){
+  Widget _getPageBody(BuildContext context){
     return PageView(
       controller: pageController,
       children: pages,

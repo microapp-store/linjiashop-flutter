@@ -42,7 +42,7 @@ class CardGoods extends StatelessWidget {
 
   void onItemClick(BuildContext context,int i){
    String id = goodsModleDataList[i].id;
-   Map<String, dynamic> p={"id":id};
+   Map<String, String> p={"id":id};
    Routes.instance.navigateToParams(context,Routes.PRODUCT_DETAILS,params: p);
   }
 }

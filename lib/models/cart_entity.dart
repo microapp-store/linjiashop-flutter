@@ -15,8 +15,8 @@ class CartModel {
   CartModel({this.msg, this.code});
 
   CartModel.fromJson(Map<String, dynamic> json) {
-    msg = json['msg'];
-    code = json['code'];
+    msg = json['msg'].toString();
+    code = int.parse(json['code'].toString());
   }
 
 }

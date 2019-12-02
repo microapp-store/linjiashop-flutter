@@ -85,7 +85,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
 
   }
   ///返回不同头部
-  _getHeader(){
+  Widget _getHeader(){
     if(null==goodsModel){
       return CommonBackTopBar(title: "详情",onBack:()=>Navigator.pop(context));
     }else{
@@ -93,7 +93,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
     }
   }
   ///返回内容
-  _getContent(){
+  Widget _getContent(){
     if(null==goodsModel){
       return Center(
         child: CircularProgressIndicator(),
@@ -255,7 +255,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
       DialogUtil.buildToast("服务器错误1~");
     }
   }
-  clearUser() async{
+  void clearUser() async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }

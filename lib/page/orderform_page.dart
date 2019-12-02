@@ -8,7 +8,7 @@ import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
 import 'package:flutter_easyrefresh/material_header.dart';
-import 'package:flutter_app/dao/order_form_dao.dart';
+
 import 'package:flutter_app/models/order_form_entity.dart';
 
 import 'package:flutter_app/utils/app_size.dart';
@@ -46,9 +46,9 @@ class _OrderFormPageState extends State<OrderFormPage> with AutomaticKeepAliveCl
 
   List<Widget> bodys;
 
-  _initTabView(){
+  void _initTabView(){
     bodys = List<Widget>.generate(myTabs.length, (i){
-      return OrderFormTabView(i,orderFormData);
+      return OrderFormTabView(i);
     });
   }
 
@@ -66,9 +66,6 @@ class _OrderFormPageState extends State<OrderFormPage> with AutomaticKeepAliveCl
     super.initState();
   }
 
-  void loadData() async{
-    orderFormData.value = await OrderFormDao.fetch();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,10 +123,10 @@ class _OrderFormPageState extends State<OrderFormPage> with AutomaticKeepAliveCl
 }
 
 class OrderFormTabView extends StatefulWidget {
-  final ValueNotifier<OrderFormEntity> data;
+
   final int currentIndex;
 
-  OrderFormTabView(this.currentIndex,this.data);
+  OrderFormTabView(this.currentIndex);
 
   @override
   _OrderFormTabViewState createState() => _OrderFormTabViewState();
@@ -144,11 +141,11 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
 
   @override
   void initState() {
-    widget.data.addListener(notifyDataChange);
+
     getOrder();
     super.initState();
   }
-  getOrder(){
+  void getOrder(){
     switch(widget.currentIndex){
       case 0:
         loadData(1,page,AppConfig.token);
@@ -170,7 +167,7 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
 
   @override
   void dispose() {
-    widget.data.removeListener(notifyDataChange);
+
     super.dispose();
   }
   void loadData(int status,int page,String token)async{
@@ -211,10 +208,7 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
 
   }
 
-  void notifyDataChange(){
-    getOrder();
 
-  }
 
   @override
   Widget build(BuildContext context) {

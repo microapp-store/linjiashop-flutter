@@ -204,7 +204,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
     }
 
 
-  _getContent(){
+  Widget _getContent(){
     if(_isLoading){
       return Center(
         child: CircularProgressIndicator(),
@@ -232,7 +232,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
             onRefresh: () async {
               _isLoading = true;
               loadData(widget.id);
-              setState(()=>{});
+
             },
             loadMore: () async {}
         ),

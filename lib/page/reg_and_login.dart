@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_app/dao/login_dao.dart';
+
 import 'package:flutter_app/dao/login_reg_dao.dart';
 import 'package:flutter_app/models/login_entity.dart';
 import 'package:flutter_app/page/reset_pwd_page.dart';
@@ -9,11 +9,9 @@ import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/constants.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
-
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/flutter_iconfont.dart';
 import 'package:flutter_app/view/theme_ui.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../common.dart';
@@ -239,7 +237,7 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
       );
   }
   void loadLoginByPass(String userName,String password) async{
-    LoginEntity entity = await LoginDao.fetch(userName,password);
+    final LoginEntity entity = await LoginDao.fetch(userName,password);
     if(entity?.userModel != null){
       saveUserInfo(entity.userModel);
       DialogUtil.buildToast('登录成功~');
@@ -263,7 +261,7 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
   /**
    * 存储用户信息
    */
-  saveUserInfo(UserModel userModel) async{
+  void saveUserInfo(UserModel userModel) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("avatar",userModel.avatar);
     prefs.setString("token",userModel.token);

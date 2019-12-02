@@ -119,7 +119,7 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
     }
   }
 
-  _getContent(){
+ Widget _getContent(){
     if(_isLoading){
       return Center(
         child: CircularProgressIndicator(),

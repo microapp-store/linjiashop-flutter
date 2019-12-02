@@ -9,20 +9,21 @@ class CategoryEntity {
 }
 class CategoryModel{
 
-   String name;
-   String id;
-	 List<CategoryInfoModel> categoryInfoModels;
-	 CategoryModel({this.name,this.id,this.categoryInfoModels});
-	 factory CategoryModel.fromJson(Map<String, dynamic> parsedJson){
-		 var list = parsedJson['bannerList'] as List;
+	String name;
+	String id;
+	List<CategoryInfoModel> categoryInfoModels;
+	CategoryModel({this.name,this.id,this.categoryInfoModels});
+	factory CategoryModel.fromJson(Map<String, dynamic> parsedJson){
+		var list = parsedJson['bannerList'] as List;
 
-		 List<CategoryInfoModel> categoryInfoList = list.map((i) => CategoryInfoModel.fromJson(i)).toList();
-		 return CategoryModel(
-				 id: parsedJson['id'],
-				 name: parsedJson['name'],
-				 categoryInfoModels:categoryInfoList
-		 );
-	 }
+		List<CategoryInfoModel> categoryInfoList =
+		list.map((i) => CategoryInfoModel.fromJson(i)).toList();
+		return CategoryModel(
+				id: parsedJson['id'],
+				name: parsedJson['name'],
+				categoryInfoModels:categoryInfoList
+		);
+	}
 }
 
 class CategoryInfoModel {

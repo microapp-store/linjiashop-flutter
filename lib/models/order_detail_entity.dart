@@ -43,7 +43,8 @@ class OrderDetailModel {
     status =json['status'];
     createTime =json['createTime'];
     goods=List<GoodsListModel> ();
-    (json['items'] as List).forEach((v) {
+    List<Map> dataList= (json['items'] as List).cast();
+    dataList.forEach((v) {
       goods.add(new GoodsListModel.fromJson(v));
     });
 

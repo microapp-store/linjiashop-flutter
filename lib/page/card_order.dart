@@ -67,7 +67,7 @@ class OrderCard extends StatelessWidget {
             _buildOrderSub(orderModleDataList[i].goods),
             ThemeView.divider(),
             SizedBox(
-              height: AppSize.height(120),
+              height: AppSize.height(120.0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,

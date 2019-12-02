@@ -1,14 +1,10 @@
 import 'dart:async';
-
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app/dao/login_dao.dart';
 import 'package:flutter_app/dao/sendsms_dao.dart';
 import 'package:flutter_app/models/goods_entity.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/utils/app_size.dart';
-
 import 'package:fluttertoast/fluttertoast.dart';
 /// 可用时使用的字体样式。
 final TextStyle _availableStyle = TextStyle(

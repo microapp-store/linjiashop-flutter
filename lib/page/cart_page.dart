@@ -42,7 +42,7 @@ class _CartPageState extends State<CartPage> {
     _listen();
     return Scaffold(
               appBar: MyAppBar(
-              preferredSize: Size.fromHeight(AppSize.height(160)),
+              preferredSize: Size.fromHeight(AppSize.height(160.0)),
               child: CommonTopBar(title: "购物车"),
               ),
               body: LoadStateLayout(

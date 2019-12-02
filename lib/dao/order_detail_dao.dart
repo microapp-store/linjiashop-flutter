@@ -14,9 +14,10 @@ class OrderDetailDao{
 
   static Future<OrderDetailEntry> fetch(String  orderSn,String token) async{
     try {
-      Options options = Options(headers: {"Authorization":token});
 
-      Response response = await Dio().get(OREDER_DETAIL_GET_URL+orderSn,options: options);
+      Map<String,String> map={"Authorization":token};
+      Options options = Options(headers:map);
+      Response<Future> response = await Dio().get(OREDER_DETAIL_GET_URL+orderSn,options: options);
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<OrderDetailEntry>(response.data);
       }

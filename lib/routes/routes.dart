@@ -1,14 +1,9 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
-
 import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
-
-
 class Routes {
   static final Router router = new Router();
   static const ROOT = '/';
@@ -21,8 +16,6 @@ class Routes {
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
-    router.define(
-        '$ORDER_DETAILS/:id', handler: Handler(handlerFunc: (context, params) => OrderDetails(params['id'][0])));
 
     router.define(
         PRODUCT_DETAILS, handler:

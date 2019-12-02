@@ -11,14 +11,14 @@ class CartBottom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(5.0),
-        height:AppSize.height(140) ,
+        height:AppSize.height(140.0) ,
         color: Colors.white,
         width:AppSize.width(1080),
         child: Row(
               children: <Widget>[
-                selectAllBtn(context),
-                allPriceArea(context),
-                goButton(context)
+                selectAllBtn(),
+                allPriceArea(),
+                goButton()
               ],
             )
 
@@ -27,7 +27,7 @@ class CartBottom extends StatelessWidget {
   }
 
   //全选按钮
-  Widget selectAllBtn(context){
+  Widget selectAllBtn(){
     return Container(
       child: Row(
         children: <Widget>[
@@ -48,7 +48,7 @@ class CartBottom extends StatelessWidget {
   }
 
   // 合计区域
-  Widget allPriceArea(context){
+  Widget allPriceArea(){
     double allPrice=0;
     list.forEach((el){
       if(el.isCheck){
@@ -92,7 +92,7 @@ class CartBottom extends StatelessWidget {
   }
 
   //结算按钮
-  Widget goButton(context){
+  Widget goButton(){
     int  allGoodsCount=0;
     int isAll=0;
     list.forEach((el){
