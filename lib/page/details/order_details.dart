@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common.dart';
+import 'package:flutter_app/dao/order_detail_dao.dart';
 import 'package:flutter_app/dao/order_form_dao.dart';
+import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/models/order_form_entity.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/constants.dart';
@@ -13,9 +16,9 @@ import 'package:flutter_app/view/theme_ui.dart';
 /// 订单详情页
 ///
 class OrderDetails extends StatefulWidget {
-  final int id;
+  final String orderSn;
 
-  OrderDetails(this.id);
+  OrderDetails(this.orderSn);
 
   @override
   _OrderDetailsState createState() => _OrderDetailsState();
@@ -31,16 +34,14 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
   void loadData() async {
-    OrderFormEntity ofe = await OrderFormDao.fetch();
+    OrderDetailEntry entry = await OrderDetailDao.fetch(widget.orderSn,AppConfig.token);
+    if(entry!=null){
 
-    var allList = ofe != null ? ofe.items : <OrderFormListItem>[];
-    allList.forEach((el) {
-      if (el.id == widget.id) {
-        setState(() {
-          data = el;
-        });
-      }
-    });
+    }else{
+
+    }
+
+
   }
 
   @override

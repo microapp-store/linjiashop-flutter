@@ -22,7 +22,7 @@ class Routes {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
     router.define(
-        '$ORDER_DETAILS/:id', handler: Handler(handlerFunc: (context, params) => OrderDetails(int.parse(params['id'][0]))));
+        '$ORDER_DETAILS/:id', handler: Handler(handlerFunc: (context, params) => OrderDetails(params['id'][0])));
 
     router.define(
         PRODUCT_DETAILS, handler:
