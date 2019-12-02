@@ -1,4 +1,5 @@
 
+
 class CartGoodsQueryEntity {
 	List<GoodsListModel> goods;
 
@@ -8,12 +9,11 @@ class CartGoodsQueryEntity {
 		if (json['data'] != null) {
 			goods = new List<GoodsListModel>();
 //			print(goods.runtimeType);
-			List<Map> dataList= (json['data'] as List).cast();
-			dataList.forEach((v) {
-				goods.add(GoodsListModel.fromJson(v));
+			(json['data'] as List).forEach((v) {
+				goods.add(new GoodsListModel.fromJson(v));
 //				print(goods.length);
 			}
-				);
+			);
 		}
 	}
 
@@ -27,9 +27,9 @@ class GoodsListModel {
 	String idGoods;
 	GoodsListModel({this.goodsModel, this.count,this.orderId,this.idGoods});
 	GoodsListModel.fromJson(Map<String, dynamic> json){
-		count = int.parse(json ['count'].toString());
-		orderId = json ['id'].toString();
-		idGoods =json ['idGoods'].toString();
+		count = json ['count'];
+		orderId = json ['id'];
+		idGoods =json ['idGoods'];
 		if(json ['goods']!=null){
 			goodsModel=new GoodsModel.fromJson(json ['goods'],count,orderId,idGoods);
 		}
@@ -67,7 +67,7 @@ class GoodsModel {
 	String name;
 	int  num;
 	String pic;
-	 int price;
+	int price;
 	String specifications;
 	///客户端自定义是否选中
 	bool isCheck;
@@ -81,16 +81,16 @@ class GoodsModel {
 		this.name,this.num,this.pic,this.price,this.specifications,this.id});
 
 	GoodsModel.fromJson(Map<String, dynamic> json,int count,String orderId,String idGoods) {
-		createBy = json['createBy'].toString();
-		createTime = json['createTime'].toString();
-		descript = json['descript'].toString();
-		detail = json['detail'].toString();
-		idCategory = json['idCategory'].toString();
-		isDelete = json['isDelete'].toD;
+		createBy = json['createBy'];
+		createTime = json['createTime'];
+		descript = json['descript'];
+		detail = json['detail'];
+		idCategory = json['idCategory'];
+		isDelete = json['isDelete'];
 		isOnSale=json['isOnSale'];
 		modifyBy=json['modifyBy'];
 		modifyTime=json['modifyTime'];
-		name = json['name'].toString();
+		name = json['name'];
 		num = json['num'];
 		pic = json['pic'];
 		price = json['price'];
@@ -99,7 +99,7 @@ class GoodsModel {
 		this.orderId= orderId;
 		countNum=count;
 		this.idGoods=idGoods;
-    isCheck = true;
+		isCheck = true;
 	}
 
 

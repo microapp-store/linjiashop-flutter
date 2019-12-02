@@ -7,8 +7,7 @@ class OrderEntity {
   OrderEntity.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       orderModel = new List<OrderModel>();
-      List<Map> dataList= (json['data']['records'] as List).cast();
-      dataList.forEach((v) {
+      (json['data']['records'] as List).forEach((v) {
         orderModel.add(new OrderModel.fromJson(v));
       });
 
@@ -24,7 +23,7 @@ class OrderModel {
   int status;
   List<GoodsListModel> goods;
   OrderModel({this.orderSn, this.realPrice,this.totalPrice,this.statusName,
-  this.status,this.goods});
+    this.status,this.goods});
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     orderSn = json['orderSn'];
@@ -33,8 +32,7 @@ class OrderModel {
     statusName = json['statusName'];
     status =json['status'];
     goods=List<GoodsListModel> ();
-    List<Map> dataList= (json['items']as List).cast();
-   dataList.forEach((v) {
+    (json['items'] as List).forEach((v) {
       goods.add(new GoodsListModel.fromJson(v));
     });
 
