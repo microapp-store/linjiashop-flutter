@@ -1,7 +1,7 @@
  # 前言
 - 基于fluetter开发的linjiashop app版本，使用flutter 1.9.6 版本构建
 ## 功能模块
-linjiashop包含了后台管理功能和手机端商城业务功能
+
 - 商城功能
     - 首页
     - 发现
@@ -21,8 +21,8 @@ linjiashop包含了后台管理功能和手机端商城业务功能
 - 左滑删除：flutter_slidable
 - toast：fluttertoast
 ## 运行效果图
-- 手机端：
-![手机端](doc/mobile.gif)
+- App：
+![效果](doc/mobile.gif)
 - 下载二维码：
 ![二维码](doc/code.png)
 ## 技术交流
