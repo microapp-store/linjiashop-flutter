@@ -45,7 +45,7 @@ class OrderDetailModel {
     goods=List<GoodsListModel> ();
     List<Map> dataList= (json['items'] as List).cast();
     dataList.forEach((v) {
-      goods.add(new GoodsListModel.fromJson(v));
+      goods.add(GoodsListModel.fromJson(v));
     });
 
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/category_entity.dart';
-import 'package:flutter_app/view/theme_ui.dart';
+
 import 'package:flutter_swiper/flutter_swiper.dart';
 /**
  * 轮播组件

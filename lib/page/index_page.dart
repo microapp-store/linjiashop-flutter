@@ -109,12 +109,6 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
 
   }
 
-
-
-
-
-
-
   final pageController = PageController();
   Widget _getPageBody(BuildContext context){
     return PageView(

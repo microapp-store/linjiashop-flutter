@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
 import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
@@ -20,7 +21,9 @@ class Routes {
     router.define(
         PRODUCT_DETAILS, handler:
     Handler(handlerFunc: (context, params) => ProductDetails(id:params['id'].first)));
-
+    router.define(
+        ORDER_DETAILS, handler:
+    Handler(handlerFunc: (context, params) => OrderDetails(orderSn:params['orderSn'].first)));
     router.define(
         login_page, handler: Handler(handlerFunc: (context, params) => RegPageAndLoginPage()));
     router.define(
