@@ -103,3 +103,6 @@ flutter:
     - family:  IconFont
       fonts:
         - asset: fonts/iconfont.ttf
+    - family:  MyIcons4
+      fonts:
+         - asset: fonts/iconpay.ttf

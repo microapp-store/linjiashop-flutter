@@ -4,6 +4,7 @@ import 'package:flutter_app/dao/order_detail_dao.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/res/colours.dart';
+import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/custom_view.dart';
@@ -206,7 +207,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                         child:
                             Text('立即付款', style: ThemeTextStyle.orderStylePrice),
                         onPressed: () {
-                          // ...
+                          String totalPriceStr = (orderDetailModel.totalPrice / 100).toStringAsFixed(2);
+                          Map<String, String> p={"orderSn":widget.orderSn,"totalPrice":totalPriceStr};
+                          Routes.instance.navigateToParams(context,Routes.pay_page,params: p);
                         },
                       ),
                     ),

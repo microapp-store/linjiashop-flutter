@@ -94,7 +94,9 @@ class OrderCard extends StatelessWidget {
                         textColor: Colors.white,
                         child: Text('立即付款',style: ThemeTextStyle.orderStylePrice),
                         onPressed: () {
-                          // ...
+                          String totalPriceStr = (orderModleDataList[i].totalPrice / 100).toStringAsFixed(2);
+                          Map<String, String> p={"orderSn":orderModleDataList[i].orderSn,"totalPrice":totalPriceStr};
+                          Routes.instance.navigateToParams(context,Routes.pay_page,params: p);
                         },
                       ),
                     )

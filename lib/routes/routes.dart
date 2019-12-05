@@ -4,6 +4,7 @@ import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
 import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
+import 'package:flutter_app/page/pay/pay_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
 class Routes {
   static final Router router = new Router();
@@ -14,6 +15,7 @@ class Routes {
 
   static const login_page = '/login_page';
   static const order_page = '/order_page';
+  static const pay_page = '/pay_page';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -24,6 +26,10 @@ class Routes {
     router.define(
         ORDER_DETAILS, handler:
     Handler(handlerFunc: (context, params) => OrderDetails(orderSn:params['orderSn'].first)));
+    router.define(
+        pay_page, handler:
+    Handler(handlerFunc: (context, params) =>
+        PayPage(orderSn:params['orderSn'].first,totalPrice:params['totalPrice'].first)));
     router.define(
         login_page, handler: Handler(handlerFunc: (context, params) => RegPageAndLoginPage()));
     router.define(
