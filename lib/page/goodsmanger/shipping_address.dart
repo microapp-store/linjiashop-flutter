@@ -129,7 +129,9 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
               style: ThemeTextStyle.personalShopNameStyle),
           Expanded(
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Routes.instance.navigateTo(context, Routes.save_address_page);
+                },
                 child: Container(
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.only(right: 10),

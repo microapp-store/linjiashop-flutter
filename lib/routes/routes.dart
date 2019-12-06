@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
 import 'package:flutter_app/page/goodsmanger/shipping_address.dart';
+import 'package:flutter_app/page/goodsmanger/shipping_edit_address.dart';
 import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
 import 'package:flutter_app/page/pay/pay_page.dart';
@@ -18,6 +19,7 @@ class Routes {
   static const order_page = '/order_page';
   static const pay_page = '/pay_page';
   static const address_page = '/address_page';
+  static const save_address_page = '/save_address_page';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -38,6 +40,8 @@ class Routes {
         order_page, handler: Handler(handlerFunc: (context, params) => OrderFormPage()));
     router.define(
         address_page, handler: Handler(handlerFunc: (context, params) => ShippingAddressPage()));
+    router.define(
+        save_address_page, handler: Handler(handlerFunc: (context, params) => ShippingEditAddressPage()));
   }
 
   /**
