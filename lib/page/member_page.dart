@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/functions.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/flutter_iconfont.dart';
 import 'package:flutter_app/view/my_icons.dart.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 import '../common.dart';
 
@@ -24,7 +25,7 @@ class MemberPage extends StatelessWidget {
           _topHeader(),
           _orderType(context),
           _orderTitle(context),
-          _actionList()
+          _actionList(context)
         ],
       ),
     );
@@ -34,7 +35,7 @@ class MemberPage extends StatelessWidget {
 
   Widget _topHeader() {
     return Container(
-      width: Screen.width(),
+      width: double.infinity,
       height: AppSize.height(450),
       child: Image(fit: BoxFit.fill, image: AssetImage("images/banner.jpg")),
     );
@@ -145,29 +146,45 @@ class MemberPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget _myListTile(String title, Icon con) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
-      child: ListTile(
-        leading: con,
-        title: Text(title),
-        trailing: Icon(IconFonts.arrow_right),
-      ),
+//
+  Widget _myListTile({String title, Icon con, OnGoMineCallback onGoMineCallback}) {
+    return InkWell(
+      onTap:onGoMineCallback ,
+      child:  Container(
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(bottom: BorderSide(width: 1, color: Colors.black12))),
+        child: ListTile(
+          leading: con,
+          title: Text(title),
+          trailing: Icon(IconFonts.arrow_right),
+        ),
+      ) ,
     );
+
   }
 
-  Widget _actionList() {
+  Widget _actionList(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Column(
         children: <Widget>[
-          _myListTile('收货地址', Icon(MyIcons.addressholder)),
-          _myListTile('我的积分', Icon(MyIcons.jifenholder)),
-          _myListTile('我的优惠券', Icon(MyIcons.youhuiquanholder)),
-          _myListTile('我的礼物', Icon(MyIcons.liwuholder)),
+          _myListTile(title:'收货地址',con:Icon(MyIcons.addressholder),onGoMineCallback:()
+          {
+            Routes.instance.navigateTo(context, Routes.address_page);
+          }),
+          _myListTile(title:'我的积分',con:Icon(MyIcons.jifenholder),onGoMineCallback:()
+          {
+            Routes.instance.navigateTo(context, Routes.address_page);
+          }),
+          _myListTile(title:'我的优惠券',con:Icon(MyIcons.youhuiquanholder),onGoMineCallback:()
+          {
+            Routes.instance.navigateTo(context, Routes.address_page);
+          }),
+          _myListTile(title:'我的礼物',con:Icon(MyIcons.liwuholder),onGoMineCallback:()
+          {
+            Routes.instance.navigateTo(context, Routes.address_page);
+          }),
         ],
       ),
     );

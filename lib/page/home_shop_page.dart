@@ -4,7 +4,7 @@ import 'package:flutter_app/models/category_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/page/swiper_diy.dart';
 import 'package:flutter_app/res/colours.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_app/dao/findings_dao.dart';
 import 'package:flutter_app/models/goods_entity.dart';
@@ -38,8 +38,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    Screen.init(context);
     AppSize.init(context);
     final screenWidth = ScreenUtil.screenWidth;
     if(myTabs.length>0) {

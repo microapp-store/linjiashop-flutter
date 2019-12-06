@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/dao/hot_goods_dao.dart';
 import 'package:flutter_app/dao/search_dao.dart';
 import 'package:flutter_app/models/hot_entity.dart';
-import 'package:flutter_app/utils/constants.dart';
-import 'package:flutter_app/utils/dialog_utils.dart';
+
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
@@ -29,7 +28,7 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
   Widget build(BuildContext context) {
     super.build(context);
     AppSize.init(context);
-    Screen.init(context);
+
     return Scaffold(
         appBar: MyAppBar(
           preferredSize: Size.fromHeight(AppSize.height(160)),

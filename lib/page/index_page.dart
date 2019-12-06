@@ -11,7 +11,7 @@ import 'package:flutter_app/page/search_page.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home_shop_page.dart';
@@ -54,7 +54,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     super.build(context);
     // 初始化屏幕适配包
     AppSize.init(context);
-    Screen.init(context);
+
     _listen();
     return WillPopScope(
       child: Scaffold(

@@ -5,6 +5,7 @@ import 'package:flutter_app/models/login_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/models/order_entity.dart';
+import 'package:flutter_app/models/shipping_entity.dart';
 
 
 import 'cart_goods_query_entity.dart';
@@ -36,6 +37,8 @@ class EntityFactory {
       return OrderEntity.fromJson(json) as T;
     }else if (T.toString() == "OrderDetailEntry"){
       return OrderDetailEntry.fromJson(json) as T;
+    }else if (T.toString() == "ShippingAddresEntry"){
+      return ShippingAddresEntry.fromJson(json) as T;
     }
     else {
       return null;

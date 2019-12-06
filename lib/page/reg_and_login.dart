@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/dao/login_dao.dart';
-
 import 'package:flutter_app/dao/login_reg_dao.dart';
 import 'package:flutter_app/models/login_entity.dart';
 import 'package:flutter_app/page/reset_pwd_page.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/utils/app_size.dart';
-import 'package:flutter_app/utils/constants.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/flutter_iconfont.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../common.dart';
 class RegPageAndLoginPage extends StatefulWidget {
   @override
@@ -35,7 +32,7 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
   @override
   Widget build(BuildContext context) {
     AppSize.init(context);
-    Screen.init(context);
+
 
     return Scaffold(
       appBar: MyAppBar(

@@ -8,11 +8,11 @@ import 'package:flutter_app/page/cart_item.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import '../cart_bottom.dart';
 import 'load_state_layout.dart';
 
@@ -32,13 +32,13 @@ class _CartPageState extends State<CartPage> {
   void initState() {
     _isLoading=true;
     loadCartData(AppConfig.token);
-    print("--*-- CartPage");
+//    print("--*-- CartPage");
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     AppSize.init(context);
-    Screen.init(context);
+
     _listen();
     return Scaffold(
               appBar: MyAppBar(

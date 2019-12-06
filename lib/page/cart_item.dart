@@ -71,7 +71,7 @@ class CartItem extends StatelessWidget {
                   builder: (context) {
                     return AlertDialog(
                       title: Text('提示？'),
-                      content: Text('确定删除该条记录？'),
+                      content: Text('确定移除该商品吗？'),
                       actions: <Widget>[
                         FlatButton(
                           child: Text('取消'),

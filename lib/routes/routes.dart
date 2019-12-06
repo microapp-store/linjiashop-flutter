@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
+import 'package:flutter_app/page/goodsmanger/shipping_address.dart';
 import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
 import 'package:flutter_app/page/pay/pay_page.dart';
@@ -16,6 +17,7 @@ class Routes {
   static const login_page = '/login_page';
   static const order_page = '/order_page';
   static const pay_page = '/pay_page';
+  static const address_page = '/address_page';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -34,6 +36,8 @@ class Routes {
         login_page, handler: Handler(handlerFunc: (context, params) => RegPageAndLoginPage()));
     router.define(
         order_page, handler: Handler(handlerFunc: (context, params) => OrderFormPage()));
+    router.define(
+        address_page, handler: Handler(handlerFunc: (context, params) => ShippingAddressPage()));
   }
 
   /**
