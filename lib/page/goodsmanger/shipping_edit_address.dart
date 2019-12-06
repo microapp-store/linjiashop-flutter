@@ -90,6 +90,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
                   onTap: () async{
                     Result result = await CityPickers.showCityPicker(
                         context: context,
+                        height: 200,
                         cancelWidget:
                         Text("取消", style: TextStyle(color: Colors.blue)),
                         confirmWidget:
