@@ -34,17 +34,19 @@ class ShippingAddressModel {
   String name;
   String province;
   String tel;
+  String id;
   bool isDefault;
 
   ShippingAddressModel({this.addressDetail, this.areaCode,this.city,this.district,
-    this.name,this.province,this.tel,this.isDefault});
+    this.name,this.province,this.tel,this.id,this.isDefault});
   ShippingAddressModel.fromJson(Map<String, dynamic> json) {
-    addressDetail = json['orderSn'];
+    addressDetail = json['addressDetail'];
     areaCode = json['areaCode'];
     district = json['district'];
     name = json['name'];
     province =json['province'];
     tel =json['tel'];
+    id =json['id'];
     isDefault =json['isDefault'];
   }
 

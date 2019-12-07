@@ -100,6 +100,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     } else {
       return Stack(
         children: <Widget>[
+
           ListView.builder(
               itemCount: shippingAddress.length,
               itemBuilder: (context, index) {
@@ -128,16 +129,27 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
           Text(shippingAddress[index].name + '   ' + shippingAddress[index].tel,
               style: ThemeTextStyle.personalShopNameStyle),
           Expanded(
-              child: InkWell(
-                onTap: () {
-                  Routes.instance.navigateTo(context, Routes.save_address_page);
-                },
                 child: Container(
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.only(right: 10),
-                  child: Icon(CupertinoIcons.create, size: 30),
+                  child: Container(
+                    width: AppSize.width(128),
+                    color: Colors.black,
+                    child:  IconButton(
+                      icon: Icon(CupertinoIcons.create, size: 30),
+                      onPressed: (){
+                        String id = shippingAddress[index].id;
+                        Map<String, String> p = {"id": id};
+                        Routes.instance.navigateToParams(
+                            context, Routes.save_address_page,
+                            params: p);
+                      },
+                      color: Colors.blueAccent,
+                      highlightColor: Colors.red,
+                    ),
+                  )
+
                 ),
-              ),
               flex: 1)
         ],
       ),

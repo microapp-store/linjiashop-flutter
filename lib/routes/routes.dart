@@ -41,7 +41,7 @@ class Routes {
     router.define(
         address_page, handler: Handler(handlerFunc: (context, params) => ShippingAddressPage()));
     router.define(
-        save_address_page, handler: Handler(handlerFunc: (context, params) => ShippingEditAddressPage()));
+        save_address_page, handler: Handler(handlerFunc: (context, params) => ShippingEditAddressPage(id:params['id'].first)));
   }
 
   /**

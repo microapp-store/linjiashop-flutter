@@ -1,4 +1,5 @@
 
+import 'package:flutter_app/models/address_entity.dart';
 import 'package:flutter_app/models/cart_entity.dart';
 import 'package:flutter_app/models/details_entity.dart';
 import 'package:flutter_app/models/login_entity.dart';
@@ -39,6 +40,8 @@ class EntityFactory {
       return OrderDetailEntry.fromJson(json) as T;
     }else if (T.toString() == "ShippingAddresEntry"){
       return ShippingAddresEntry.fromJson(json) as T;
+    }else if (T.toString() == "AddressEditEntity"){
+      return AddressEditEntity.fromJson(json) as T;
     }
     else {
       return null;
