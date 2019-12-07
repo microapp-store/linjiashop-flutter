@@ -23,7 +23,7 @@ class IndexPage extends StatefulWidget {
 }
 
 final List<BottomNavigationBarItem> bottomBar = <BottomNavigationBarItem>[
-  BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text("首页")),
+  BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text("小铺")),
   BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), title: Text("发现")),
   BottomNavigationBarItem(icon: Icon(CupertinoIcons.shopping_cart), title: Text("购物车")),
   BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), title: Text("我的"))

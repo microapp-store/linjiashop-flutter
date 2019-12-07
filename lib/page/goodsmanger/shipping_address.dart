@@ -134,7 +134,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                   padding: EdgeInsets.only(right: 10),
                   child: Container(
                     width: AppSize.width(128),
-                    color: Colors.black,
                     child:  IconButton(
                       icon: Icon(CupertinoIcons.create, size: 30),
                       onPressed: (){

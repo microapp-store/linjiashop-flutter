@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: MyAppBar(
         preferredSize: Size.fromHeight(AppSize.height(160)),
-        child: CommonTopBar(title: "首页"),
+        child: CommonTopBar(title: "邻家小铺"),
       ),
       body:
       LoadStateLayout(
