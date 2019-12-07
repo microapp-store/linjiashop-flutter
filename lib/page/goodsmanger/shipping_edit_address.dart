@@ -164,7 +164,53 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
       ),
     );
   }
+  Widget _buildAddressEditText({double length,
+    String title,
+    String hint,
+  }) {
+    return Container(
+      color: Colours.white,
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 15.0, right: length),
+                child: Text(
+                  title,
+                  style: ThemeTextStyle.primaryStyle,
+                ),
+              ),
+              Expanded(
 
+                child:InkWell(
+                  onTap: ()async{
+                    Result result = await CityPickers.showCityPicker(
+                        context: context,
+                        height: 200,
+                        cancelWidget:
+                        Text("取消", style: TextStyle(color: Colors.blue)),
+                        confirmWidget:
+                        Text("确定", style: TextStyle(color: Colors.blue))
+                    );
+
+                    print(result);
+                  },
+                  child: Text(
+                    hint,
+                    style: ThemeTextStyle.primaryStyle,
+                  ),
+                ),
+//
+                flex: 1,
+              )
+            ],
+          ),
+          ThemeView.divider(),
+        ],
+      ),
+    );
+  }
   ///收货地址
   Widget _buildSwitch() {
     return Container(
@@ -229,14 +275,11 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
                 onChangedCallback: () {
                   phone = _controllerTel.text.toString();
                 }),
-            _buildEditText(
+            _buildAddressEditText(
                 length: 63,
                 title: '地区',
-                hint: '选择省/市/区',
-                controller: _controllerDistrict,
-                onChangedCallback: () {
-                  district = _controllerDistrict.text.toString();
-                }),
+                hint:addressModelInfo.city+addressModelInfo.district,
+               ),
             _buildEditText(
                 length: 32,
                 title: '详细地址',
