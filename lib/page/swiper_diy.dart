@@ -63,8 +63,5 @@ class SwiperDiy extends StatelessWidget{
 
     Routes.instance.navigateToParams(context,Routes.PRODUCT_DETAILS,params: p);
   }
-  JsonModel parsePlatformJson(String jsonStr) {
-    JsonModel result = jsonDecode(jsonStr);
-    return result;
-  }
+
 }
