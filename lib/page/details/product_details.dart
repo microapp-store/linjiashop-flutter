@@ -35,9 +35,8 @@ class _ProductDetailsState extends State<ProductDetails>  {
 
   @override
   void initState() {
+    if(mounted)
     loadData();
-
-
     super.initState();
   }
 

@@ -8,6 +8,7 @@ import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
 import 'package:flutter_app/page/pay/pay_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
+import 'package:flutter_app/page/web_page.dart';
 class Routes {
   static final Router router = new Router();
   static const ROOT = '/';
@@ -20,6 +21,7 @@ class Routes {
   static const pay_page = '/pay_page';
   static const address_page = '/address_page';
   static const save_address_page = '/save_address_page';
+  static const web_page = '/web';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -42,6 +44,8 @@ class Routes {
         address_page, handler: Handler(handlerFunc: (context, params) => ShippingAddressPage()));
     router.define(
         save_address_page, handler: Handler(handlerFunc: (context, params) => ShippingEditAddressPage(id:params['id'].first)));
+    router.define(
+        web_page, handler: Handler(handlerFunc: (context, params) => WebViewPage(url:params['url'].first)));
   }
 
   /**
