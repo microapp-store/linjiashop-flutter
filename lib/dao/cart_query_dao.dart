@@ -16,10 +16,7 @@ class CartQueryDao{
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<CartGoodsQueryEntity>(response.data);
       }
-      else{
-        eventBus.fire(new UserLoggedInEvent("fail"));
 
-      }
     } catch (e) {
       print(e);
       return null;

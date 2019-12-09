@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/category_entity.dart';
-import 'package:flutter_app/models/json_model.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'dart:convert';
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -60,7 +59,6 @@ class SwiperDiy extends StatelessWidget{
   }
   void _goDetail(BuildContext context,String id){
     Map<String, String> p={"id":id};
-
     Routes.instance.navigateToParams(context,Routes.PRODUCT_DETAILS,params: p);
   }
 

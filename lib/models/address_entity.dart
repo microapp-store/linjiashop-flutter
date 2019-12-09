@@ -31,9 +31,12 @@ class AddressModel {
   String name;
   String province;
   String tel;
+  String id;
+  String idUser;
+  bool isDelete;
 
   AddressModel({this.addressDetail, this.areaCode,this.city,this.district,this.isDefault,
-  this.name,this.province,this.tel});
+  this.name,this.province,this.tel,this.id,this.idUser,this.isDelete});
   AddressModel.fromJson(Map<String, dynamic> json) {
     addressDetail = json['addressDetail'].toString();
     areaCode = json['areaCode'].toString();
@@ -43,5 +46,8 @@ class AddressModel {
     name = json['name'].toString();
     province = json['province'].toString();
     tel = json['tel'].toString();
+    id = json['id'].toString();
+    idUser = json['idUser'].toString();
+    isDelete= json['isDelete'];
   }
 }

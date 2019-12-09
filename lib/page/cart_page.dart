@@ -111,6 +111,10 @@ class _CartPageState extends State<CartPage> {
       }else{
         if(mounted) {
           setState(() {
+            Routes.instance.navigateTo(context, Routes.login_page);
+            AppConfig.token='';
+            DialogUtil.buildToast("请求失败~");
+
             _layoutState = LoadState.State_Error;
 
           });
@@ -119,25 +123,11 @@ class _CartPageState extends State<CartPage> {
 
 
   }
-  StreamSubscription _failSubscription;
+
   StreamSubscription _clearSubscription;
 
   ///监听Bus events
   void _listen() {
-    _failSubscription=eventBus.on<UserLoggedInEvent>().listen((event) {
-
-      if("fail"==event.text&&!AppConfig.isUser) {
-        AppConfig.isUser=true;
-        DialogUtil.buildToast("请求失败~");
-        Routes.instance.navigateTo(context, Routes.login_page);
-       AppConfig.token='';
-        setState(() {
-          _layoutState = LoadState.State_Error;
-        });
-
-      }
-    });
-
     _clearSubscription= eventBus.on<GoodsNumInEvent>().listen((event) {
       if(mounted) {
         if ('clear' == event.event) {
@@ -166,7 +156,6 @@ class _CartPageState extends State<CartPage> {
     // TODO: implement dispose
     super.dispose();
 
-    _failSubscription.cancel();
     _clearSubscription.cancel();
   }
 

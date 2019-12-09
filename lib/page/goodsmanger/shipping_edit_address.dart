@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:ui' as prefix0;
 
 import 'package:city_pickers/city_pickers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
+import 'package:flutter_app/dao/save_address_dao.dart';
 import 'package:flutter_app/dao/shipping_address_dao.dart';
 import 'package:flutter_app/dao/shipping_address_edit_dao.dart';
 import 'package:flutter_app/models/address_entity.dart';
+import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/models/shipping_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
@@ -39,10 +42,10 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
   LoadState _layoutState = LoadState.State_Loading;
   String name = '';
   String phone = '';
-  String district = '';
+
   String street = '';
   bool _isLoading = false;
-
+ Result resultArr = new Result();
   @override
   void initState() {
     _isLoading = true;
@@ -55,6 +58,10 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
         await ShippingEditAddressDao.fetch(token, widget.id);
     if (entity?.addressModel != null) {
       addressModelInfo = entity.addressModel;
+      phone=addressModelInfo.tel;
+      name=addressModelInfo.name;
+      street=addressModelInfo.district;
+
       _switchValue= entity.addressModel.isDefault;
       _controllerName=TextEditingController.fromValue(
           TextEditingValue(
@@ -105,7 +112,18 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
 
   Widget _btnSave() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+
+        Map<String, dynamic> param={"addressDetail":street,
+          "areaCode":resultArr.areaId!=null?resultArr.areaId:addressModelInfo.areaCode,
+          "city":resultArr.areaId!=null?resultArr.cityName:addressModelInfo.city,
+        "district":street,"id":int.parse(addressModelInfo.id),
+        "idUser":int.parse(addressModelInfo.idUser),"isDefault":_switchValue,"isDelete":addressModelInfo.isDelete,
+          "name":name,"postCode":resultArr.areaId!=null?resultArr.areaId:addressModelInfo.areaCode,
+          "province":resultArr.provinceId!=null?resultArr.provinceName:addressModelInfo.province,
+        "tel":phone};
+        loadSave(param,AppConfig.token);
+      },
       child: Container(
         alignment: Alignment.center,
         margin: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
@@ -119,7 +137,19 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
       ),
     );
   }
+ void loadSave(Map<String, dynamic> param,String token) async{
 
+   MsgEntity entity = await SaveDao.fetch(param,token);
+   if(entity?.msgModel != null){
+     if(entity.msgModel.code==20000){
+       Navigator.pop(context);
+     }
+     DialogUtil.buildToast(entity.msgModel.msg);
+   }else{
+     DialogUtil.buildToast("服务器错误~");
+   }
+
+ }
   Widget _buildEditText(
       {double length,
       String title,
@@ -172,44 +202,70 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
       color: Colours.white,
       child: Column(
         children: <Widget>[
-          Row(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(left: 15.0, right: length),
-                child: Text(
-                  title,
-                  style: ThemeTextStyle.primaryStyle,
-                ),
-              ),
-              Expanded(
-
-                child:InkWell(
-                  onTap: ()async{
-                    Result result = await CityPickers.showCityPicker(
-                        context: context,
-                        height: 200,
-                        cancelWidget:
-                        Text("取消", style: TextStyle(color: Colors.blue)),
-                        confirmWidget:
-                        Text("确定", style: TextStyle(color: Colors.blue))
-                    );
-
-                    print(result);
-                  },
+          Container(
+            height: AppSize.height(120.0),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(left: 15.0, right: length),
                   child: Text(
-                    hint,
+                    title,
                     style: ThemeTextStyle.primaryStyle,
                   ),
                 ),
+                Expanded(
+
+                  child:InkWell(
+                    onTap: ()async{
+                      Result tempResult = await CityPickers.showCityPicker(
+                          context: context,
+                          height: 200,
+                          locationCode: resultArr.areaId != null?resultArr.areaId:
+                          addressModelInfo.areaCode,
+                          cancelWidget:
+                          Text("取消", style: TextStyle(color: Colors.blue)),
+                          confirmWidget:
+                          Text("确定", style: TextStyle(color: Colors.blue))
+                      );
+                      if(tempResult != null){
+                        setState(() {
+                          resultArr = tempResult;
+                        });
+                      }
+                    },
+                    child: Text(
+                      resultArr.areaId != null?getAddress(resultArr.provinceName):
+                      hint,
+                      style: ThemeTextStyle.primaryStyle,
+                    ),
+                  ),
 //
-                flex: 1,
-              )
-            ],
+                  flex: 1,
+                )
+              ],
+            ), 
           ),
           ThemeView.divider(),
         ],
       ),
     );
+  }
+
+  String getAddress(String province){
+    String res='';
+    if (province.contains("北京") ||
+        province.contains("重庆") ||
+       province.contains("天津") ||
+        province.contains("上海") ||
+       province.contains("深圳") ||
+       province.contains("香港") ||
+       province.contains("澳门")) {
+      res=resultArr.cityName+resultArr.areaName;
+    }else{
+      res=resultArr.provinceName+resultArr.cityName+resultArr.areaName;
+    }
+    return res;
+
   }
   ///收货地址
   Widget _buildSwitch() {
@@ -323,4 +379,5 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
     super.dispose();
 
   }
+
 }
