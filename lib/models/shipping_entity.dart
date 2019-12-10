@@ -47,6 +47,7 @@ class ShippingAddressModel {
     province =json['province'];
     tel =json['tel'];
     id =json['id'];
+    city=json['city'];
     isDefault =json['isDefault'];
   }
 

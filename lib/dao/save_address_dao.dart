@@ -15,12 +15,6 @@ class SaveDao{
     try {
       Options options = Options(headers: {"Authorization":token,"content-type":"application/json"});
 
-//      Map<String, dynamic> body={"addressInfo":param};
-//      FormData formData = new FormData.from({
-//        "addressInfo": body
-//
-//      });
-//      Map<String, dynamic> body={"addressInfo":param};
       Response response = await Dio().post(SAVE_ADDRESS_URL,
           data:json.encode(param),
           options: options);

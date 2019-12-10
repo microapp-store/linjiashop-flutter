@@ -63,6 +63,10 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
       }
     } else {
       if (mounted) {
+         AppConfig.token='';
+         DialogUtil.buildToast('token失败');
+         Routes.instance.navigateTo(context, Routes.login_page);
+
         setState(() {
           _layoutState = LoadState.State_Error;
         });
@@ -78,7 +82,11 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
 
   Widget _btnBottom() {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        if(AppConfig.token.isNotEmpty)  {
+          Routes.instance.navigateTo(context, Routes.new_address_page);
+        }
+      },
       child: Container(
         alignment: Alignment.center,
         width: AppSize.width(1080),
@@ -155,18 +163,13 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     );
   }
 
-  StreamSubscription _failSubscription;
+  StreamSubscription _saveSubscription;
 
   ///监听Bus events
   void _listen() {
-    _failSubscription = eventBus.on<UserLoggedInEvent>().listen((event) {
-      if ("fail" == event.text) {
-        DialogUtil.buildToast("请求失败~");
-        Routes.instance.navigateTo(context, Routes.login_page);
-        AppConfig.token = '';
-        setState(() {
-          _layoutState = LoadState.State_Error;
-        });
+    _saveSubscription = eventBus.on<OrderInEvent>().listen((event) {
+      if ("succuss" == event.text) {
+       loadData();
       }
     });
   }
@@ -199,6 +202,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     // TODO: implement dispose
     super.dispose();
 
-    _failSubscription.cancel();
+    _saveSubscription.cancel();
   }
 }

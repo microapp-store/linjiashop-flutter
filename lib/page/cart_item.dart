@@ -8,6 +8,7 @@ import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/page/count_item.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
+import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/theme_ui.dart';
@@ -111,7 +112,10 @@ class CartItem extends StatelessWidget {
       }
       DialogUtil.buildToast(entity.msgModel.msg);
     }else{
-      DialogUtil.buildToast("服务器错误2~");
+      Routes.instance.navigateTo(context, Routes.login_page);
+      AppConfig.token='';
+      DialogUtil.buildToast("请求失败~");
+
     }
   }
   //多选按钮

@@ -7,6 +7,7 @@ import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/models/order_entity.dart';
 import 'package:flutter_app/models/shipping_entity.dart';
+import 'package:flutter_app/models/user_entity.dart';
 
 
 import 'cart_goods_query_entity.dart';
@@ -42,6 +43,8 @@ class EntityFactory {
       return ShippingAddresEntry.fromJson(json) as T;
     }else if (T.toString() == "AddressEditEntity"){
       return AddressEditEntity.fromJson(json) as T;
+    }else if (T.toString() == "UserEntity"){
+      return UserEntity.fromJson(json) as T;
     }
     else {
       return null;

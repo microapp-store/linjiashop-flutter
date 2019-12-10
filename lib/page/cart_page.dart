@@ -114,7 +114,6 @@ class _CartPageState extends State<CartPage> {
             Routes.instance.navigateTo(context, Routes.login_page);
             AppConfig.token='';
             DialogUtil.buildToast("请求失败~");
-
             _layoutState = LoadState.State_Error;
 
           });
