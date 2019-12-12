@@ -14,8 +14,6 @@ void main() {
     SystemChrome.setSystemUIOverlayStyle(
         SystemUiOverlayStyle(statusBarColor: Colors.transparent));
   }
-
-
   FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
 }
 

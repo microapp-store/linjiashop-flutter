@@ -158,7 +158,6 @@ class ThemeCard extends StatelessWidget {
                     child: Container(
                       alignment:Alignment.center,
                       height: AppSize.height(232),
-
                       child:Text(
                         number,
                         textAlign: TextAlign.center,

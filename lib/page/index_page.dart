@@ -114,7 +114,6 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     return PageView(
       controller: pageController,
       children: pages,
-
       physics: NeverScrollableScrollPhysics(), // 禁止滑动
     );
   }

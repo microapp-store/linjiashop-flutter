@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/entity_factory.dart';
-import 'package:flutter_app/receiver/event_bus.dart';
+
 import 'dart:async';
 
 import 'config.dart';
@@ -15,6 +15,8 @@ class CartQueryDao{
       Response response = await Dio().get(CART_URL,options: options);
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<CartGoodsQueryEntity>(response.data);
+      }else{
+        throw Exception("StatusCode: ${response.statusCode}");
       }
 
     } catch (e) {
