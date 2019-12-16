@@ -54,10 +54,12 @@ class _ProductDetailsState extends State<ProductDetails> {
     if (entity?.goods != null) {
       goodsModel = entity.goods;
       urls.clear();
-      urls = goodsModel.gallery.split(",");
-      setState(() {
-        _loadStateDetails = LoadState.State_Success;
-      });
+      if(goodsModel.gallery.contains(",")) {
+        urls = goodsModel.gallery.split(",");
+        setState(() {
+          _loadStateDetails = LoadState.State_Success;
+        });
+      }
     } else {
       setState(() {
         _loadStateDetails = LoadState.State_Error;

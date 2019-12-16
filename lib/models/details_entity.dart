@@ -6,13 +6,20 @@ class DetailsEntity {
 	DetailsEntity({this.goods});
 	DetailsEntity.fromJson(Map<String, dynamic> json) {
 		if (json['data'] != null) {
-			goods=new GoodsModelDetail.fromJson(json['data']);
+			goods=new GoodsModelDetail.fromJson(json['data']['goods']);
 		}
 	}
 }
+class GoodsModelAndSku{
+	GoodsModelDetail goodsModelDetail;
+
+}
+class SkuModel{
+
+}
+
 
 class GoodsModelDetail {
-
 	String createBy;
 	String createTime;
 	String descript;
@@ -20,7 +27,6 @@ class GoodsModelDetail {
 	String detail;
 	String idCategory;
 	String id;
-
 	bool isDelete;
 	bool isOnSale;
 	String modifyBy;
@@ -47,7 +53,7 @@ class GoodsModelDetail {
 		modifyBy=json['modifyBy'];
 		modifyTime=json['modifyTime'];
 		name = json['name'];
-		num = json['num'];
+		num = json['stock'];
 		pic = json['pic'];
 		price = json['price'];
 		specifications = json['specifications'];

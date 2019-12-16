@@ -9,8 +9,8 @@ class GoodsEntity {
 //			print(goods.runtimeType);
 			List<Map> dataList= (json['data']['records'] as List).cast();
 			dataList.forEach((v) {
-				goods.add(new GoodsModel.fromJson(v));
-//				print(goods.length);
+				goods.add(GoodsModel.fromJson(v));
+				print(goods.length);
 			}
 				);
 		}
@@ -48,7 +48,7 @@ class GoodsModel {
 	String modifyBy;
 	String modifyTime;
 	String name;
-	int  num;
+	int  stock;
 	String pic;
 	 int price;
 	String specifications;
@@ -56,7 +56,7 @@ class GoodsModel {
 
 	GoodsModel({this.createBy, this.createTime, this.descript, this.detail,
 		this.idCategory,this.isDelete,this.isOnSale,this.modifyBy,this.modifyTime,
-		this.name,this.num,this.pic,this.price,this.specifications,this.id});
+		this.name,this.stock,this.pic,this.price,this.specifications,this.id});
 
 	GoodsModel.fromJson(Map<String, dynamic> json) {
 		createBy = json['createBy'];
@@ -69,9 +69,9 @@ class GoodsModel {
 		modifyBy=json['modifyBy'];
 		modifyTime=json['modifyTime'];
 		name = json['name'];
-		num = json['num'];
+		stock =  json['stock'];
 		pic = json['pic'];
-		price = json['price'];
+		price = int.parse(json['price'].toString());
 		specifications = json['specifications'];
 		id=json['id'];
 	}
