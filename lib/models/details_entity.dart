@@ -48,10 +48,12 @@ class SkuModel{
 		dataListTree.forEach((t) {
 			treeModel.add(TreeModel.fromJson(t));
 		});
-		List<Map> dataListTreeList= (json['list'] as List).cast();
-		dataListTreeList.forEach((l) {
-			listModels.add(listModel.fromJson(l,treeModel));
-		});
+		if(null!=json['list']) {
+			List<Map> dataListTreeList = (json['list'] as List).cast();
+			dataListTreeList.forEach((l) {
+				listModels.add(listModel.fromJson(l, treeModel));
+			});
+		}
 	}
 }
 class TreeModel{
