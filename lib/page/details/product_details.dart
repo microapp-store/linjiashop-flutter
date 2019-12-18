@@ -52,7 +52,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   void loadData() async {
     DetailsEntity entity = await DetailsDao.fetch(widget.id.toString());
     if (entity?.goods != null) {
-      goodsModel = entity.goods;
+      goodsModel = entity.goods.goodsModelDetail;
       urls.clear();
       if(goodsModel.gallery.contains(",")) {
         urls = goodsModel.gallery.split(",");

@@ -71,7 +71,11 @@ class GoodsModel {
 		name = json['name'];
 		stock =  json['stock'];
 		pic = json['pic'];
-		price = int.parse(json['price'].toString());
+		if(json['price'].toString().isEmpty){
+			price=0;
+		}else {
+			price = int.parse(json['price'].toString());
+		}
 		specifications = json['specifications'];
 		id=json['id'];
 	}

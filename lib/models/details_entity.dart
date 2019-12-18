@@ -42,12 +42,13 @@ class SkuModel{
 		none_sku=json['none_sku'];
 		price=json['price'];
 		List<Map> dataListTree= (json['tree'] as List).cast();
-		List<Map> dataListTreeList= (json['list'] as List).cast();
+		treeModel = List<TreeModel>();
+		listModels = List<listModel>();
 
 		dataListTree.forEach((t) {
 			treeModel.add(TreeModel.fromJson(t));
 		});
-
+		List<Map> dataListTreeList= (json['list'] as List).cast();
 		dataListTreeList.forEach((l) {
 			listModels.add(listModel.fromJson(l,treeModel));
 		});
@@ -63,8 +64,11 @@ class TreeModel{
 		k_s=json['k_s'];
 		k= json['k'];
 		List<Map> dataList= (json['v'] as List).cast();
+		vModels=List<vModel>();
 		dataList.forEach((v) {
 			vModels.add(vModel.fromJson(v));
+
+
 		});
 	}
 
@@ -75,6 +79,7 @@ class vModel{
 	vModel({this.id,this.name});
 	vModel.fromJson(Map<String, dynamic> json){
 		id = json['id'];
+		print(json['name'].runtimeType);
 		name=json['name'];
 	}
 }
@@ -84,7 +89,7 @@ class listModel{
 //	"s1": "1",
 //	"s2": "3",
 //	"stock_num": 100
-   String price;
+   int price;
    String id;
    int stock_num;
    Map<String,String> map;
@@ -93,6 +98,7 @@ class listModel{
 		 id = json['id'];
 		 price=json['price'];
 		 stock_num=json['stock_num'];
+		 map=Map<String,String>();
 		 trModel.forEach((e){
 			 map[e.k_s] = json[e.k_s];
 		 });
