@@ -1,3 +1,5 @@
+import 'dart:math';
+
 /**
  * 商品详情页面
  */
@@ -40,7 +42,11 @@ class SkuModel{
 	SkuModel.fromJson(Map<String, dynamic> json){
 		hide_stock=json['hide_stock'];
 		none_sku=json['none_sku'];
-		price=json['price'];
+		if(json['price'].toString().isEmpty){
+			price=0;
+		}else {
+			price = int.parse(json['price'].toString());
+		}
 		List<Map> dataListTree= (json['tree'] as List).cast();
 		treeModel = List<TreeModel>();
 		listModels = List<listModel>();
@@ -81,7 +87,7 @@ class vModel{
 	vModel({this.id,this.name});
 	vModel.fromJson(Map<String, dynamic> json){
 		id = json['id'];
-		print(json['name'].runtimeType);
+
 		name=json['name'];
 	}
 }
@@ -98,8 +104,17 @@ class listModel{
 	 listModel({this.price,this.id,this.stock_num,this.map});
 	 listModel.fromJson(Map<String, dynamic> json,List<TreeModel> trModel){
 		 id = json['id'];
-		 price=json['price'];
-		 stock_num=json['stock_num'];
+		 if(json['price'].toString().isEmpty){
+		 	price = 0;
+		 }else {
+			 price = int.parse(json['price'].toString());
+		 }
+		 if(json['stock_num'].toString().isEmpty){
+			 stock_num = 0;
+		 }else {
+			 stock_num = int.parse(json['stock_num'].toString());
+		 }
+
 		 map=Map<String,String>();
 		 trModel.forEach((e){
 			 map[e.k_s] = json[e.k_s];
@@ -145,9 +160,19 @@ class GoodsModelDetail {
 		modifyBy=json['modifyBy'];
 		modifyTime=json['modifyTime'];
 		name = json['name'];
-		num = json['stock'];
+		if(json['stock'].toString().isEmpty){
+			num =0;
+		}else{
+			num = int.parse(json['stock'].toString());
+		}
+
 		pic = json['pic'];
-		price = json['price'];
+		if(json['price'].toString().isEmpty){
+			price =0;
+		}else{
+			price = int.parse(json['price'].toString());
+		}
+
 		specifications = json['specifications'];
 		id=json['id'];
 		gallery=json['gallery'];
