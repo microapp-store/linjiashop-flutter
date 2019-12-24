@@ -1,8 +1,6 @@
 
 import 'package:fluttertoast/fluttertoast.dart';
-
 import 'app_size.dart';
-
 class DialogUtil {
  static void buildToast(String str) {
     Fluttertoast.showToast(

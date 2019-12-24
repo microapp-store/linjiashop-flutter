@@ -281,7 +281,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               decoration: BoxDecoration(
                 color: Colors.white,
               ),
-              height: skuModel.listModels.length==0?170.0:300.0,
+              height: skuModel.listModels.length==0?170.0:600.0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
