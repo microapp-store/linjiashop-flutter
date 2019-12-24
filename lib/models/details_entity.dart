@@ -97,11 +97,13 @@ class listModel{
 //	"s1": "1",
 //	"s2": "3",
 //	"stock_num": 100
+//	"code": "1,3",
    int price;
    String id;
    int stock_num;
+   String code;
    Map<String,String> map;
-	 listModel({this.price,this.id,this.stock_num,this.map});
+	 listModel({this.price,this.id,this.stock_num,this.map,this.code});
 	 listModel.fromJson(Map<String, dynamic> json,List<TreeModel> trModel){
 		 id = json['id'];
 		 if(json['price'].toString().isEmpty){
@@ -114,6 +116,7 @@ class listModel{
 		 }else {
 			 stock_num = int.parse(json['stock_num'].toString());
 		 }
+		 code = json['code'];
 
 		 map=Map<String,String>();
 		 trModel.forEach((e){

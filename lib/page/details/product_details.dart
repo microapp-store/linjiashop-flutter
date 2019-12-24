@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/details_entity.dart';
 import 'package:flutter_app/page/details_top_area.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
+import 'package:flutter_app/page/specifica_button.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -18,6 +21,7 @@ import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 ///
 /// 商品详情页
@@ -37,7 +41,9 @@ class _ProductDetailsState extends State<ProductDetails> {
       "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
   LoadState _loadStateDetails = LoadState.State_Loading;
   GoodsModelDetail goodsModel;
-
+  SkuModel skuModel;
+  listModel model=listModel();
+  StreamSubscription _spcSubscription;
   @override
   void initState() {
     if (mounted) loadData();
@@ -47,23 +53,51 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   void dispose() {
     super.dispose();
+    _spcSubscription.cancel();
   }
+  ///监听Bus events
+  void _listen() {
+    _spcSubscription= eventBus.on<SpecEvent>().listen((event) {
+      if(mounted) {
+        skuModel.listModels.forEach((e){
+          if(e.code == event.code){
+            model=e;
+          }
+          setState(() {
 
+          });
+        });
+
+      }
+    });
+  }
   void loadData() async {
+
+
     DetailsEntity entity = await DetailsDao.fetch(widget.id.toString());
     if (entity?.goods != null) {
       goodsModel = entity.goods.goodsModelDetail;
       urls.clear();
-      if(goodsModel.gallery.contains(",")) {
+      if (goodsModel.gallery.contains(",")) {
         urls = goodsModel.gallery.split(",");
         setState(() {
           _loadStateDetails = LoadState.State_Success;
         });
       }
+      skuModel = entity.goods.skuModel;
+      if(skuModel.listModels.length>0){
+        model=skuModel.listModels[0];
+      }
+
     } else {
       setState(() {
         _loadStateDetails = LoadState.State_Error;
       });
+    }
+    SharedPreferences prefs = await SharedPreferences
+        .getInstance();
+    if (null != prefs.getString("token")) {
+      AppConfig.token = prefs.getString("token") ;
     }
   }
 
@@ -71,6 +105,7 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   @override
   Widget build(BuildContext context) {
+    _listen();
     return Scaffold(
         appBar: MyAppBar(
           preferredSize: Size.fromHeight(AppSize.height(160)),
@@ -142,7 +177,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                     Routes.instance.navigateTo(context, Routes.login_page);
                     return;
                   }
-                  eventBus.fire(new IndexInEvent("2"));
+                  eventBus.fire(IndexInEvent("2"));
                   Navigator.pop(context);
                 },
                 child: Container(
@@ -182,7 +217,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                 return;
               }
               showBottomMenu();
-//
             },
             child: Container(
               alignment: Alignment.center,
@@ -247,7 +281,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               decoration: BoxDecoration(
                 color: Colors.white,
               ),
-              height: 300.0,
+              height: skuModel.listModels.length==0?170.0:300.0,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -264,44 +298,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                               height: AppSize.width(220)),
                         ),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(goodsModel.name,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.clip,
-                                  style: ThemeTextStyle.primaryStyle),
-                              Text.rich(TextSpan(
-                                  text: "¥" +
-                                      (goodsModel.price / 100)
-                                          .toStringAsFixed(2),
-                                  style: ThemeTextStyle.cardPriceStyle,
-                                  children: [
-                                    TextSpan(text: '+', style: descTextStyle1),
-                                    TextSpan(text: '60'),
-                                    TextSpan(text: '积分', style: descTextStyle1)
-                                  ])),
-                              Text('库存:589425件', style: descTextStyle1)
-                            ],
-                          ),
+                          child:buildInfo()
+
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.only(left: AppSize.width(30)),
-                      child: Scrollbar(
-                        child: SingleChildScrollView(
-                          child: Wrap(
-                            spacing: 20,
-                            runSpacing: 5,
-                            children: boxs,
+                  skuModel.listModels.length==0
+                      ? Container() : Expanded(
+                          child: Padding(
+                            padding: EdgeInsets.only(left: AppSize.width(30)),
+                            child: Scrollbar(
+                              child: SingleChildScrollView(
+                                  child: SpecificaButton(
+                                      treeModel:skuModel.treeModel)),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -343,10 +357,49 @@ class _ProductDetailsState extends State<ProductDetails> {
       },
     );
   }
+  Widget buildInfo(){
+    return skuModel.listModels.length==0?
+      Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(goodsModel.name,
+            maxLines: 2,
+            overflow: TextOverflow.clip,
+            style: ThemeTextStyle.primaryStyle),
+        Text.rich(TextSpan(
+            text: "¥" +
+                (goodsModel.price / 100)
+                    .toStringAsFixed(2),
+            style: ThemeTextStyle.cardPriceStyle,
+            children: [
+              TextSpan(text: '+', style: descTextStyle1),
+              TextSpan(text: '60'),
+              TextSpan(text: '积分', style: descTextStyle1)
+            ])),
+        Text('库存:'+goodsModel.num.toString(), style: descTextStyle1)
+      ],
+      ):  Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(goodsModel.name,
+            maxLines: 2,
+            overflow: TextOverflow.clip,
+            style: ThemeTextStyle.primaryStyle),
+        Text.rich(TextSpan(
+            text: "¥" +
+                (model.price / 100)
+                    .toStringAsFixed(2),
+            style: ThemeTextStyle.cardPriceStyle,
+            children: [
+              TextSpan(text: '+', style: descTextStyle1),
+              TextSpan(text: '60'),
+              TextSpan(text: '积分', style: descTextStyle1)
+            ])),
+        Text('库存:'+model.stock_num.toString(), style: descTextStyle1)
+      ],
+    );
+  }
 
-  var boxs = List<Widget>.generate(50, (i) {
-    return Text('这是流式布局$i');
-  });
 
   void loadCartData(String token) async {
     CartGoodsQueryEntity entity = await CartQueryDao.fetch(token);
@@ -371,4 +424,5 @@ class _ProductDetailsState extends State<ProductDetails> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.clear();
   }
+
 }

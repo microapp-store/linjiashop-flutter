@@ -25,6 +25,7 @@
 - 拨打客服电话：url_launcher
 ## 运行效果图
 - App：
+![新增规格](doc/guige.jpg)
 ![效果](doc/mobile.gif)
 - 下载二维码：
 ![二维码](doc/code.png)

@@ -33,3 +33,9 @@ class OrderInEvent {
     this.text = text;
   }
 }
+class SpecEvent{
+  String  code;
+  SpecEvent(String text){
+    this.code=text;
+  }
+}

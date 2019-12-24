@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.2.71'
     repositories {
-       
+        maven { url 'http://192.168.1.183:8081/repository/maven-public/' }
         google()
         jcenter()
     }
