@@ -77,7 +77,7 @@ class CartCount extends StatelessWidget {
   Widget _addBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        addCart(context,item.id,1,AppConfig.token);
+        addCart(context,item.id,1,item.idSku,AppConfig.token);
       },
       child: Container(
         width:AppSize.width(55),
@@ -94,8 +94,8 @@ class CartCount extends StatelessWidget {
       ),
     );
   }
-  void addCart(BuildContext context,String idGoods,int count,String token) async{
-    CartEntity entity = await AddDao.fetch(idGoods,count,token);
+  void addCart(BuildContext context,String idGoods,int count,String idSku,String token) async{
+    CartEntity entity = await AddDao.fetch(idGoods,count,idSku,token);
     if(entity?.cartModel != null){
       if(entity.cartModel.code==20000){
         item.countNum++;

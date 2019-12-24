@@ -95,7 +95,7 @@ class CartDetailCount extends StatelessWidget {
     );
   }
   void addCart(BuildContext context,String idGoods,int count,String token) async{
-    CartEntity entity = await AddDao.fetch(idGoods,count,token);
+    CartEntity entity = await AddDao.fetch(idGoods,count,"",token);
     if(entity?.cartModel != null){
       if(entity.cartModel.code==20000){
         item.countNum++;

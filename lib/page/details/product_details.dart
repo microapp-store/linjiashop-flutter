@@ -254,8 +254,8 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
   }
 
-  void addCart(String idGoods, int count, String token) async {
-    CartEntity entity = await AddDao.fetch(idGoods, count, token);
+  void addCart(String idGoods, int count,String idSku, String token) async {
+    CartEntity entity = await AddDao.fetch(idGoods, count,idSku, token);
     if (entity?.cartModel != null) {
       if (entity.cartModel.code == 20000) {
         setState(() {
@@ -326,7 +326,11 @@ class _ProductDetailsState extends State<ProductDetails> {
                           child: RaisedButton(
                             highlightColor: ThemeColor.appBarBottomBg,
                             onPressed: () {
-                              addCart(widget.id, 1, AppConfig.token);
+                              if(skuModel.listModels.length==0) {
+                                addCart(widget.id, 1,"", AppConfig.token);
+                              }else{
+                                addCart(widget.id, 1,model.id, AppConfig.token);
+                              }
                             },
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
