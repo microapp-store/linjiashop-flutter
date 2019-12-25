@@ -12,10 +12,10 @@ import 'package:flutter_app/utils/dialog_utils.dart';
 
 import '../common.dart';
 
-class CartCount extends StatelessWidget {
+class CartDetailCount extends StatelessWidget {
   GoodsModel item;
 
-  CartCount(this.item);
+  CartDetailCount(this.item);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,7 +77,7 @@ class CartCount extends StatelessWidget {
   Widget _addBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        addCart(context,item.id,1,item.idSku,AppConfig.token);
+        addCart(context,item.id,1,AppConfig.token);
       },
       child: Container(
         width:AppSize.width(55),
@@ -94,8 +94,8 @@ class CartCount extends StatelessWidget {
       ),
     );
   }
-  void addCart(BuildContext context,String idGoods,int count,String idSku,String token) async{
-    CartEntity entity = await AddDao.fetch(idGoods,count,idSku,token);
+  void addCart(BuildContext context,String idGoods,int count,String token) async{
+    CartEntity entity = await AddDao.fetch(idGoods,count,"",token);
     if(entity?.cartModel != null){
       if(entity.cartModel.code==20000){
         item.countNum++;

@@ -4,7 +4,6 @@ import 'package:flutter_app/models/category_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/page/swiper_diy.dart';
 import 'package:flutter_app/res/colours.dart';
-
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_app/dao/findings_dao.dart';
 import 'package:flutter_app/models/goods_entity.dart';
@@ -256,6 +255,3 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   @override
   bool get wantKeepAlive => true;
 }
-
-
-

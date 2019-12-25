@@ -25,6 +25,12 @@
 - 拨打客服电话：url_launcher
 ## 运行效果图
 - App：
+![新增规格](doc/guige.jpg)
+![ios首页效果](doc/home.png)
+![ios发现效果](doc/find.png)
+![ios我的效果](doc/mine.png)
+![ios登录效果](doc/login.png)
+![ios购物车效果](doc/cart.png)
 ![效果](doc/mobile.gif)
 - 下载二维码：
 ![二维码](doc/code.png)

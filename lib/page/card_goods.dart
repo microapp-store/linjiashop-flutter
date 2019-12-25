@@ -29,7 +29,7 @@ class CardGoods extends StatelessWidget {
             price:"¥"+priceDouble.toStringAsFixed(2) ,
             imgUrl:imgUrl+goodsModleDataList[i].pic,
             descript: goodsModleDataList[i].descript,
-            number: "x"+goodsModleDataList[i].num.toString(),
+            number: "x"+goodsModleDataList[i].stock.toString(),
           )
       )
       );

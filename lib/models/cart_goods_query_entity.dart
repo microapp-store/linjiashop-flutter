@@ -25,13 +25,15 @@ class GoodsListModel {
 	int count;
 	String orderId;
 	String idGoods;
-	GoodsListModel({this.goodsModel, this.count,this.orderId,this.idGoods});
+	String idSku;
+	GoodsListModel({this.goodsModel, this.count,this.orderId,this.idGoods,this.idSku});
 	GoodsListModel.fromJson(Map<String, dynamic> json){
 		count = json ['count'];
 		orderId = json ['id'];
 		idGoods =json ['idGoods'];
+		idSku =json['idSku'];
 		if(json ['goods']!=null){
-			goodsModel=new GoodsModel.fromJson(json ['goods'],count,orderId,idGoods);
+			goodsModel=new GoodsModel.fromJson(json ['goods'],count,orderId,idGoods,idSku);
 		}
 	}
 }
@@ -65,6 +67,7 @@ class GoodsModel {
 	String modifyBy;
 	String modifyTime;
 	String name;
+	String idSku;
 	int  num;
 	String pic;
 	int price;
@@ -78,9 +81,9 @@ class GoodsModel {
 
 	GoodsModel({this.createBy, this.createTime, this.descript, this.detail,
 		this.idCategory,this.isDelete,this.isOnSale,this.modifyBy,this.modifyTime,
-		this.name,this.num,this.pic,this.price,this.specifications,this.id});
+		this.name,this.num,this.pic,this.price,this.specifications,this.id,this.idSku});
 
-	GoodsModel.fromJson(Map<String, dynamic> json,int count,String orderId,String idGoods) {
+	GoodsModel.fromJson(Map<String, dynamic> json,int count,String orderId,String idGoods,String idSku) {
 		createBy = json['createBy'];
 		createTime = json['createTime'];
 		descript = json['descript'];
@@ -99,6 +102,7 @@ class GoodsModel {
 		this.orderId= orderId;
 		countNum=count;
 		this.idGoods=idGoods;
+		this.idSku = idSku;
 		isCheck = true;
 	}
 

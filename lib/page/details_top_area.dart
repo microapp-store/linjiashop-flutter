@@ -148,10 +148,7 @@ class DetailsTopArea extends StatelessWidget {
   ///查看商品评论
 
   Widget _goodsComment(){
-//    return Container(
-//      color: Colors.white,
-//      height: AppSize.height(90),
-//      child:
+
   return
   Container(
     width: double.infinity,
