@@ -150,7 +150,6 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
       case 1:
         loadData(2, page, AppConfig.token);
         break;
-
       case 2:
         loadData(3, page, AppConfig.token);
         break;
