@@ -10,7 +10,7 @@ linjiashop包含了后台管理功能和手机端商城业务功能
     - 我的订单
 
 ## 技术选型
-- 核心框架：flutter 1.9.6
+- 核心框架：flutter 1.12.13
 - 数据存储：shared_preferences
 - 屏幕适配：flutter_screenutil
 - 路由管理：fluro
