@@ -3,7 +3,8 @@ class CategoryEntity {
 	CategoryEntity({this.category});
 	CategoryEntity.fromJson(Map<String, dynamic> json) {
 		if (json['data'] != null) {
-			category = new List<CategoryModel>();(json['data'] as List).forEach((v) { category.add(new CategoryModel.fromJson(v)); });
+			category = new List<CategoryModel>();(json['data'] as List).forEach((v) {
+				category.add(new CategoryModel.fromJson(v)); });
 		}
 	}
 }
