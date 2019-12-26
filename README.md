@@ -34,7 +34,7 @@
 </tr>
 <tr>
 <td>
-<img src="doc/guige.jpg" width="300"/></td>
+<img src="doc/detail.png" width="300"/></td>
 <td>
 <img src="doc/login.png" width="300"/></td>
 </tr>
