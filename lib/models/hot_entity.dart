@@ -7,7 +7,8 @@ class HotEntity {
     if (json['data'] != null) {
       goods = new List<GoodsModel>();
 //			print(goods.runtimeType);
-      (json['data']['records'] as List).forEach((v) {
+      List<Map> dataList= (json['data']['records'] as List).cast();
+      dataList.forEach((v) {
         goods.add(new GoodsModel.fromJson(v));
 //				print(goods.length);
       }

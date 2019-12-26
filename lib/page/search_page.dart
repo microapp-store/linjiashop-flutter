@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/dao/hot_goods_dao.dart';
 import 'package:flutter_app/dao/search_dao.dart';
 import 'package:flutter_app/models/hot_entity.dart';
-import 'package:flutter_app/utils/constants.dart';
-import 'package:flutter_app/utils/dialog_utils.dart';
+
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_easyrefresh/material_footer.dart';
@@ -29,7 +28,7 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
   Widget build(BuildContext context) {
     super.build(context);
     AppSize.init(context);
-    Screen.init(context);
+
     return Scaffold(
         appBar: MyAppBar(
           preferredSize: Size.fromHeight(AppSize.height(160)),
@@ -63,8 +62,8 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
         )
     );
   }
-  GlobalKey<RefreshHeaderState> _headerKey = GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey = GlobalKey<RefreshFooterState>();
+  GlobalKey _headerKey = GlobalKey();
+  GlobalKey _footerKey = GlobalKey();
 
   bool _isLoading = false;
 
@@ -119,7 +118,7 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
     }
   }
 
-  _getContent(){
+ Widget _getContent(){
     if(_isLoading){
       return Center(
         child: CircularProgressIndicator(),
@@ -131,10 +130,10 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
             left: AppSize.width(30),
             right: AppSize.width(30)),
         child: EasyRefresh(
-            refreshHeader: MaterialHeader(
+            header: MaterialHeader(
               key: _headerKey,
             ),
-            refreshFooter: MaterialFooter(
+            footer: MaterialFooter(
               key: _footerKey,
             ),
 
@@ -153,7 +152,7 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
               }
 
             },
-            loadMore: () async {}
+            onLoad: ()  async {}
         ),
       );
     }

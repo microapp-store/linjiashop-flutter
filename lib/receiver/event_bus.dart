@@ -27,3 +27,15 @@ class IndexInEvent{
     this.index=text;
   }
 }
+class OrderInEvent {
+  String text;
+  OrderInEvent(String text){
+    this.text = text;
+  }
+}
+class SpecEvent{
+  String  code;
+  SpecEvent(String text){
+    this.code=text;
+  }
+}

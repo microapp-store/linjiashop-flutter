@@ -29,7 +29,7 @@ class CardGoods extends StatelessWidget {
             price:"¥"+priceDouble.toStringAsFixed(2) ,
             imgUrl:imgUrl+goodsModleDataList[i].pic,
             descript: goodsModleDataList[i].descript,
-            number: "x"+goodsModleDataList[i].num.toString(),
+            number: "x"+goodsModleDataList[i].stock.toString(),
           )
       )
       );
@@ -42,7 +42,7 @@ class CardGoods extends StatelessWidget {
 
   void onItemClick(BuildContext context,int i){
    String id = goodsModleDataList[i].id;
-   Map<String, dynamic> p={"id":id};
+   Map<String, String> p={"id":id};
    Routes.instance.navigateToParams(context,Routes.PRODUCT_DETAILS,params: p);
   }
 }

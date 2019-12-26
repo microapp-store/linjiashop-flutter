@@ -4,7 +4,6 @@ import 'package:flutter_app/models/category_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/page/swiper_diy.dart';
 import 'package:flutter_app/res/colours.dart';
-import 'package:flutter_app/utils/constants.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_app/dao/findings_dao.dart';
 import 'package:flutter_app/models/goods_entity.dart';
@@ -38,8 +37,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    Screen.init(context);
     AppSize.init(context);
     final screenWidth = ScreenUtil.screenWidth;
     if(myTabs.length>0) {
@@ -48,7 +45,7 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: MyAppBar(
         preferredSize: Size.fromHeight(AppSize.height(160)),
-        child: CommonTopBar(title: "首页"),
+        child: CommonTopBar(title: "邻家小铺"),
       ),
       body:
       LoadStateLayout(
@@ -166,8 +163,8 @@ class FindingTabView extends StatefulWidget {
 }
 
 class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAliveClientMixin{
-  GlobalKey<RefreshHeaderState> _headerKey = GlobalKey<RefreshHeaderState>();
-  GlobalKey<RefreshFooterState> _footerKey = GlobalKey<RefreshFooterState>();
+  GlobalKey _headerKey = GlobalKey();
+  GlobalKey _footerKey = GlobalKey();
   LoadState _layoutState = LoadState.State_Loading;
   List<GoodsModel> goodsList = new List<GoodsModel>();
   bool _isLoading = false;
@@ -204,7 +201,7 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
     }
 
 
-  _getContent(){
+  Widget _getContent(){
     if(_isLoading){
       return Center(
         child: CircularProgressIndicator(),
@@ -216,10 +213,10 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
             left: AppSize.width(30),
             right: AppSize.width(30)),
         child: EasyRefresh(
-            refreshHeader: MaterialHeader(
+            header: MaterialHeader(
               key: _headerKey,
             ),
-            refreshFooter: MaterialFooter(
+            footer: MaterialFooter(
               key: _footerKey,
             ),
             child:ListView(
@@ -232,9 +229,9 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
             onRefresh: () async {
               _isLoading = true;
               loadData(widget.id);
-              setState(()=>{});
+
             },
-            loadMore: () async {}
+            onLoad: () async {}
         ),
       );
     }
@@ -258,6 +255,3 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   @override
   bool get wantKeepAlive => true;
 }
-
-
-

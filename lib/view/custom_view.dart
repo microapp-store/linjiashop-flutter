@@ -1,4 +1,4 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/order_form_entity.dart';
 import 'package:flutter_app/res/colours.dart';
@@ -123,7 +123,10 @@ class ThemeCard extends StatelessWidget {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(8),
                               topRight: Radius.circular(8)),
-                          child:Image(image:CachedNetworkImageProvider(imgUrl),fit: BoxFit.cover,)),
+                          child: Image.network(
+                            imgUrl,
+                            fit: BoxFit.cover,
+                          ),),
                     ),
                     flex: 2,
                   ),
@@ -158,7 +161,6 @@ class ThemeCard extends StatelessWidget {
                     child: Container(
                       alignment:Alignment.center,
                       height: AppSize.height(232),
-
                       child:Text(
                         number,
                         textAlign: TextAlign.center,
@@ -204,7 +206,10 @@ class ThemeBtnCard extends StatelessWidget {
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8)),
-              child:Image(image:CachedNetworkImageProvider(imgUrl),fit: BoxFit.cover,))
+              child:Image.network(
+                imgUrl,
+                fit: BoxFit.cover,
+              ),)
           ,
           Padding(
               child: Text(title,style: ThemeTextStyle.cardTitleStyle,

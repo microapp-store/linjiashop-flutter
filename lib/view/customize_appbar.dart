@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget child;

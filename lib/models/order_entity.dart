@@ -23,7 +23,7 @@ class OrderModel {
   int status;
   List<GoodsListModel> goods;
   OrderModel({this.orderSn, this.realPrice,this.totalPrice,this.statusName,
-  this.status,this.goods});
+    this.status,this.goods});
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     orderSn = json['orderSn'];

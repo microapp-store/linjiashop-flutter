@@ -1,5 +1,4 @@
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
 
@@ -8,6 +7,7 @@ import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/page/count_item.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
+import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/theme_ui.dart';
@@ -71,7 +71,7 @@ class CartItem extends StatelessWidget {
                   builder: (context) {
                     return AlertDialog(
                       title: Text('提示？'),
-                      content: Text('确定删除该条记录？'),
+                      content: Text('确定移除该商品吗？'),
                       actions: <Widget>[
                         FlatButton(
                           child: Text('取消'),
@@ -111,7 +111,10 @@ class CartItem extends StatelessWidget {
       }
       DialogUtil.buildToast(entity.msgModel.msg);
     }else{
-      DialogUtil.buildToast("服务器错误2~");
+      Routes.instance.navigateTo(context, Routes.login_page);
+      AppConfig.token='';
+      DialogUtil.buildToast("请求失败~");
+
     }
   }
   //多选按钮
@@ -143,7 +146,10 @@ class CartItem extends StatelessWidget {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8)),
-          child:Image(image:CachedNetworkImageProvider(imgUrl+item.pic),fit: BoxFit.cover,)),
+        child:Image.network(
+          imgUrl,
+          fit: BoxFit.cover,
+        ),),
     );
   }
   //商品名称

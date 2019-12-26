@@ -8,11 +8,11 @@ import 'package:flutter_app/page/cart_item.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import '../cart_bottom.dart';
 import 'load_state_layout.dart';
 
@@ -32,17 +32,17 @@ class _CartPageState extends State<CartPage> {
   void initState() {
     _isLoading=true;
     loadCartData(AppConfig.token);
-    print("--*-- CartPage");
+//    print("--*-- CartPage");
     super.initState();
   }
   @override
   Widget build(BuildContext context) {
     AppSize.init(context);
-    Screen.init(context);
+
     _listen();
     return Scaffold(
               appBar: MyAppBar(
-              preferredSize: Size.fromHeight(AppSize.height(160)),
+              preferredSize: Size.fromHeight(AppSize.height(160.0)),
               child: CommonTopBar(title: "购物车"),
               ),
               body: LoadStateLayout(
@@ -111,6 +111,9 @@ class _CartPageState extends State<CartPage> {
       }else{
         if(mounted) {
           setState(() {
+            Routes.instance.navigateTo(context, Routes.login_page);
+            AppConfig.token='';
+            DialogUtil.buildToast("请求失败~");
             _layoutState = LoadState.State_Error;
 
           });
@@ -119,25 +122,11 @@ class _CartPageState extends State<CartPage> {
 
 
   }
-  StreamSubscription _failSubscription;
+
   StreamSubscription _clearSubscription;
 
   ///监听Bus events
   void _listen() {
-    _failSubscription=eventBus.on<UserLoggedInEvent>().listen((event) {
-
-      if("fail"==event.text&&!AppConfig.isUser) {
-        AppConfig.isUser=true;
-        DialogUtil.buildToast("请求失败~");
-        Routes.instance.navigateTo(context, Routes.login_page);
-       AppConfig.token='';
-        setState(() {
-          _layoutState = LoadState.State_Error;
-        });
-
-      }
-    });
-
     _clearSubscription= eventBus.on<GoodsNumInEvent>().listen((event) {
       if(mounted) {
         if ('clear' == event.event) {
@@ -166,7 +155,6 @@ class _CartPageState extends State<CartPage> {
     // TODO: implement dispose
     super.dispose();
 
-    _failSubscription.cancel();
     _clearSubscription.cancel();
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/order_entity.dart';
+import 'package:flutter_app/routes/routes.dart';
 
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/view/custom_view.dart';
@@ -26,29 +27,35 @@ class OrderCard extends StatelessWidget {
         width: AppSize.width(1080),
         child:Column(
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  child:Container(
-                    padding: EdgeInsets.only(left: 10),
-                 child:  Text('订单编号:', style: ThemeTextStyle.orderFormStatusStyle,)
-                   ),
-                  flex: 1,
-                ),
-                Expanded(
-                  child:
-                  Container(
-                      padding: EdgeInsets.only(right: 10),
-                    child: Text(
-                    orderModleDataList[i].statusName,
-                    textAlign: TextAlign.right,
-                    style: ThemeTextStyle.detailStylePrice,)
+            InkWell(
+              onTap: (){
+                onItemClick(context,i);
+              },
+              child:  Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    child:Container(
+                        padding: EdgeInsets.only(left: 10),
+                        child:  Text('订单编号:', style: ThemeTextStyle.orderFormStatusStyle,)
+                    ),
+                    flex: 1,
+                  ),
+                  Expanded(
+                    child:
+                    Container(
+                        padding: EdgeInsets.only(right: 10),
+                        child: Text(
+                          orderModleDataList[i].statusName,
+                          textAlign: TextAlign.right,
+                          style: ThemeTextStyle.detailStylePrice,)
                     )
-                  ,flex: 1,
-                )
-              ],
+                    ,flex: 1,
+                  )
+                ],
+              ),
             ),
+
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -67,7 +74,7 @@ class OrderCard extends StatelessWidget {
             _buildOrderSub(orderModleDataList[i].goods),
             ThemeView.divider(),
             SizedBox(
-              height: AppSize.height(120),
+              height: AppSize.height(120.0),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,7 +94,9 @@ class OrderCard extends StatelessWidget {
                         textColor: Colors.white,
                         child: Text('立即付款',style: ThemeTextStyle.orderStylePrice),
                         onPressed: () {
-                          // ...
+                          String totalPriceStr = (orderModleDataList[i].totalPrice / 100).toStringAsFixed(2);
+                          Map<String, String> p={"orderSn":orderModleDataList[i].orderSn,"totalPrice":totalPriceStr};
+                          Routes.instance.navigateToParams(context,Routes.pay_page,params: p);
                         },
                       ),
                     )
@@ -124,11 +133,11 @@ class OrderCard extends StatelessWidget {
     );
     return contentSub;
   }
-
-
   void onItemClick(BuildContext context,int i){
-//   String id = goodsModleDataList[i].id;
-//   Map<String, dynamic> p={"id":id};
-//   Routes.instance.navigateToParams(context,Routes.PRODUCT_DETAILS,params: p);
+    String orderSn = orderModleDataList[i].orderSn;
+    Map<String, String> p={"orderSn":orderSn};
+    Routes.instance.navigateToParams(context,Routes.ORDER_DETAILS,params: p);
   }
+
+
 }

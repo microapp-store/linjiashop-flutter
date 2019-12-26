@@ -11,8 +11,7 @@ class DelDao{
   static Future<MsgEntity> fetch(String id,int count,String token) async{
     try {
       Options options = Options(headers: {"Authorization":token});
-      Response response = await Dio().post(DEL_URL,
-          queryParameters: {"id":id,"count":count},
+      Response response = await Dio().post(DEL_URL+"/"+id+"/"+count.toString(),
           options: options);
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<MsgEntity>(response.data);

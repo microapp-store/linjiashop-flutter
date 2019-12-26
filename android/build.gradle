@@ -1,7 +1,7 @@
 buildscript {
     ext.kotlin_version = '1.2.71'
     repositories {
-       
+        maven { url 'http://192.168.1.183:8081/repository/maven-public/' }
         google()
         jcenter()
     }
@@ -22,6 +22,16 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    project.evaluationDependsOn(':app')
+
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.core'
+                    && !details.requested.name.contains('multidex')) {
+                details.useVersion "1.0.0"
+            }
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(':app')

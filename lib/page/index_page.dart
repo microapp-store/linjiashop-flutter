@@ -11,7 +11,7 @@ import 'package:flutter_app/page/search_page.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
-import 'package:flutter_app/utils/constants.dart';
+
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'home_shop_page.dart';
@@ -23,7 +23,7 @@ class IndexPage extends StatefulWidget {
 }
 
 final List<BottomNavigationBarItem> bottomBar = <BottomNavigationBarItem>[
-  BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text("首页")),
+  BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text("小铺")),
   BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), title: Text("发现")),
   BottomNavigationBarItem(icon: Icon(CupertinoIcons.shopping_cart), title: Text("购物车")),
   BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), title: Text("我的"))
@@ -54,7 +54,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     super.build(context);
     // 初始化屏幕适配包
     AppSize.init(context);
-    Screen.init(context);
+
     _listen();
     return WillPopScope(
       child: Scaffold(
@@ -92,7 +92,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
             items: bottomBar),
         body: _getPageBody(context),
       ) ,
-        onWillPop: () async {
+        onWillPop:  ()async{
           // 点击返回键的操作
           if (lastPopTime == null ||
               DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
@@ -101,19 +101,19 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
           } else {
             lastPopTime = DateTime.now();
             // 退出app
-            await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+           return await SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+
           }
-        },
+        }
     );
 
   }
 
   final pageController = PageController();
-  _getPageBody(BuildContext context){
+  Widget _getPageBody(BuildContext context){
     return PageView(
       controller: pageController,
       children: pages,
-
       physics: NeverScrollableScrollPhysics(), // 禁止滑动
     );
   }

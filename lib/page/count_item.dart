@@ -6,6 +6,7 @@ import 'package:flutter_app/models/cart_entity.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
+import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 
@@ -35,10 +36,10 @@ class CartCount extends StatelessWidget {
     );
   }
   // 减少按钮
-  Widget _reduceBtn(context){
+  Widget _reduceBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        loadReduce(item.orderId,item.countNum-1,AppConfig.token);
+        loadReduce(context,item.orderId,item.countNum-1,AppConfig.token);
       },
       child: Container(
         width:AppSize.width(55),
@@ -54,7 +55,7 @@ class CartCount extends StatelessWidget {
       ),
     );
   }
-  void loadReduce(String orderId,int count,String token) async{
+  void loadReduce(BuildContext context,String orderId,int count,String token) async{
 
     MsgEntity entity = await DelDao.fetch(orderId,count,token);
     if(entity?.msgModel != null){
@@ -64,16 +65,19 @@ class CartCount extends StatelessWidget {
       }
       DialogUtil.buildToast(entity.msgModel.msg);
     }else{
-      DialogUtil.buildToast("服务器错误3~");
+
+      Routes.instance.navigateTo(context, Routes.login_page);
+      AppConfig.token='';
+      DialogUtil.buildToast("请求失败~");
     }
 
   }
 
   //添加按钮
-  Widget _addBtn(context){
+  Widget _addBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        addCart(item.id,1,AppConfig.token);
+        addCart(context,item.id,1,item.idSku,AppConfig.token);
       },
       child: Container(
         width:AppSize.width(55),
@@ -90,16 +94,19 @@ class CartCount extends StatelessWidget {
       ),
     );
   }
-  void addCart(String idGoods,int count,String token) async{
-    CartEntity entity = await AddDao.fetch(idGoods,count,token);
+  void addCart(BuildContext context,String idGoods,int count,String idSku,String token) async{
+    CartEntity entity = await AddDao.fetch(idGoods,count,idSku,token);
     if(entity?.cartModel != null){
       if(entity.cartModel.code==20000){
         item.countNum++;
-        eventBus.fire(new GoodsNumInEvent("add"));
+        eventBus.fire(GoodsNumInEvent("add"));
       }
       DialogUtil.buildToast(entity.cartModel.msg);
     }else{
-      DialogUtil.buildToast("服务器错误4~");
+      Routes.instance.navigateTo(context, Routes.login_page);
+      AppConfig.token='';
+      DialogUtil.buildToast("请求失败~");
+
     }
 
   }

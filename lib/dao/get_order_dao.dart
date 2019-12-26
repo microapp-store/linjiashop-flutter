@@ -17,11 +17,12 @@ class OrderQueryDao{
 
       Response response = await Dio().get(OREDER_GET_URL,
           queryParameters: {"status":status,"page":page,"limt":20},options: options);
+
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<OrderEntity>(response.data);
       }
       else{
-        eventBus.fire(new UserLoggedInEvent("fail"));
+        eventBus.fire(UserLoggedInEvent("fail"));
 
       }
     } catch (e) {

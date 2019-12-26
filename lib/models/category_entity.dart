@@ -3,26 +3,28 @@ class CategoryEntity {
 	CategoryEntity({this.category});
 	CategoryEntity.fromJson(Map<String, dynamic> json) {
 		if (json['data'] != null) {
-			category = new List<CategoryModel>();(json['data'] as List).forEach((v) { category.add(new CategoryModel.fromJson(v)); });
+			category = new List<CategoryModel>();(json['data'] as List).forEach((v) {
+				category.add(new CategoryModel.fromJson(v)); });
 		}
 	}
 }
 class CategoryModel{
 
-   String name;
-   String id;
-	 List<CategoryInfoModel> categoryInfoModels;
-	 CategoryModel({this.name,this.id,this.categoryInfoModels});
-	 factory CategoryModel.fromJson(Map<String, dynamic> parsedJson){
-		 var list = parsedJson['bannerList'] as List;
+	String name;
+	String id;
+	List<CategoryInfoModel> categoryInfoModels;
+	CategoryModel({this.name,this.id,this.categoryInfoModels});
+	factory CategoryModel.fromJson(Map<String, dynamic> parsedJson){
+		var list = parsedJson['bannerList'] as List;
 
-		 List<CategoryInfoModel> categoryInfoList = list.map((i) => CategoryInfoModel.fromJson(i)).toList();
-		 return CategoryModel(
-				 id: parsedJson['id'],
-				 name: parsedJson['name'],
-				 categoryInfoModels:categoryInfoList
-		 );
-	 }
+		List<CategoryInfoModel> categoryInfoList =
+		list.map((i) => CategoryInfoModel.fromJson(i)).toList();
+		return CategoryModel(
+				id: parsedJson['id'],
+				name: parsedJson['name'],
+				categoryInfoModels:categoryInfoList
+		);
+	}
 }
 
 class CategoryInfoModel {
@@ -35,8 +37,12 @@ class CategoryInfoModel {
 	String type;
 	String url;
 	String id;
+	String page;
+	String param;
 
-	CategoryInfoModel({this.createBy, this.createTime, this.idFile, this.modifyBy,this.modifyTime,this.title,this.type,this.url,this.id});
+
+	CategoryInfoModel({this.createBy, this.createTime, this.idFile, this.modifyBy,
+		this.modifyTime,this.title,this.type,this.url,this.id,this.page});
 
 	CategoryInfoModel.fromJson(Map<String, dynamic> json) {
 		createBy = json['createBy'];
@@ -48,6 +54,8 @@ class CategoryInfoModel {
 		type = json['type'];
 		url = json['url'];
 		id = json['id'];
+		page = json['page'];
+		param = json['param'];
 	}
 
 	Map<String, dynamic> toJson() {
@@ -61,6 +69,7 @@ class CategoryInfoModel {
 		data['type'] = this.type;
 		data['url'] = this.url;
 		data['id'] = this.id;
+		data['page'] = this.page;
 		return data;
 	}
 }

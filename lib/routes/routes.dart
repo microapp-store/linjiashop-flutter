@@ -1,14 +1,15 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
-
+import 'package:flutter_app/page/goodsmanger/shipping_address.dart';
+import 'package:flutter_app/page/goodsmanger/shipping_edit_address.dart';
+import 'package:flutter_app/page/goodsmanger/shipping_save_address.dart';
 import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
+import 'package:flutter_app/page/pay/pay_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
-
-
+import 'package:flutter_app/page/web_page.dart';
 class Routes {
   static final Router router = new Router();
   static const ROOT = '/';
@@ -18,20 +19,38 @@ class Routes {
 
   static const login_page = '/login_page';
   static const order_page = '/order_page';
+  static const pay_page = '/pay_page';
+  static const address_page = '/address_page';
+  static const save_address_page = '/save_address_page';
+  static const new_address_page = '/new_address_page';
+  static const web_page = '/web';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
-    router.define(
-        '$ORDER_DETAILS/:id', handler: Handler(handlerFunc: (context, params) => OrderDetails(int.parse(params['id'][0]))));
 
     router.define(
         PRODUCT_DETAILS, handler:
     Handler(handlerFunc: (context, params) => ProductDetails(id:params['id'].first)));
-
+    router.define(
+        ORDER_DETAILS, handler:
+    Handler(handlerFunc: (context, params) => OrderDetails(orderSn:params['orderSn'].first)));
+    router.define(
+        pay_page, handler:
+    Handler(handlerFunc: (context, params) =>
+        PayPage(orderSn:params['orderSn'].first,totalPrice:params['totalPrice'].first)));
     router.define(
         login_page, handler: Handler(handlerFunc: (context, params) => RegPageAndLoginPage()));
     router.define(
         order_page, handler: Handler(handlerFunc: (context, params) => OrderFormPage()));
+    router.define(
+        address_page, handler: Handler(handlerFunc: (context, params) => ShippingAddressPage()));
+    router.define(
+        save_address_page, handler: Handler(handlerFunc: (context, params) => ShippingEditAddressPage(id:params['id'].first)));
+    router.define(
+        web_page, handler: Handler(handlerFunc: (context, params) => WebViewPage(url:params['url'].first)));
+    router.define(
+        new_address_page, handler: Handler(handlerFunc: (context, params) =>
+        ShippingSaveAddressPage()));
   }
 
   /**
