@@ -34,7 +34,7 @@
 </tr>
 <tr>
 <td>
-<img src="doc/detail.png" width="300"/></td>
+<img src="doc/guige.jpg" width="300"/></td>
 <td>
 <img src="doc/login.png" width="300"/></td>
 </tr>
@@ -52,7 +52,9 @@
 
 - 下载二维码(Android)：
 ![二维码](doc/code.png)
+- 测试账号：15011112222 admin
+## 在线文档
+- [http://microapp.gitee.io/linjiashop](http://microapp.gitee.io/linjiashop)
 ## 技术交流
 - QQ群：254059156
-- 测试账号：15011112222 admin
 - 微信：myenilu,添加请备注：邻家小铺
