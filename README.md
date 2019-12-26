@@ -47,7 +47,9 @@
 </table>
 
 - Android:
+
 ![效果](doc/mobile.gif)
+
 - 下载二维码(Android)：
 ![二维码](doc/code.png)
 ## 技术交流
