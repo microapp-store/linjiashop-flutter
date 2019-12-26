@@ -3,11 +3,13 @@
 *.log
 *.pyc
 *.swp
+*.lock
 .DS_Store
 .atom/
 .buildlog/
 .history
 .svn/
+pubspec.lock
 
 # IntelliJ related
 *.iml

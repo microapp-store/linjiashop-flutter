@@ -36,7 +36,7 @@ class _OrderFormPageState extends State<OrderFormPage>
   ];
 
   final ValueNotifier<OrderFormEntity> orderFormData =
-      ValueNotifier<OrderFormEntity>(null);
+  ValueNotifier<OrderFormEntity>(null);
 
   List<Widget> bodys;
 
@@ -71,7 +71,7 @@ class _OrderFormPageState extends State<OrderFormPage>
       appBar: MyAppBar(
         preferredSize: Size.fromHeight(AppSize.height(160)),
         child:
-            CommonBackTopBar(title: "订单", onBack: () => Navigator.pop(context)),
+        CommonBackTopBar(title: "订单", onBack: () => Navigator.pop(context)),
       ),
       body: Container(
         color: Color(0xfff5f6f7),
