@@ -43,7 +43,7 @@ class _ResetCodePageState extends State<ResetCodePage> {
   TextStyle inkWellStyle = _availableStyle;
   /// 当前墨水瓶（`InkWell`）的文本。
   String _verifyStr = '获取验证码';
-
+  bool isCheck=false;
 
 
   @override
@@ -78,6 +78,7 @@ class _ResetCodePageState extends State<ResetCodePage> {
           if(mounted) {
             setState(() {});
             if (_seconds == 0) {
+              isCheck=false;
               _verifyStr = '重新发送';
             }
           }
@@ -89,6 +90,7 @@ class _ResetCodePageState extends State<ResetCodePage> {
     /// 计时器（`Timer`）组件的取消（`cancel`）方法，取消计时器。
     _timer?.cancel();
   }
+
   @override
   Widget build(BuildContext context) {
     _listen();
@@ -113,9 +115,11 @@ class _ResetCodePageState extends State<ResetCodePage> {
               msg: "手机号码格式不正确~");
           return ;
         }
-        if(_seconds == widget.countdown){
+        if(_seconds == widget.countdown&&!isCheck){
 //          widget.onTapCallback();
+          isCheck=true;
         sendSms(widget.phoneNum);
+
         }
 
       }
