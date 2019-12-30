@@ -144,11 +144,11 @@ class _SearchPageState extends State<SearchPage>  with AutomaticKeepAliveClientM
             ),
             onRefresh: () async {
               _isLoading = true;
-              var username = _controller.text;
-              if (username.isEmpty) {
+              var name = _controller.text;
+              if (name.isEmpty) {
                 loadData();
               }else {
-                _doSearch(username.toString());
+                _doSearch(name.toString());
               }
 
             },

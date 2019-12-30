@@ -69,8 +69,14 @@ class GoodsModel {
 		modifyBy=json['modifyBy'];
 		modifyTime=json['modifyTime'];
 		name = json['name'];
-		stock =  json['stock'];
+		if(json['stock'].toString().isEmpty){
+			stock=0;
+		}else {
+			stock = int.parse(json['stock'].toString());
+		}
+
 		pic = json['pic'];
+
 		if(json['price'].toString().isEmpty){
 			price=0;
 		}else {
