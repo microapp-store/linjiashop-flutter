@@ -147,7 +147,7 @@ class CartItem extends StatelessWidget {
               topLeft: Radius.circular(8),
               topRight: Radius.circular(8)),
         child:Image.network(
-          imgUrl,
+          imgUrl+item.pic,
           fit: BoxFit.cover,
         ),),
     );
