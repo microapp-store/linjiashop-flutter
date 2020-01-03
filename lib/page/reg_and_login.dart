@@ -243,7 +243,11 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
       saveUserInfo(entity.userModel);
 
     } else {
-      DialogUtil.buildToast(entity.msgModel.msg);
+      if(entity?.msgModel!=null) {
+        DialogUtil.buildToast(entity.msgModel.msg);
+      }else{
+        DialogUtil.buildToast("登录失败");
+      }
     }
   }
 
@@ -270,7 +274,6 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
     eventBus.fire(UserLoggedInEvent("sucuss"));
     AppConfig.token = userModel.token;
     AppConfig.isUser = false;
-
     loadUserInfo();
   }
 }

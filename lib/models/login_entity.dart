@@ -13,17 +13,13 @@ class LoginEntity {
 	}
 }
 class UserModel {
-	String avatar;
-	String mobile;
-	String nickName;
+
 	String token;
-	String msg;
-	UserModel({this.avatar, this.mobile, this.nickName, this.token});
+
+	UserModel({ this.token});
 
 	UserModel.fromJson(Map<String, dynamic> json) {
-		avatar = json['user']['avatar'];
-		mobile = json['user']['mobile'];
-		nickName = json['user']['nickName'];
+
 		token = json['token'];
 	}
 

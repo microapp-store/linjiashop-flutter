@@ -2,9 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/dao/sendsms_dao.dart';
 import 'package:flutter_app/models/goods_entity.dart';
+import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/utils/app_size.dart';
+import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 /// 可用时使用的字体样式。
 final TextStyle _availableStyle = TextStyle(
@@ -137,12 +139,17 @@ class _ResetCodePageState extends State<ResetCodePage> {
     return matched;
   }
   void sendSms(String mobile) async{
-    GoodsEntity entity = await SendSmsDao.fetch(mobile);
-    _startTimer();
-    inkWellStyle = _unavailableStyle;
-    _verifyStr = '已发送$_seconds'+'s';
-    setState(() {});
-    widget.onTapCallback();
+    MsgEntity entity = await SendSmsDao.fetch(mobile);
+    if(entity!=null) {
+      _startTimer();
+      inkWellStyle = _unavailableStyle;
+      _verifyStr = '已发送$_seconds' + 's';
+      DialogUtil.buildToast("短信验证码为:"+entity.msgModel.data);
+      setState(() {});
+      widget.onTapCallback();
+    }else{
+      DialogUtil.buildToast("发送失败");
+    }
 
   }
   @override

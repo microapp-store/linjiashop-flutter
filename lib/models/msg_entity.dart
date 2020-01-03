@@ -9,11 +9,13 @@ class MsgEntity {
 }
 class MsgModel {
   String msg;
+  String data;
   int code;
-  MsgModel({this.msg, this.code});
+  MsgModel({this.msg, this.code,this.data});
   MsgModel.fromJson(Map<String, dynamic> json) {
     msg = json['msg'];
     code = json['code'];
+    data = json['data'];
   }
 
 }
