@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_app/models/entity_factory.dart';
 import 'package:flutter_app/models/login_entity.dart';
 import 'dart:async';
-
 import 'config.dart';
 const LOGIN_URL = '$SERVER_HOST/loginByPass';
 
