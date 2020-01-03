@@ -196,7 +196,7 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
    * 返回用户或短信登录
    */
   Widget _buildSmsOrPass() {
-    String buttonName = isSendSms ? '手机短信登录/注册' : '用户名密码登录';
+    String buttonName = isSendSms ? '用户名密码登录':'手机短信登录/注册';
     return InkWell(
       onTap: () {
         setState(() {
