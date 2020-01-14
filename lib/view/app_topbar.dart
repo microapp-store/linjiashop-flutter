@@ -87,6 +87,10 @@ class CommonBackTopBar extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Center(child: Text(title,
+              softWrap: true,
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 8,
             style: TextStyle(color: Colors.white,fontSize: AppSize.sp(52)))),
         InkWell(
           onTap: onBack,

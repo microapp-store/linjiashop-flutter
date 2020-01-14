@@ -1,4 +1,7 @@
-
+enum HomeData{
+  topic,
+  cateGory
+}
 
 class AppConfig {
   static  bool isUser = false;

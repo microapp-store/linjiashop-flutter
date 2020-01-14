@@ -7,6 +7,8 @@ import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/models/order_entity.dart';
 import 'package:flutter_app/models/shipping_entity.dart';
+import 'package:flutter_app/models/topic_details_entity.dart';
+import 'package:flutter_app/models/topic_goods_query_entity.dart';
 import 'package:flutter_app/models/user_entity.dart';
 
 
@@ -45,6 +47,10 @@ class EntityFactory {
       return AddressEditEntity.fromJson(json) as T;
     }else if (T.toString() == "UserEntity"){
       return UserEntity.fromJson(json) as T;
+    }else if (T.toString() == "TopicGoodsQueryEntity"){
+      return TopicGoodsQueryEntity.fromJson(json) as T;
+    }else if (T.toString() == "TopicDetailsEntity"){
+      return TopicDetailsEntity.fromJson(json) as T;
     }
     else {
       return null;

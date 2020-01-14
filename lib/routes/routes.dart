@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/page/details/order_details.dart';
 import 'package:flutter_app/page/details/product_details.dart';
+import 'package:flutter_app/page/details/topic_details.dart';
 import 'package:flutter_app/page/goodsmanger/shipping_address.dart';
 import 'package:flutter_app/page/goodsmanger/shipping_edit_address.dart';
 import 'package:flutter_app/page/goodsmanger/shipping_save_address.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const save_address_page = '/save_address_page';
   static const new_address_page = '/new_address_page';
   static const web_page = '/web';
+  static const topic_page = '/topic';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -48,6 +50,8 @@ class Routes {
         save_address_page, handler: Handler(handlerFunc: (context, params) => ShippingEditAddressPage(id:params['id'].first)));
     router.define(
         web_page, handler: Handler(handlerFunc: (context, params) => WebViewPage(url:params['url'].first)));
+    router.define(
+        topic_page, handler: Handler(handlerFunc: (context, params) => TopicDetails(id:params['id'].first)));
     router.define(
         new_address_page, handler: Handler(handlerFunc: (context, params) =>
         ShippingSaveAddressPage()));

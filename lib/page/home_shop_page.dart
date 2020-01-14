@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common.dart';
+import 'package:flutter_app/dao/hot_goods_dao.dart';
+import 'package:flutter_app/dao/new_goods_dao.dart';
 import 'package:flutter_app/dao/shop_home_category.dart';
+import 'package:flutter_app/dao/topic_query_dao.dart';
 import 'package:flutter_app/models/category_entity.dart';
+import 'package:flutter_app/models/hot_entity.dart';
+import 'package:flutter_app/models/topic_goods_query_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/page/swiper_diy.dart';
+import 'package:flutter_app/page/topic_card_goods.dart';
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_app/dao/findings_dao.dart';
@@ -21,6 +28,7 @@ import 'card_goods.dart';
  */
 
 class HomePage extends StatefulWidget {
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -30,7 +38,8 @@ class _HomePageState extends State<HomePage>
   List<Tab> myTabs = <Tab>[];
   List<FindingTabView> bodys = [];
   TabController mController;
-
+  HomeData topicData = HomeData.topic;
+  HomeData cateGoryData = HomeData.cateGory;
   LoadState _layoutState = LoadState.State_Loading;
   double width=0;
 
@@ -40,6 +49,7 @@ class _HomePageState extends State<HomePage>
     AppSize.init(context);
     final screenWidth = ScreenUtil.screenWidth;
     if(myTabs.length>0) {
+
       width=(screenWidth / (myTabs.length*2))  - 45;
     }
     return Scaffold(
@@ -110,11 +120,15 @@ class _HomePageState extends State<HomePage>
     CategoryEntity entity = await ShopHomeCategoryDao.fetch();
     if (entity?.category != null) {
       List<Tab> myTabsTmp = <Tab>[];
+      myTabsTmp.add(Tab(text:'推荐'));
       List<FindingTabView> bodysTmp = [];
+      bodysTmp.add(FindingTabView(topic:topicData));
+
         for (int i = 0; i < entity.category.length; i++) {
           CategoryModel model = entity.category[i];
           myTabsTmp.add(Tab(text: model.name));
-          bodysTmp.add(FindingTabView(i, model.id, model.categoryInfoModels));
+          bodysTmp.add(FindingTabView(currentPage:i, id:model.id,
+              categoryInfoModels:model.categoryInfoModels,topic: cateGoryData));
         }
         setState(() {
           myTabs.addAll(myTabsTmp);
@@ -156,7 +170,13 @@ class FindingTabView extends StatefulWidget {
   final String id;
   final  List<CategoryInfoModel> categoryInfoModels;
 
-  FindingTabView(this.currentPage,this.id,this.categoryInfoModels);
+  /**
+   * 0,表示推荐
+   * 1，表示分类
+   */
+  final HomeData topic;
+
+  FindingTabView({this.currentPage,this.id,this.categoryInfoModels,@required this.topic});
 
   @override
   _FindingTabViewState createState() => _FindingTabViewState();
@@ -167,17 +187,90 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   GlobalKey _footerKey = GlobalKey();
   LoadState _layoutState = LoadState.State_Loading;
   List<GoodsModel> goodsList = new List<GoodsModel>();
+  List<TopicGoodsListModel> topGoodsList = new List<TopicGoodsListModel>();
+  ///新品推荐
+  List<GoodsModel> newGoodsList = List<GoodsModel>();
+  ///热门推荐
+  List<GoodsModel> hotGoodsList = List<GoodsModel>();
   bool _isLoading = false;
 
   @override
   void initState() {
     _isLoading = true;
-    loadData(widget.id);
+    if(widget.topic==HomeData.topic){
+      loadTopicData();
+    }
+    if(widget.topic==HomeData.cateGory) {
+      loadData(widget.id);
+    }
     super.initState();
   }
 
-  void loadData(String id) async{
+  /**
+   * 加载推荐数据
+   */
+  void loadTopicData() async{
+    TopicGoodsQueryEntity entity = await TopicQueryDao.fetch();
+    if(entity?.topicGoods !=null){
+      if(mounted) {
+        setState(() {
+          topGoodsList.clear();
+          topGoodsList = entity.topicGoods;
+          _isLoading = false;
+          if (topGoodsList.length > 0) {
+            _layoutState = LoadState.State_Success;
+          }
+          loadHotData();
 
+        });
+      }
+    }else {
+
+      setState(() {
+        _layoutState = LoadState.State_Error;
+      });
+    }
+  }
+  void loadHotData() async{
+    HotEntity entity = await HotGoodsDao.fetch();
+    if(entity?.goods != null){
+      setState(() {
+        hotGoodsList.clear();
+        hotGoodsList = entity.goods;
+        _isLoading = false;
+        if (hotGoodsList.length > 0) {
+          _layoutState = LoadState.State_Success;
+        }
+        loadNewData();
+      });
+    }else{
+      setState(() {
+        _layoutState = LoadState.State_Error;
+      });
+    }
+  }
+  void loadNewData() async{
+    HotEntity entity = await NewGoodsDao.fetch();
+    if(entity?.goods != null){
+      setState(() {
+        newGoodsList.clear();
+        newGoodsList = entity.goods;
+        _isLoading = false;
+        if (newGoodsList.length > 0) {
+          _layoutState = LoadState.State_Success;
+        }
+      });
+    }else{
+      setState(() {
+        _layoutState = LoadState.State_Error;
+      });
+    }
+  }
+
+  /**
+   * 加载分类数据
+   */
+  void loadData(String id) async{
       GoodsEntity entity = await FindingsDao.fetch(id);
       if (entity?.goods != null) {
         if(mounted) {
@@ -197,6 +290,72 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
         setState(() {
           _layoutState = LoadState.State_Error;
         });
+      }
+    }
+    Widget _getHotData(){
+      return hotGoodsList.length>0?
+          Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  color: Colours.white,
+                  width: double.infinity,
+                  margin: EdgeInsets.only(top: 10),
+                  height: AppSize.height(94),
+                    padding: EdgeInsets.only(left: 10,top: 7),
+                    child:  Text('热门推荐',
+                      style: ThemeTextStyle.orderFormTitleStyle,)
+                ),
+                ThemeView.divider(),
+                CardGoods(goodsModleDataList: hotGoodsList)
+              ],
+            ),
+          ):Container();
+
+    }
+  Widget _getNewData(){
+    return newGoodsList.length>0?
+    Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+              color: Colours.white,
+              width: double.infinity,
+              margin: EdgeInsets.only(top: 10),
+              height: AppSize.height(94),
+              padding: EdgeInsets.only(left: 10,top: 7),
+              child:  Text('新品推荐',
+                style: ThemeTextStyle.orderFormTitleStyle,)
+          ),
+          ThemeView.divider(),
+          CardGoods(goodsModleDataList: newGoodsList)
+        ],
+      ),
+    ):Container();
+
+  }
+    Widget _getHomeDataType(){
+       ///返回推荐数据
+      if(widget.topic==HomeData.topic){
+        return ListView(
+          children: <Widget>[
+            topGoodsList.length>0? TopicCardGoods(topicGoodsModleDataList: topGoodsList):Container(),
+            _getHotData(),
+            _getNewData()
+
+          ],
+        );
+      }
+
+      ///返回项目数据
+      if(widget.topic==HomeData.cateGory){
+        return ListView(
+            children: <Widget>[
+            SwiperDiy(swiperDataList:widget.categoryInfoModels,
+            width:double.infinity,height: AppSize.height(430)),
+            CardGoods(goodsModleDataList:goodsList)
+            ],
+            );
       }
     }
 
@@ -219,17 +378,15 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
             footer: MaterialFooter(
               key: _footerKey,
             ),
-            child:ListView(
-              children: <Widget>[
-                 SwiperDiy(swiperDataList:widget.categoryInfoModels,
-                     width:double.infinity,height: AppSize.height(430)),
-                CardGoods(goodsModleDataList:goodsList)
-              ],
-            ),
+            child:_getHomeDataType(),
             onRefresh: () async {
               _isLoading = true;
-              loadData(widget.id);
-
+              if(widget.topic==HomeData.topic){
+                loadTopicData();
+              }
+              if(widget.topic==HomeData.cateGory){
+                loadData(widget.id);
+              }
             },
             onLoad: () async {}
         ),
@@ -246,7 +403,13 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
           setState(() {
             _layoutState = LoadState.State_Loading;
           });
-          loadData(widget.id);
+          if(widget.topic==HomeData.topic){
+            loadTopicData();
+          }
+          if(widget.topic==HomeData.cateGory){
+            loadData(widget.id);
+          }
+
         }, //错误按钮点击过后进行重新加载
         successWidget:_getContent()
       );
@@ -255,3 +418,4 @@ class _FindingTabViewState extends State<FindingTabView> with AutomaticKeepAlive
   @override
   bool get wantKeepAlive => true;
 }
+

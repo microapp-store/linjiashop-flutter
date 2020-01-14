@@ -31,7 +31,7 @@ class ResetCodePage extends StatefulWidget {
     this.countdown: 60,
     this.onTapCallback,
     this.available: true,
-  @required this.phoneNum,
+    @required this.phoneNum,
   });
   @override
   _ResetCodePageState createState() => _ResetCodePageState();
