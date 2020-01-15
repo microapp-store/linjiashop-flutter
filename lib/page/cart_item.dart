@@ -14,11 +14,7 @@ import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class CartItem extends StatelessWidget {
-
-
   final  List<GoodsModel> goodsModels;
-
-
   CartItem(this.goodsModels);
   String imgUrl = "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
   @override
@@ -164,10 +160,18 @@ class CartItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(item.name, textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: false,
                   style: ThemeTextStyle.cardTitleStyle),
               Text(item.descript, textAlign: TextAlign.left,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines:1,
+                  softWrap: false,
                   style: ThemeTextStyle.cardTitleStyle),
               Text('￥${(item.price/100).toStringAsFixed(2)}',
+                  maxLines: 1,
+                  softWrap: false,
                   textAlign: TextAlign.left,
                   style: ThemeTextStyle.cardPriceStyle),
               CartCount(item)

@@ -24,7 +24,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   flutter_swiper: ^1.1.6
-
+  #需要申请权限(IOS)
+  image_picker: ^0.6.2+3
+  path_provider: ^1.5.1
+  flutter_luban: ^0.1.7
   flutter_screenutil: ^0.7.0
   flutter_staggered_grid_view: ^0.3.0
   fluro: ^1.5.1

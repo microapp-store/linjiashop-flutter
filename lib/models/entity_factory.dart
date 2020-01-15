@@ -14,6 +14,7 @@ import 'package:flutter_app/models/user_entity.dart';
 
 import 'cart_goods_query_entity.dart';
 import 'category_entity.dart';
+import 'file_upload_entity.dart';
 import 'goods_entity.dart';
 import 'hot_entity.dart';
 
@@ -51,6 +52,8 @@ class EntityFactory {
       return TopicGoodsQueryEntity.fromJson(json) as T;
     }else if (T.toString() == "TopicDetailsEntity"){
       return TopicDetailsEntity.fromJson(json) as T;
+    }else if (T.toString() == "FileEntity"){
+      return FileEntity.fromJson(json) as T;
     }
     else {
       return null;

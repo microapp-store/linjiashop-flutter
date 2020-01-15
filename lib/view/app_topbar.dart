@@ -90,7 +90,7 @@ class CommonBackTopBar extends StatelessWidget {
               softWrap: true,
               textAlign: TextAlign.center,
               overflow: TextOverflow.ellipsis,
-              maxLines: 8,
+              maxLines: 1,
             style: TextStyle(color: Colors.white,fontSize: AppSize.sp(52)))),
         InkWell(
           onTap: onBack,

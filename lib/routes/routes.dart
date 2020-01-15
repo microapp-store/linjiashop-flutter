@@ -10,6 +10,7 @@ import 'package:flutter_app/page/index_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
 import 'package:flutter_app/page/pay/pay_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
+import 'package:flutter_app/page/setting_page.dart';
 import 'package:flutter_app/page/web_page.dart';
 class Routes {
   static final Router router = new Router();
@@ -26,6 +27,7 @@ class Routes {
   static const new_address_page = '/new_address_page';
   static const web_page = '/web';
   static const topic_page = '/topic';
+  static const setting_page = '/setting';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -52,6 +54,8 @@ class Routes {
         web_page, handler: Handler(handlerFunc: (context, params) => WebViewPage(url:params['url'].first)));
     router.define(
         topic_page, handler: Handler(handlerFunc: (context, params) => TopicDetails(id:params['id'].first)));
+    router.define(
+        setting_page, handler: Handler(handlerFunc: (context, params) => SettingPage()));
     router.define(
         new_address_page, handler: Handler(handlerFunc: (context, params) =>
         ShippingSaveAddressPage()));

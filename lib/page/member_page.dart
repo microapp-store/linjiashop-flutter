@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/dao/user_dao.dart';
 import 'package:flutter_app/functions.dart';
+import 'package:flutter_app/models/user_entity.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 
@@ -40,6 +43,12 @@ class MemberPage extends StatelessWidget {
       child: Image(fit: BoxFit.fill, image: AssetImage("images/banner.jpg")),
     );
   }
+  @override
+  void initState() {
+
+//    print("--*-- _IndexPageState");
+  }
+
 
   //我的订单顶部
   Widget _orderTitle(BuildContext context) {
@@ -184,6 +193,10 @@ class MemberPage extends StatelessWidget {
           _myListTile(title:'我的礼物',con:Icon(MyIcons.liwuholder),onGoMineCallback:()
           {
             Routes.instance.navigateTo(context, Routes.address_page);
+          }),
+          _myListTile(title:'设置',con:Icon(CupertinoIcons.gear_big),onGoMineCallback:()
+          {
+            Routes.instance.navigateTo(context, Routes.setting_page);
           }),
         ],
       ),

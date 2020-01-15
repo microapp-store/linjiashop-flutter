@@ -38,13 +38,13 @@ class _WebViewState extends State<WebViewPage> {
             initialUrl: widget.url,
             onWebViewCreated: (WebViewController web) {
               web.canGoBack().then((res) {
-                print(res); // 是否能返回上一级
+//                print(res); // 是否能返回上一级
               });
               web.currentUrl().then((url) {
-                print(url); // 返回当前url
+//                print(url); // 返回当前url
               });
               web.canGoForward().then((res) {
-                print(res); //是否能前进
+//                print(res); //是否能前进
               });
             },
             onPageFinished: (String value) {

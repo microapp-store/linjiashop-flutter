@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_app/common.dart';
+import 'package:flutter_app/dao/user_dao.dart';
+import 'package:flutter_app/models/user_entity.dart';
 import 'package:flutter_app/page/cart_page.dart';
 import 'package:flutter_app/page/member_page.dart';
 
@@ -74,6 +76,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
                   }
                   AppConfig.token = prefs.getString("token") ;
                 }
+                loadUserInfo();
 
 
                 setState(() {
@@ -134,5 +137,15 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     // TODO: implement dispose
     super.dispose();
     _indexSubscription.cancel();
+  }
+  loadUserInfo() async {
+    UserEntity entity = await UserDao.fetch(AppConfig.token);
+    if (entity?.userInfoModel != null) {
+      AppConfig.id = entity.userInfoModel.id;
+      AppConfig.mobile = entity.userInfoModel.mobile;
+      AppConfig.nickName = entity.userInfoModel.nickName;
+      AppConfig.avatar = entity.userInfoModel.avatar;
+
+    }
   }
 }

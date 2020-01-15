@@ -118,6 +118,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.11.1"
+  flutter_luban:
+    dependency: "direct main"
+    description:
+      name: flutter_luban
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.1.7+1"
   flutter_page_indicator:
     dependency: transitive
     description:
@@ -125,6 +132,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.3"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.4"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -198,6 +212,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.3"
   lpinyin:
     dependency: transitive
     description:
@@ -226,6 +247,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.6.4"
+  path_provider:
+    dependency: "direct main"
+    description:
+      name: path_provider
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.5.1"
   pedantic:
     dependency: transitive
     description:
@@ -240,6 +268,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.0"
+  platform:
+    dependency: transitive
+    description:
+      name: platform
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.1"
   plugin_platform_interface:
     dependency: transitive
     description:
