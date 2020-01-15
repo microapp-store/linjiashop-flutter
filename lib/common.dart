@@ -11,4 +11,5 @@ class AppConfig {
   static String nickName ='';
   static String mobile ='';
   static String avatar ='';
+  static String gender ='';
 }

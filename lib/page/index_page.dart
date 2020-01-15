@@ -70,7 +70,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
                 if(AppConfig.token.isEmpty) {
                   SharedPreferences prefs = await SharedPreferences
                       .getInstance();
-                  if (null == prefs.getString("token")) {
+                  if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
                     Routes.instance.navigateTo(context, Routes.login_page);
                     return;
                   }
@@ -145,6 +145,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
       AppConfig.mobile = entity.userInfoModel.mobile;
       AppConfig.nickName = entity.userInfoModel.nickName;
       AppConfig.avatar = entity.userInfoModel.avatar;
+      AppConfig.gender = entity.userInfoModel.gender;
 
     }
   }

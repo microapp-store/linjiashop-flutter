@@ -33,6 +33,12 @@ class OrderInEvent {
     this.text = text;
   }
 }
+class UserInfoInEvent {
+  String text;
+  UserInfoInEvent(String text){
+    this.text = text;
+  }
+}
 class SpecEvent{
   String  code;
   SpecEvent(String text){

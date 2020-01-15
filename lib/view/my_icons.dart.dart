@@ -36,4 +36,5 @@ class MyIcons {
   static const IconData yiwancheng = const IconData(0xe6d7, fontFamily: 'MyIcons3');
   static const IconData zhifubpay = const IconData(0xe68a, fontFamily: 'MyIcons4');
   static const IconData weixinpay = const IconData(0xe61b, fontFamily: 'MyIcons4');
+  static const IconData sexicon = const IconData(0xe611, fontFamily: 'MyIcons4');
 }

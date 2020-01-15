@@ -138,12 +138,16 @@ class ThemeCard extends StatelessWidget {
                           children: <Widget>[
                             Text(
                               title,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
                               textAlign: TextAlign.left,
                               style: ThemeTextStyle.cardTitleStyle,
                             ),
                             Text(
                               descript,
                               textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: ThemeTextStyle.cardNumStyle,
                             ),
                             Text(

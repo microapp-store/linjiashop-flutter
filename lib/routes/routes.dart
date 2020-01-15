@@ -7,6 +7,8 @@ import 'package:flutter_app/page/goodsmanger/shipping_address.dart';
 import 'package:flutter_app/page/goodsmanger/shipping_edit_address.dart';
 import 'package:flutter_app/page/goodsmanger/shipping_save_address.dart';
 import 'package:flutter_app/page/index_page.dart';
+import 'package:flutter_app/page/modify_name_page.dart';
+import 'package:flutter_app/page/modify_pwd_page.dart';
 import 'package:flutter_app/page/orderform_page.dart';
 import 'package:flutter_app/page/pay/pay_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
@@ -28,6 +30,8 @@ class Routes {
   static const web_page = '/web';
   static const topic_page = '/topic';
   static const setting_page = '/setting';
+  static const modify_name_page = '/modify_name';
+  static const modify_pwd_page = '/modify_pwd';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -57,8 +61,13 @@ class Routes {
     router.define(
         setting_page, handler: Handler(handlerFunc: (context, params) => SettingPage()));
     router.define(
+        modify_name_page, handler: Handler(handlerFunc: (context, params) => ModifyNamePage(name: params['name'].first,)));
+    router.define(
         new_address_page, handler: Handler(handlerFunc: (context, params) =>
         ShippingSaveAddressPage()));
+    router.define(
+        modify_pwd_page, handler: Handler(handlerFunc: (context, params) =>
+    ModifyPwdPage()));
   }
 
   /**

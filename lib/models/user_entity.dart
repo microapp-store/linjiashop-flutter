@@ -17,15 +17,17 @@ class UserInfoModel {
 	String mobile;
 	String nickName;
 	String id;
+	String gender;
 
 
-	UserInfoModel({this.avatar, this.mobile, this.nickName});
+	UserInfoModel({this.avatar, this.mobile, this.nickName,this.gender});
 
 	UserInfoModel.fromJson(Map<String, dynamic> json) {
 		avatar = json['avatar'];
 		mobile = json['mobile'];
 		nickName = json['nickName'];
 		id = json ['id'];
+		gender = json ['gender'];
 	}
 
 }
