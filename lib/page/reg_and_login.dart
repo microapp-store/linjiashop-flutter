@@ -261,6 +261,8 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> with CommonInterface{
       globalStore.apiUpdate(entity.userInfoModel.jsonMap);
       DialogUtil.buildToast("登录成功~");
       Navigator.pop(context);
+      eventBus.fire(UserLoggedInEvent("sucuss"));
+
     } else {
       DialogUtil.buildToast(entity.msgModel.msg);
     }
@@ -273,7 +275,6 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> with CommonInterface{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("token", userModel.token);
     Provider.of<UserModle>(context).token  = userModel.token;
-    eventBus.fire(UserLoggedInEvent("sucuss"));
 
     AppConfig.isUser = false;
     loadUserInfo();

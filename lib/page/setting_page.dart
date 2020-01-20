@@ -42,6 +42,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
   @override
   void initState() {
     super.initState();
+    Future.microtask(() => cAvatar(context));
   }
 
   @override
@@ -291,6 +292,8 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
     // TODO: implement build
     AppSize.init(context);
     _listen();
+    String avtar=cAvatar(context);
+    print(avtar);
     return Scaffold(
       appBar: MyAppBar(
           preferredSize: Size.fromHeight(AppSize.height(160)),
@@ -412,26 +415,9 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
                   onItemClickListener: (index) {
                     if (index == 0) {
                       Navigator.pop(context);
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return LoadingDialog(
-                              text: "图片上传中…",
-                            );
-                          });
-
                       _pickImage(ImageSource.camera);
                     } else if (index == 2) {
                       Navigator.pop(context);
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (BuildContext context) {
-                            return LoadingDialog(
-                              text: "图片上传中…",
-                            );
-                          });
                       _pickImage(ImageSource.gallery);
                     }
                   },
@@ -485,6 +471,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
 
   ///上传头像
   _pickImage(ImageSource type) async {
+
     File imageFile = await ImagePicker.pickImage(source: type);
     setState(() {
       primaryFile = imageFile;
@@ -503,13 +490,21 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
 
     Luban.compressImage(compressObject).then((_path) {
       compressedFile = File(_path);
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return LoadingDialog(
+              text: "图片上传中…",
+            );
+          });
       String strContent = getImageBase64(compressedFile);
       Map<String, dynamic> param = {
         "base64": strContent,
         "name": "logo.jpg",
         "type": "image/jpeg"
       };
-      loadSave(param,cAvatar(context));
+      loadSave(param,cToken(context));
     });
   }
 

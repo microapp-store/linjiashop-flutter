@@ -211,6 +211,7 @@ class _CartPageState extends State<CartPage> with CommonInterface {
   }
 
   StreamSubscription _clearSubscription;
+  StreamSubscription _loginSubscription;
 
   ///监听Bus events
   void _listen() {
@@ -233,13 +234,21 @@ class _CartPageState extends State<CartPage> with CommonInterface {
         }
       }
     });
+    _loginSubscription = eventBus.on<UserLoggedInEvent>().listen((event) {
+      if (mounted) {
+        if ('sucuss' == event.text) {
+          loadCartData(cToken(context));
+
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
+    _loginSubscription.cancel();
     _clearSubscription.cancel();
   }
 }

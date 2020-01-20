@@ -67,15 +67,26 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
             type: BottomNavigationBarType.fixed,
             currentIndex: this.currentIndex,
             onTap: (index) async{
-              if(index==3) {
-                  SharedPreferences prefs = await SharedPreferences
-                      .getInstance();
-                  if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
-                    Routes.instance.navigateTo(context, Routes.login_page);
-                    return;
-                  }
-                  Provider.of<UserModle>(context).token   = prefs.getString("token") ;
+              if(index ==2){
+                SharedPreferences prefs = await SharedPreferences
+                    .getInstance();
+                if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
+                  Routes.instance.navigateTo(context, Routes.login_page);
+                  return;
+                }
+                Provider.of<UserModle>(context).token   = prefs.getString("token") ;
                 loadUserInfo();
+              }
+              if(index==3) {
+                SharedPreferences prefs = await SharedPreferences
+                    .getInstance();
+                if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
+                  Routes.instance.navigateTo(context, Routes.login_page);
+                  return;
+                }
+                Provider.of<UserModle>(context).token   = prefs.getString("token") ;
+                loadUserInfo();
+
                 setState(() {
                   this.currentIndex = index;
                   pageController.jumpToPage(index);
@@ -109,6 +120,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
 
   }
 
+
   final pageController = PageController();
   Widget _getPageBody(BuildContext context){
     return PageView(
@@ -140,6 +152,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     if (entity?.userInfoModel != null) {
       UserModle globalStore = Provider.of<UserModle>(context);
       globalStore.apiUpdate(entity.userInfoModel.jsonMap);
+      Provider.of<UserModle>(context).avatar = entity.userInfoModel.avatar;
     }
   }
 }
