@@ -22,6 +22,8 @@ import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../global.dart';
+
 ///
 /// 商品详情页
 ///
@@ -34,7 +36,7 @@ class ProductDetails extends StatefulWidget {
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> {
+class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
   int num = 0;
   final String imgUrl =
       "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
@@ -90,10 +92,6 @@ class _ProductDetailsState extends State<ProductDetails> {
         _loadStateDetails = LoadState.State_Error;
       });
     }
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (null != prefs.getString("token")) {
-      AppConfig.token = prefs.getString("token");
-    }
   }
 
   List<String> urls = List();
@@ -128,6 +126,68 @@ class _ProductDetailsState extends State<ProductDetails> {
     }
   }
 
+  Widget _getBody() {
+
+    return goodsModel.isOnSale
+        ? Stack(
+            children: <Widget>[
+              ListView(
+                children: <Widget>[
+                  DetailsTopArea(
+                      gallery: urls,
+                      descript: goodsModel.descript,
+                      name: goodsModel.name,
+                      num: goodsModel.num,
+                      price: goodsModel.price),
+                  Html(data: goodsModel.detail)
+                ],
+              ),
+              Positioned(bottom: 0, left: 0, child: detailBottom())
+            ],
+          )
+        : Container(
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+
+              children: <Widget>[
+                Image.asset(
+                  'images/ic_empty_shop.png',
+                  height: 256,
+                  width: 256,
+                ),
+                Text("该商品已下架"),
+                Container(
+                  margin: EdgeInsets.only(top: 30),
+                  child:Center(
+                    child:Material(
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.all(new Radius.circular(25.0)),
+                        ),
+                        child: InkWell(
+                          borderRadius: BorderRadius.circular(25.0),
+                          onTap: ()  {
+                            Routes.instance.navigateTo(context,Routes.ROOT);
+                          },
+                          child: Container(
+                            width: 300.0,
+                            height: 50.0,
+                            //设置child 居中
+                            alignment: Alignment(0, 0),
+                            child: Text("去看看其他商品",style: TextStyle(color: Colors.white,fontSize: 16.0),),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ),
+              ],
+            ),
+          );
+  }
+
   ///返回内容
   Widget _getContent() {
     if (null == goodsModel) {
@@ -135,22 +195,7 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Stack(
-        children: <Widget>[
-          ListView(
-            children: <Widget>[
-              DetailsTopArea(
-                  gallery: urls,
-                  descript: goodsModel.descript,
-                  name: goodsModel.name,
-                  num: goodsModel.num,
-                  price: goodsModel.price),
-              Html(data: goodsModel.detail)
-            ],
-          ),
-          Positioned(bottom: 0, left: 0, child: detailBottom())
-        ],
-      );
+      return _getBody();
     }
   }
 
@@ -168,7 +213,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             children: <Widget>[
               InkWell(
                 onTap: () {
-                  if (AppConfig.token.isEmpty) {
+                  if (cToken(context) == null || cToken(context).isEmpty) {
                     Routes.instance.navigateTo(context, Routes.login_page);
                     return;
                   }
@@ -207,7 +252,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           InkWell(
             onTap: () async {
-              if (AppConfig.token.isEmpty) {
+              if (cToken(context) == null || cToken(context).isEmpty) {
                 Routes.instance.navigateTo(context, Routes.login_page);
                 return;
               }
@@ -226,7 +271,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           InkWell(
             onTap: () {
-              if (AppConfig.token.isEmpty) {
+              if (cToken(context) == null || cToken(context).isEmpty) {
                 Routes.instance.navigateTo(context, Routes.login_page);
                 return;
               }
@@ -319,10 +364,10 @@ class _ProductDetailsState extends State<ProductDetails> {
                             highlightColor: ThemeColor.appBarBottomBg,
                             onPressed: () {
                               if (skuModel.listModels.length == 0) {
-                                addCart(widget.id, 1, "", AppConfig.token);
+                                addCart(widget.id, 1, "", cToken(context));
                               } else {
                                 addCart(
-                                    widget.id, 1, model.id, AppConfig.token);
+                                    widget.id, 1, model.id, cToken(context));
                               }
                             },
                             shape: RoundedRectangleBorder(

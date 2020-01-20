@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/common.dart';
+
 import 'package:flutter_app/dao/order_detail_dao.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
@@ -11,6 +11,8 @@ import 'package:flutter_app/view/custom_view.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../global.dart';
 ///
 /// 订单详情页
 ///
@@ -23,7 +25,7 @@ class OrderDetails extends StatefulWidget {
   _OrderDetailsState createState() => _OrderDetailsState();
 }
 
-class _OrderDetailsState extends State<OrderDetails> {
+class _OrderDetailsState extends State<OrderDetails> with CommonInterface{
   LoadState _layoutState = LoadState.State_Loading;
   OrderDetailModel orderDetailModel;
   final String imgUrl =
@@ -31,13 +33,16 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   @override
   void initState() {
-    loadData();
+    Future.microtask(() =>
+        loadData()
+    );
+
     super.initState();
   }
 
   void loadData() async {
     OrderDetailEntry entity =
-        await OrderDetailDao.fetch(widget.orderSn, AppConfig.token);
+        await OrderDetailDao.fetch(widget.orderSn, cToken(context));
     if (null != entity) {
       orderDetailModel = entity.orderDetailModel;
       setState(() {
@@ -149,139 +154,142 @@ class _OrderDetailsState extends State<OrderDetails> {
         child: CircularProgressIndicator(),
       );
     } else {
-      return Container(
-        color: ThemeColor.appBg,
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: AppSize.height(120.0),
-              color: Colors.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          orderDetailModel.name + "   " + orderDetailModel.tel,
-                          style: ThemeTextStyle.orderFormStatusStyle,
-                        )),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Text(
-                          orderDetailModel.statusName,
-                          textAlign: TextAlign.right,
-                          style: ThemeTextStyle.detailStylePrice,
-                        )),
-                    flex: 1,
-                  )
-                ],
+      return SingleChildScrollView(
+        child: Container(
+          color: ThemeColor.appBg,
+          child: Column(
+            children: <Widget>[
+              Container(
+                height: AppSize.height(120.0),
+                color: Colors.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            orderDetailModel.name + "   " + orderDetailModel.tel,
+                            style: ThemeTextStyle.orderFormStatusStyle,
+                          )),
+                      flex: 1,
+                    ),
+                    Expanded(
+                      child: Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            orderDetailModel.statusName,
+                            textAlign: TextAlign.right,
+                            style: ThemeTextStyle.detailStylePrice,
+                          )),
+                      flex: 1,
+                    )
+                  ],
+                ),
               ),
-            ),
-            ThemeView.divider(),
-            _getAddress(),
-            ThemeView.divider(),
-            Container(
-              height: AppSize.height(160.0),
-              color: Colors.white,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    MaterialButton(
-                      color: Colors.white,
-                      textColor: Colors.grey,
-                      child: Text('联系客服',
-                          style: ThemeTextStyle.orderFormStatusStyle),
-                        onPressed: () => _launchURL()
+              ThemeView.divider(),
+              _getAddress(),
+              ThemeView.divider(),
+              Container(
+                height: AppSize.height(160.0),
+                color: Colors.white,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      MaterialButton(
+                          color: Colors.white,
+                          textColor: Colors.grey,
+                          child: Text('联系客服',
+                              style: ThemeTextStyle.orderFormStatusStyle),
+                          onPressed: () => _launchURL()
 
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(left:10,right: 10),
-                      child: MaterialButton(
-                        color: Colors.red,
-                        textColor: Colors.white,
-                        child:
-                            Text('立即付款', style: ThemeTextStyle.orderStylePrice),
-                        onPressed: () {
-                          String totalPriceStr = (orderDetailModel.totalPrice / 100).toStringAsFixed(2);
-                          Map<String, String> p={"orderSn":widget.orderSn,"totalPrice":totalPriceStr};
-                          Routes.instance.navigateToParams(context,Routes.pay_page,params: p);
-                        },
                       ),
+                      Container(
+                        margin: EdgeInsets.only(left:10,right: 10),
+                        child: MaterialButton(
+                          color: Colors.red,
+                          textColor: Colors.white,
+                          child:
+                          Text('立即付款', style: ThemeTextStyle.orderStylePrice),
+                          onPressed: () {
+                            String totalPriceStr = (orderDetailModel.totalPrice / 100).toStringAsFixed(2);
+                            Map<String, String> p={"orderSn":widget.orderSn,"totalPrice":totalPriceStr};
+                            Routes.instance.navigateToParams(context,Routes.pay_page,params: p);
+                          },
+                        ),
+                      ),
+                    ]),
+              ),
+              Container(
+                height: AppSize.height(40.0),
+                color: Colours.divider,
+                width: double.infinity,
+              ),
+              _getOrderSn(),
+              ThemeView.divider(),
+              _buildOrderWidget(),
+              ThemeView.divider(),
+              Container(
+                height: AppSize.height(120.0),
+                width: double.infinity,
+                padding: EdgeInsets.only(right: 10.0),
+                alignment: Alignment.centerRight,
+                color: Colours.white,
+                child: Text(
+                  '合计:' + (orderDetailModel.totalPrice / 100).toStringAsFixed(2),
+                  style: ThemeTextStyle.orderFormStatusStyle,
+                ),
+              ),
+              ThemeView.divider(),
+              _getOrderSn(),
+              ThemeView.divider(),
+              Container(
+                height: AppSize.height(120.0),
+                width: double.infinity,
+                color: Colours.white,
+                padding: EdgeInsets.only(left: 10.0),
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '备注:',
+                  style: ThemeTextStyle.orderFormStatusStyle,
+                ),
+              ),
+              ThemeView.divider(),
+              Container(
+                height: AppSize.height(120.0),
+                width: double.infinity,
+                color: Colours.white,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            '创建时间',
+                            style: ThemeTextStyle.orderFormStatusStyle,
+                          )),
+                      flex: 1,
                     ),
-                  ]),
-            ),
-            Container(
-              height: AppSize.height(40.0),
-              color: Colours.divider,
-              width: double.infinity,
-            ),
-            _getOrderSn(),
-            ThemeView.divider(),
-            _buildOrderWidget(),
-            ThemeView.divider(),
-            Container(
-              height: AppSize.height(120.0),
-              width: double.infinity,
-              padding: EdgeInsets.only(right: 10.0),
-              alignment: Alignment.centerRight,
-              color: Colours.white,
-              child: Text(
-                '合计:' + (orderDetailModel.totalPrice / 100).toStringAsFixed(2),
-                style: ThemeTextStyle.orderFormStatusStyle,
+                    Expanded(
+                      child: Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Text(
+                            orderDetailModel.createTime,
+                            textAlign: TextAlign.right,
+                            style: ThemeTextStyle.orderFormStatusStyle,
+                          )),
+                      flex: 1,
+                    )
+                  ],
+                ),
               ),
-            ),
-            ThemeView.divider(),
-            _getOrderSn(),
-            ThemeView.divider(),
-            Container(
-              height: AppSize.height(120.0),
-              width: double.infinity,
-              color: Colours.white,
-              padding: EdgeInsets.only(left: 10.0),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                '备注:',
-                style: ThemeTextStyle.orderFormStatusStyle,
-              ),
-            ),
-            ThemeView.divider(),
-            Container(
-              height: AppSize.height(120.0),
-              width: double.infinity,
-              color: Colours.white,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          '创建时间',
-                          style: ThemeTextStyle.orderFormStatusStyle,
-                        )),
-                    flex: 1,
-                  ),
-                  Expanded(
-                    child: Container(
-                        padding: EdgeInsets.only(right: 10),
-                        child: Text(
-                          orderDetailModel.createTime,
-                          textAlign: TextAlign.right,
-                          style: ThemeTextStyle.orderFormStatusStyle,
-                        )),
-                    flex: 1,
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
+            ],
+          ),
+        )
       );
+
     }
   }
 

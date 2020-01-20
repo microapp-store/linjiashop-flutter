@@ -6,6 +6,7 @@ import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/shipping_address_dao.dart';
 import 'package:flutter_app/models/shipping_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -13,13 +14,16 @@ import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
+import 'package:provider/provider.dart';
+
+import '../../global.dart';
 
 class ShippingAddressPage extends StatefulWidget {
   @override
   _ShippingAddressPageState createState() => _ShippingAddressPageState();
 }
 
-class _ShippingAddressPageState extends State<ShippingAddressPage> {
+class _ShippingAddressPageState extends State<ShippingAddressPage> with CommonInterface{
   LoadState _layoutState = LoadState.State_Loading;
   List<ShippingAddressModel> shippingAddress = List();
   bool _isLoading = false;
@@ -27,14 +31,18 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
 
   @override
   void initState() {
-    _isLoading = true;
-    loadData();
+
     super.initState();
+    _isLoading = true;
+    Future.microtask(() =>
+        loadData()
+    );
+
   }
 
   void loadData() async {
     ShippingAddresEntry entity =
-        await ShippingAddressDao.fetch(AppConfig.token);
+        await ShippingAddressDao.fetch(cToken(context));
 
     if (entity?.shippingAddressModels != null) {
       if (entity.shippingAddressModels.length > 0) {
@@ -63,7 +71,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
       }
     } else {
       if (mounted) {
-         AppConfig.token='';
+        Provider.of<UserModle>(context).token  = '';
          DialogUtil.buildToast('token失败');
          Routes.instance.navigateTo(context, Routes.login_page);
 
@@ -83,7 +91,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
   Widget _btnBottom() {
     return InkWell(
       onTap: () {
-        if(AppConfig.token.isNotEmpty)  {
+        if(cToken(context).isNotEmpty)  {
           Routes.instance.navigateTo(context, Routes.new_address_page);
         }
       },

@@ -5,6 +5,7 @@ import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/cart_query_dao.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/page/cart_item.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -12,8 +13,10 @@ import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
+import 'package:provider/provider.dart';
 
 import '../cart_bottom.dart';
+import '../global.dart';
 import 'load_state_layout.dart';
 
 class CartPage extends StatefulWidget {
@@ -22,7 +25,7 @@ class CartPage extends StatefulWidget {
 
 }
 
-class _CartPageState extends State<CartPage> {
+class _CartPageState extends State<CartPage> with CommonInterface{
   LoadState _layoutState = LoadState.State_Loading;
   List<GoodsModel> goodsModels= List();
   String token ;
@@ -30,10 +33,12 @@ class _CartPageState extends State<CartPage> {
   bool _isAllCheck = true;
   @override
   void initState() {
-    _isLoading=true;
-    loadCartData(AppConfig.token);
 //    print("--*-- CartPage");
     super.initState();
+    _isLoading=true;
+    Future.microtask(() =>
+        loadCartData(cToken(context))
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -52,8 +57,7 @@ class _CartPageState extends State<CartPage> {
               _layoutState = LoadState.State_Loading;
               });
               _isLoading=true;
-              loadCartData(AppConfig.token);
-
+              loadCartData(cToken(context));
               },
               successWidget: _getContent(context)
     )
@@ -112,7 +116,7 @@ class _CartPageState extends State<CartPage> {
         if(mounted) {
           setState(() {
             Routes.instance.navigateTo(context, Routes.login_page);
-            AppConfig.token='';
+            Provider.of<UserModle>(context).token  = '';
             DialogUtil.buildToast("请求失败~");
             _layoutState = LoadState.State_Error;
 

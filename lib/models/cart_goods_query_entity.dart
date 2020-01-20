@@ -94,7 +94,12 @@ class GoodsModel {
 		modifyBy=json['modifyBy'];
 		modifyTime=json['modifyTime'];
 		name = json['name'];
-		num = json['num'];
+		if(json['stock'].toString().isEmpty){
+			num = 0;
+		}else{
+			num = json['stock'];
+		}
+
 		pic = json['pic'];
 		price = json['price'];
 		specifications = json['specifications'];

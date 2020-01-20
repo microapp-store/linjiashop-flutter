@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/common.dart';
+
 import 'package:flutter_app/dao/file_upload_dao.dart';
 import 'package:flutter_app/dao/save_sex_dao.dart';
+import 'package:flutter_app/global.dart';
 import 'package:flutter_app/models/file_upload_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/routes/routes.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/bottom_dialog.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
+import 'package:flutter_app/view/custom_view.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/flutter_iconfont.dart';
 import 'package:flutter_app/view/my_icons.dart.dart';
@@ -22,6 +25,7 @@ import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_luban/flutter_luban.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
@@ -29,7 +33,7 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends State<SettingPage> with CommonInterface{
   String imgUrl =
       "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
   File primaryFile;
@@ -50,7 +54,7 @@ class _SettingPageState extends State<SettingPage> {
   Widget _buildModifyName() {
     return InkWell(
         onTap: () {
-          Map<String, String> p = {"name": AppConfig.nickName};
+          Map<String, String> p = {"name": cNickName(context)};
           Routes.instance
               .navigateToParams(context, Routes.modify_name_page, params: p);
         },
@@ -80,7 +84,7 @@ class _SettingPageState extends State<SettingPage> {
                         ),
                         Padding(
                             padding: EdgeInsets.only(right: 3.0),
-                            child: Text(AppConfig.nickName,
+                            child: Text(cNickName(context),
                                 style: TextStyle(
                                     color: Colours.text_gray,
                                     fontSize: 14,
@@ -203,10 +207,10 @@ class _SettingPageState extends State<SettingPage> {
                   onItemClickListener: (index) {
                     if (index == 0) {
                       Navigator.pop(context);
-                      loadSexSave("male", AppConfig.token);
+                      loadSexSave("male", cToken(context));
                     } else if (index == 2) {
                       Navigator.pop(context);
-                      loadSexSave("female", AppConfig.token);
+                      loadSexSave("female", cToken(context));
                     }
                   },
                 );
@@ -239,9 +243,9 @@ class _SettingPageState extends State<SettingPage> {
                         Padding(
                             padding: EdgeInsets.only(right: 3.0),
                             child: Text(
-                                AppConfig.gender.isEmpty
+                                cGender(context).isEmpty
                                     ? "请选择"
-                                    : getGender(AppConfig.gender),
+                                    : getGender( cGender(context)),
                                 style: TextStyle(
                                     color: Colours.text_gray,
                                     fontSize: 14,
@@ -263,7 +267,8 @@ class _SettingPageState extends State<SettingPage> {
     if (entity?.msgModel != null) {
       if (entity.msgModel.code == 20000) {
         setState(() {
-          AppConfig.gender = sex;
+          Provider.of<UserModle>(context).gender = sex;
+
         });
       }
       DialogUtil.buildToast(entity.msgModel.msg);
@@ -304,7 +309,7 @@ class _SettingPageState extends State<SettingPage> {
             _buildModifyPwd(),
             ///更换手机
             _buildChangePhone(),
-            _btnSave(context)
+            _btnExit(context)
           ],
         ),
       ),
@@ -330,7 +335,7 @@ class _SettingPageState extends State<SettingPage> {
               child: Text('确定'),
               onPressed: () async {
                 Navigator.of(context).pop();
-                AppConfig.token='';
+                Provider.of<UserModle>(context).token = '';
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString("token", "");
                 Routes.instance.navigateTo(context,Routes.ROOT);
@@ -341,7 +346,7 @@ class _SettingPageState extends State<SettingPage> {
       },
     );
   }
-  Widget _btnSave(BuildContext context) {
+  Widget _btnExit(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       child:Center(
@@ -376,7 +381,7 @@ class _SettingPageState extends State<SettingPage> {
 
   ///头像是否为空
   Widget _buildIsHasHead() {
-    if (AppConfig.avatar == null || AppConfig.avatar.isEmpty) {
+    if (cAvatar(context) == null || cAvatar(context).isEmpty) {
       return Image.asset(
         "images/icon_user.png",
         width: 28.0,
@@ -384,7 +389,7 @@ class _SettingPageState extends State<SettingPage> {
       );
     } else {
       return CircleAvatar(
-          radius: 16, backgroundImage: NetworkImage(imgUrl + AppConfig.avatar));
+          radius: 16, backgroundImage: NetworkImage(imgUrl + cAvatar(context)));
     }
   }
 
@@ -407,9 +412,26 @@ class _SettingPageState extends State<SettingPage> {
                   onItemClickListener: (index) {
                     if (index == 0) {
                       Navigator.pop(context);
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return LoadingDialog(
+                              text: "图片上传中…",
+                            );
+                          });
+
                       _pickImage(ImageSource.camera);
                     } else if (index == 2) {
                       Navigator.pop(context);
+                      showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (BuildContext context) {
+                            return LoadingDialog(
+                              text: "图片上传中…",
+                            );
+                          });
                       _pickImage(ImageSource.gallery);
                     }
                   },
@@ -477,6 +499,8 @@ class _SettingPageState extends State<SettingPage> {
       step:
           6, //compress quality step, The bigger the fast, Smaller is more accurate, default 6
     );
+
+
     Luban.compressImage(compressObject).then((_path) {
       compressedFile = File(_path);
       String strContent = getImageBase64(compressedFile);
@@ -485,7 +509,7 @@ class _SettingPageState extends State<SettingPage> {
         "name": "logo.jpg",
         "type": "image/jpeg"
       };
-      loadSave(param, AppConfig.token);
+      loadSave(param,cAvatar(context));
     });
   }
 
@@ -493,9 +517,10 @@ class _SettingPageState extends State<SettingPage> {
     FileEntity entity = await FileUploadDao.fetch(param, token);
     if (entity?.msgModel != null) {
       setState(() {
-        AppConfig.avatar = entity.msgModel.avatar;
+        Provider.of<UserModle>(context).avatar = entity.msgModel.avatar;
       });
     }
+    Navigator.pop(context);
     DialogUtil.buildToast(entity.msgModel.msg);
   }
 }

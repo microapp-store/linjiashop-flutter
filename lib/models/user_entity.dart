@@ -18,6 +18,7 @@ class UserInfoModel {
 	String nickName;
 	String id;
 	String gender;
+	Map<String, dynamic> jsonMap;
 
 
 	UserInfoModel({this.avatar, this.mobile, this.nickName,this.gender});
@@ -28,6 +29,7 @@ class UserInfoModel {
 		nickName = json['nickName'];
 		id = json ['id'];
 		gender = json ['gender'];
+		jsonMap = json;
 	}
 
 }

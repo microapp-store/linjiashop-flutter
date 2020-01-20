@@ -10,12 +10,15 @@ import 'package:flutter_app/page/cart_page.dart';
 import 'package:flutter_app/page/member_page.dart';
 
 import 'package:flutter_app/page/search_page.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 
 import 'package:flutter_app/utils/dialog_utils.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../global.dart';
 import 'home_shop_page.dart';
 
 class IndexPage extends StatefulWidget {
@@ -38,7 +41,7 @@ final List<Widget> pages = <Widget>[
   MemberPage()
 ];
 
-class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMixin{
+class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMixin,CommonInterface{
 
   DateTime lastPopTime;
   String token;
@@ -64,21 +67,15 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
             type: BottomNavigationBarType.fixed,
             currentIndex: this.currentIndex,
             onTap: (index) async{
-
-
               if(index==2||index==3) {
-                if(AppConfig.token.isEmpty) {
                   SharedPreferences prefs = await SharedPreferences
                       .getInstance();
                   if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
                     Routes.instance.navigateTo(context, Routes.login_page);
                     return;
                   }
-                  AppConfig.token = prefs.getString("token") ;
-                }
+                  Provider.of<UserModle>(context).token   = prefs.getString("token") ;
                 loadUserInfo();
-
-
                 setState(() {
                   this.currentIndex = index;
                   pageController.jumpToPage(index);
@@ -139,14 +136,10 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     _indexSubscription.cancel();
   }
   loadUserInfo() async {
-    UserEntity entity = await UserDao.fetch(AppConfig.token);
+    UserEntity entity = await UserDao.fetch(cToken(context));
     if (entity?.userInfoModel != null) {
-      AppConfig.id = entity.userInfoModel.id;
-      AppConfig.mobile = entity.userInfoModel.mobile;
-      AppConfig.nickName = entity.userInfoModel.nickName;
-      AppConfig.avatar = entity.userInfoModel.avatar;
-      AppConfig.gender = entity.userInfoModel.gender;
-
+      UserModle globalStore = Provider.of<UserModle>(context);
+      globalStore.apiUpdate(entity.userInfoModel.jsonMap);
     }
   }
 }

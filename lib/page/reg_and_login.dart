@@ -5,6 +5,7 @@ import 'package:flutter_app/dao/user_dao.dart';
 import 'package:flutter_app/models/login_entity.dart';
 import 'package:flutter_app/models/user_entity.dart';
 import 'package:flutter_app/page/reset_pwd_page.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
@@ -12,15 +13,17 @@ import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/flutter_iconfont.dart';
 import 'package:flutter_app/view/theme_ui.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../common.dart';
+import '../global.dart';
 
 class RegPageAndLoginPage extends StatefulWidget {
   @override
   _RegAndLoginState createState() => _RegAndLoginState();
 }
 
-class _RegAndLoginState extends State<RegPageAndLoginPage> {
+class _RegAndLoginState extends State<RegPageAndLoginPage> with CommonInterface{
   TextEditingController _phoneNum = TextEditingController();
   TextEditingController _password = TextEditingController();
 
@@ -252,12 +255,10 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
   }
 
   loadUserInfo() async {
-    UserEntity entity = await UserDao.fetch(AppConfig.token);
+    UserEntity entity = await UserDao.fetch(cToken(context));
     if (entity?.userInfoModel != null) {
-      AppConfig.id = entity.userInfoModel.id;
-      AppConfig.mobile = entity.userInfoModel.mobile;
-      AppConfig.nickName = entity.userInfoModel.nickName;
-      AppConfig.avatar = entity.userInfoModel.avatar;
+      UserModle globalStore = Provider.of<UserModle>(context);
+      globalStore.apiUpdate(entity.userInfoModel.jsonMap);
       DialogUtil.buildToast("登录成功~");
       Navigator.pop(context);
     } else {
@@ -271,8 +272,9 @@ class _RegAndLoginState extends State<RegPageAndLoginPage> {
   void saveUserInfo(UserModel userModel) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("token", userModel.token);
+    Provider.of<UserModle>(context).token  = userModel.token;
     eventBus.fire(UserLoggedInEvent("sucuss"));
-    AppConfig.token = userModel.token;
+
     AppConfig.isUser = false;
     loadUserInfo();
   }

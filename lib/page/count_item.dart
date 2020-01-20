@@ -2,17 +2,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/dao/add_goods_cart_dao.dart';
 import 'package:flutter_app/dao/del_goods_dao.dart';
+import 'package:flutter_app/global.dart';
 import 'package:flutter_app/models/cart_entity.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
+import 'package:provider/provider.dart';
 
 import '../common.dart';
 
-class CartCount extends StatelessWidget {
+class CartCount extends StatelessWidget with CommonInterface{
   GoodsModel item;
 
   CartCount(this.item);
@@ -39,7 +42,7 @@ class CartCount extends StatelessWidget {
   Widget _reduceBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        loadReduce(context,item.orderId,item.countNum-1,AppConfig.token);
+        loadReduce(context,item.orderId,item.countNum-1,cToken(context));
       },
       child: Container(
         width:AppSize.width(55),
@@ -67,7 +70,7 @@ class CartCount extends StatelessWidget {
     }else{
 
       Routes.instance.navigateTo(context, Routes.login_page);
-      AppConfig.token='';
+      Provider.of<UserModle>(context).token  = '';
       DialogUtil.buildToast("请求失败~");
     }
 
@@ -77,7 +80,7 @@ class CartCount extends StatelessWidget {
   Widget _addBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        addCart(context,item.id,1,item.idSku,AppConfig.token);
+        addCart(context,item.id,1,item.idSku,cToken(context));
       },
       child: Container(
         width:AppSize.width(55),
@@ -104,7 +107,7 @@ class CartCount extends StatelessWidget {
       DialogUtil.buildToast(entity.cartModel.msg);
     }else{
       Routes.instance.navigateTo(context, Routes.login_page);
-      AppConfig.token='';
+      Provider.of<UserModle>(context).token  = '';
       DialogUtil.buildToast("请求失败~");
 
     }

@@ -8,6 +8,7 @@ import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/save_address_dao.dart';
 
 import 'package:flutter_app/dao/shipping_address_edit_dao.dart';
+import 'package:flutter_app/global.dart';
 import 'package:flutter_app/models/address_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 
@@ -33,7 +34,7 @@ class ShippingEditAddressPage extends StatefulWidget {
       _ShippingEditAddressPageState();
 }
 
-class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
+class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> with CommonInterface {
  AddressModel addressModelInfo=AddressModel();
   TextEditingController _controllerName;
   TextEditingController _controllerTel;
@@ -49,7 +50,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
   @override
   void initState() {
     _isLoading = true;
-    loadData(AppConfig.token);
+    loadData(cToken(context));
     super.initState();
   }
 
@@ -115,7 +116,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
           "name":name,"postCode":resultArr.areaId!=null?resultArr.areaId:addressModelInfo.areaCode,
           "province":resultArr.provinceId!=null?resultArr.provinceName:addressModelInfo.province,
         "tel":phone};
-        loadSave(param,AppConfig.token);
+        loadSave(param,cToken(context));
       },
       child: Container(
         alignment: Alignment.center,
@@ -379,7 +380,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> {
                 _layoutState = LoadState.State_Loading;
               });
               _isLoading = true;
-              loadData(AppConfig.token);
+              loadData(cToken(context));
             },
             successWidget: _getContent()));
   }

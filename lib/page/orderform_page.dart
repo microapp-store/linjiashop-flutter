@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/get_order_dao.dart';
+import 'package:flutter_app/global.dart';
 import 'package:flutter_app/models/order_entity.dart';
 import 'package:flutter_app/page/card_order.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
@@ -15,6 +17,7 @@ import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'load_state_layout.dart';
 
 ///
@@ -26,7 +29,7 @@ class OrderFormPage extends StatefulWidget {
 }
 
 class _OrderFormPageState extends State<OrderFormPage>
-    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
+    with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin{
   double width = 0;
   final List<Tab> myTabs = <Tab>[
     Tab(text: '待付款'),
@@ -128,7 +131,7 @@ class OrderFormTabView extends StatefulWidget {
   _OrderFormTabViewState createState() => _OrderFormTabViewState();
 }
 
-class _OrderFormTabViewState extends State<OrderFormTabView> {
+class _OrderFormTabViewState extends State<OrderFormTabView> with CommonInterface {
   GlobalKey _headerKey = GlobalKey();
   GlobalKey _footerKey = GlobalKey();
   LoadState _layoutState = LoadState.State_Loading;
@@ -138,23 +141,26 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
 
   @override
   void initState() {
-    getOrder();
+
     super.initState();
+    Future.microtask(() =>
+        getOrder()
+    );
   }
 
   void getOrder() {
     switch (widget.currentIndex) {
       case 0:
-        loadData(1, page, AppConfig.token);
+        loadData(1, page, cToken(context));
         break;
       case 1:
-        loadData(2, page, AppConfig.token);
+        loadData(2, page, cToken(context));
         break;
       case 2:
-        loadData(3, page, AppConfig.token);
+        loadData(3, page, cToken(context));
         break;
       case 3:
-        loadData(4, page, AppConfig.token);
+        loadData(4, page, cToken(context));
         break;
     }
   }
@@ -245,7 +251,7 @@ class _OrderFormTabViewState extends State<OrderFormTabView> {
         AppConfig.isUser = true;
         DialogUtil.buildToast("请求失败~");
         Routes.instance.navigateTo(context, Routes.login_page);
-        AppConfig.token = '';
+        Provider.of<UserModle>(context).token  = '';
         setState(() {
           _layoutState = LoadState.State_Error;
         });

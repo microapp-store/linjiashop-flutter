@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
 
 import 'package:flutter_app/dao/clear_goods_dao.dart';
+import 'package:flutter_app/global.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 import 'package:flutter_app/page/count_item.dart';
+import 'package:flutter_app/provider/user_model.dart';
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 
-class CartItem extends StatelessWidget {
+class CartItem extends StatelessWidget with CommonInterface{
   final  List<GoodsModel> goodsModels;
   CartItem(this.goodsModels);
   String imgUrl = "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
@@ -51,7 +54,7 @@ class CartItem extends StatelessWidget {
             children: <Widget>[
               _cartCheckBt(context,goodsModels[i]),
               _cartImage(goodsModels[i]),
-              _cartGoodsName(goodsModels[i],AppConfig.token),
+              _cartGoodsName(goodsModels[i],cToken(context)),
             ],
           ),
         ) ,
@@ -76,7 +79,7 @@ class CartItem extends StatelessWidget {
                         FlatButton(
                           child: Text('确定'),
                           onPressed: () {
-                            loadClearGoods(context,goodsModels[i].orderId,AppConfig.token,i);
+                            loadClearGoods(context,goodsModels[i].orderId,cToken(context),i);
                           },
                         ),
                       ],
@@ -108,7 +111,7 @@ class CartItem extends StatelessWidget {
       DialogUtil.buildToast(entity.msgModel.msg);
     }else{
       Routes.instance.navigateTo(context, Routes.login_page);
-      AppConfig.token='';
+      Provider.of<UserModle>(context).token  = '';
       DialogUtil.buildToast("请求失败~");
 
     }
