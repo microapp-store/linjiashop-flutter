@@ -164,7 +164,7 @@ class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
                       child: Ink(
                         decoration: BoxDecoration(
                           color: Colors.blue,
-                          borderRadius: BorderRadius.all(new Radius.circular(25.0)),
+                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
                         ),
                         child: InkWell(
                           borderRadius: BorderRadius.circular(25.0),

@@ -67,7 +67,7 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
             type: BottomNavigationBarType.fixed,
             currentIndex: this.currentIndex,
             onTap: (index) async{
-              if(index==2||index==3) {
+              if(index==3) {
                   SharedPreferences prefs = await SharedPreferences
                       .getInstance();
                   if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
