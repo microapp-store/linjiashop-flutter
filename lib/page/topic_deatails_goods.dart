@@ -35,11 +35,13 @@ class TopicDeatilsCardGoods extends StatelessWidget {
     final screenWidth = ScreenUtil.screenWidth;
 
     for (int i = 0; i < sub.length; i++) {
-      String pic=sub[i].pic;
-      String name=sub[i].name;
+      String pic = sub[i].pic;
+      String name = sub[i].name;
+      String id = sub[i].id;
         mSubGoodsCard.add(
           InkWell(
               onTap: () {
+                onItemClick(context,id);
               },
               child: Column(
                 children: <Widget>[
@@ -77,11 +79,12 @@ class TopicDeatilsCardGoods extends StatelessWidget {
     return content;
   }
 
-  void onItemClick(BuildContext context, int i,String id) {
+  void onItemClick(BuildContext context, String id) {
 
     Map<String, String> p = {"id": id};
-    Routes.instance.navigateToParams(context, Routes.topic_page, params: p);
+    Routes.instance.navigateToParams(context, Routes.PRODUCT_DETAILS, params: p);
   }
+
 
   Widget _buildWidget(BuildContext context) {
     List<Row> mTopCard = [];

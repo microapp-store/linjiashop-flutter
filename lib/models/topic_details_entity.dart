@@ -30,9 +30,11 @@ class ArticleModel{
 class TopGoods {
 	String name;
 	String pic;
+	String id;
 	TopGoods.fromJson(Map<String, dynamic> json){
 		name = json['name'];
 		pic = json['pic'];
+		id = json['id'];
 	}
 }
 

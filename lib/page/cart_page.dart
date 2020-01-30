@@ -6,18 +6,18 @@ import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/cart_query_dao.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/page/cart_item.dart';
-import 'package:flutter_app/provider/user_model.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 
-import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
-import 'package:provider/provider.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../cart_bottom.dart';
-import '../global.dart';
+
 import 'load_state_layout.dart';
 
 class CartPage extends StatefulWidget {
@@ -25,7 +25,7 @@ class CartPage extends StatefulWidget {
   _CartPageState createState() => _CartPageState();
 }
 
-class _CartPageState extends State<CartPage> with CommonInterface {
+class _CartPageState extends State<CartPage>  {
   LoadState _layoutState = LoadState.State_Loading;
   List<GoodsModel> goodsModels = List();
 
@@ -36,9 +36,9 @@ class _CartPageState extends State<CartPage> with CommonInterface {
   void initState() {
 //    print("--*-- CartPage");
     super.initState();
-    _isLoading = true;
 
-    Future.microtask(() => loadCartData(cToken(context)));
+    _isLoading = true;
+    loadCartData();
   }
 
   @override
@@ -62,7 +62,7 @@ class _CartPageState extends State<CartPage> with CommonInterface {
         child: CircularProgressIndicator(),
       );
     } else {
-      if(cToken(context).isEmpty){
+      if(tokenStr.isEmpty){
         return Container(
           width: double.infinity,
           height: double.infinity,
@@ -171,10 +171,22 @@ class _CartPageState extends State<CartPage> with CommonInterface {
 
     }
   }
+  String tokenStr='';
 
 
-  void loadCartData(String token) async {
-    CartGoodsQueryEntity entity = await CartQueryDao.fetch(token);
+  void loadCartData() async {
+    SharedPreferences prefs = await SharedPreferences
+        .getInstance();
+    if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
+      setState(() {
+        _isLoading = false;
+        _layoutState = LoadState.State_Success;
+
+      });
+      return;
+    }
+    tokenStr=prefs.getString("token");
+    CartGoodsQueryEntity entity = await CartQueryDao.fetch(tokenStr);
     if (entity?.goods != null) {
       if (entity.goods.length > 0) {
         List<GoodsModel> goodsModelsTmp = List();
@@ -204,7 +216,7 @@ class _CartPageState extends State<CartPage> with CommonInterface {
         setState(() {
           _isLoading = false;
           _layoutState = LoadState.State_Success;
-          Provider.of<UserModle>(context).token = '';
+          AppConfig.token='';
         });
       }
     }
@@ -237,7 +249,7 @@ class _CartPageState extends State<CartPage> with CommonInterface {
     _loginSubscription = eventBus.on<UserLoggedInEvent>().listen((event) {
       if (mounted) {
         if ('sucuss' == event.text) {
-          loadCartData(cToken(context));
+          loadCartData();
 
         }
       }

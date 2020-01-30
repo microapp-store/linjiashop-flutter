@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
+
 import 'package:flutter_app/dao/save_name_dao.dart';
-import 'package:flutter_app/global.dart';
+
 import 'package:flutter_app/models/msg_entity.dart';
-import 'package:flutter_app/provider/user_model.dart';
+
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
@@ -21,7 +22,7 @@ class ModifyNamePage extends StatefulWidget {
   _ModifyNamePageState createState() => _ModifyNamePageState();
 }
 
-class _ModifyNamePageState extends State<ModifyNamePage> with CommonInterface{
+class _ModifyNamePageState extends State<ModifyNamePage> {
   String _inputText = '';
 
   Widget _buildName() {
@@ -104,7 +105,7 @@ class _ModifyNamePageState extends State<ModifyNamePage> with CommonInterface{
             borderRadius: new BorderRadius.circular(25.0),
             onTap: () {
               if (_inputText.isNotEmpty)
-                loadSave(_inputText, cToken(context));
+                loadSave(_inputText, AppConfig.token);
               else
                 DialogUtil.buildToast('姓名没有修改');
             },
@@ -130,7 +131,7 @@ class _ModifyNamePageState extends State<ModifyNamePage> with CommonInterface{
     if (entity?.msgModel != null) {
       DialogUtil.buildToast(entity.msgModel.msg);
       if (entity.msgModel.code == 20000) {
-        Provider.of<UserModle>(context).nickName  = name;
+        AppConfig.nickName  = name;
         Navigator.pop(context);
       }
     } else {

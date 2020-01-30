@@ -1,18 +1,19 @@
-import 'dart:async';
-import 'dart:ui' as prefix0;
+
 
 import 'package:city_pickers/city_pickers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
+
 import 'package:flutter_app/dao/save_address_dao.dart';
 
 import 'package:flutter_app/dao/shipping_address_edit_dao.dart';
-import 'package:flutter_app/global.dart';
+
 import 'package:flutter_app/models/address_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
 
 import 'package:flutter_app/page/load_state_layout.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/res/colours.dart';
 
@@ -21,6 +22,7 @@ import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
+import 'package:provider/provider.dart';
 
 import '../../functions.dart';
 
@@ -34,7 +36,7 @@ class ShippingEditAddressPage extends StatefulWidget {
       _ShippingEditAddressPageState();
 }
 
-class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> with CommonInterface {
+class _ShippingEditAddressPageState extends State<ShippingEditAddressPage>  {
  AddressModel addressModelInfo=AddressModel();
   TextEditingController _controllerName;
   TextEditingController _controllerTel;
@@ -50,7 +52,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> with 
   @override
   void initState() {
     _isLoading = true;
-    loadData(cToken(context));
+    loadData(AppConfig.token);
     super.initState();
   }
 
@@ -116,7 +118,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> with 
           "name":name,"postCode":resultArr.areaId!=null?resultArr.areaId:addressModelInfo.areaCode,
           "province":resultArr.provinceId!=null?resultArr.provinceName:addressModelInfo.province,
         "tel":phone};
-        loadSave(param,cToken(context));
+        loadSave(param,AppConfig.token);
       },
       child: Container(
         alignment: Alignment.center,
@@ -380,7 +382,7 @@ class _ShippingEditAddressPageState extends State<ShippingEditAddressPage> with 
                 _layoutState = LoadState.State_Loading;
               });
               _isLoading = true;
-              loadData(cToken(context));
+              loadData(AppConfig.token);
             },
             successWidget: _getContent()));
   }

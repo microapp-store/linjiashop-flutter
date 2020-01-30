@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common.dart';
 
 import 'package:flutter_app/dao/order_detail_dao.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
+
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -10,9 +12,10 @@ import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/custom_view.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../global.dart';
+
 ///
 /// 订单详情页
 ///
@@ -25,7 +28,7 @@ class OrderDetails extends StatefulWidget {
   _OrderDetailsState createState() => _OrderDetailsState();
 }
 
-class _OrderDetailsState extends State<OrderDetails> with CommonInterface{
+class _OrderDetailsState extends State<OrderDetails>{
   LoadState _layoutState = LoadState.State_Loading;
   OrderDetailModel orderDetailModel;
   final String imgUrl =
@@ -42,7 +45,7 @@ class _OrderDetailsState extends State<OrderDetails> with CommonInterface{
 
   void loadData() async {
     OrderDetailEntry entity =
-        await OrderDetailDao.fetch(widget.orderSn, cToken(context));
+        await OrderDetailDao.fetch(widget.orderSn, AppConfig.token);
     if (null != entity) {
       orderDetailModel = entity.orderDetailModel;
       setState(() {

@@ -23,7 +23,8 @@
 - 左滑删除：flutter_slidable
 - toast：fluttertoast
 - 拨打客服电话：url_launcher
-- 状态管理：provider
+- 图片压缩：flutter_luban
+- 相册选择：image_picker
 ## 运行效果图
 - IOS：
 <table>

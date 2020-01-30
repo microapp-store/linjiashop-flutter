@@ -6,19 +6,21 @@ import 'package:flutter/services.dart';
 import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/user_dao.dart';
 import 'package:flutter_app/models/user_entity.dart';
+
+
 import 'package:flutter_app/page/cart_page.dart';
 import 'package:flutter_app/page/member_page.dart';
 
 import 'package:flutter_app/page/search_page.dart';
-import 'package:flutter_app/provider/user_model.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 
 import 'package:flutter_app/utils/dialog_utils.dart';
-import 'package:provider/provider.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import '../global.dart';
+
 import 'home_shop_page.dart';
 
 class IndexPage extends StatefulWidget {
@@ -41,7 +43,7 @@ final List<Widget> pages = <Widget>[
   MemberPage()
 ];
 
-class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMixin,CommonInterface{
+class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMixin{
 
   DateTime lastPopTime;
   String token;
@@ -62,21 +64,13 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
 
     _listen();
     return WillPopScope(
+
       child: Scaffold(
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: this.currentIndex,
             onTap: (index) async{
-              if(index ==2){
-                SharedPreferences prefs = await SharedPreferences
-                    .getInstance();
-                if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
-                  Routes.instance.navigateTo(context, Routes.login_page);
-                  return;
-                }
-                Provider.of<UserModle>(context).token   = prefs.getString("token") ;
-                loadUserInfo();
-              }
+
               if(index==3) {
                 SharedPreferences prefs = await SharedPreferences
                     .getInstance();
@@ -84,9 +78,8 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
                   Routes.instance.navigateTo(context, Routes.login_page);
                   return;
                 }
-                Provider.of<UserModle>(context).token   = prefs.getString("token") ;
+                AppConfig.token=prefs.getString("token");
                 loadUserInfo();
-
                 setState(() {
                   this.currentIndex = index;
                   pageController.jumpToPage(index);
@@ -123,11 +116,14 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
 
   final pageController = PageController();
   Widget _getPageBody(BuildContext context){
-    return PageView(
-      controller: pageController,
-      children: pages,
-      physics: NeverScrollableScrollPhysics(), // 禁止滑动
-    );
+
+         return PageView(
+            controller: pageController,
+            children: pages,
+            physics: NeverScrollableScrollPhysics(), // 禁止滑动
+          );
+
+
   }
   StreamSubscription _indexSubscription;
 
@@ -148,11 +144,14 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
     _indexSubscription.cancel();
   }
   loadUserInfo() async {
-    UserEntity entity = await UserDao.fetch(cToken(context));
+    UserEntity entity = await UserDao.fetch(AppConfig.token);
     if (entity?.userInfoModel != null) {
-      UserModle globalStore = Provider.of<UserModle>(context);
-      globalStore.apiUpdate(entity.userInfoModel.jsonMap);
-      Provider.of<UserModle>(context).avatar = entity.userInfoModel.avatar;
+      AppConfig.nickName=entity.userInfoModel.nickName;
+      AppConfig.mobile=entity.userInfoModel.mobile;
+      AppConfig.avatar=entity.userInfoModel.avatar;
+      AppConfig.gender=entity.userInfoModel.gender;
+
+
     }
   }
 }

@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
-import 'package:flutter_app/dao/save_name_dao.dart';
+
 import 'package:flutter_app/dao/save_pwd_dao.dart';
-import 'package:flutter_app/global.dart';
+
 import 'package:flutter_app/models/msg_entity.dart';
+
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
+import 'package:provider/provider.dart';
 
 class ModifyPwdPage extends StatefulWidget {
   @override
   _ModifyPwdPageState createState() => _ModifyPwdPageState();
 }
 
-class _ModifyPwdPageState extends State<ModifyPwdPage> with CommonInterface{
+class _ModifyPwdPageState extends State<ModifyPwdPage>{
   String _inputOldText = '';
   String _inputNewText = '';
   String _inputAginText = '';
@@ -214,7 +216,7 @@ class _ModifyPwdPageState extends State<ModifyPwdPage> with CommonInterface{
                 return;
               }
 
-              loadSave(_inputOldText,_inputNewText,_inputAginText,cToken(context));
+              loadSave(_inputOldText,_inputNewText,_inputAginText,AppConfig.token);
             },
             child: Container(
               width: 300.0,

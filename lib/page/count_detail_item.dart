@@ -1,21 +1,21 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/add_goods_cart_dao.dart';
 import 'package:flutter_app/dao/del_goods_dao.dart';
-import 'package:flutter_app/global.dart';
+
 import 'package:flutter_app/models/cart_entity.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
-import 'package:flutter_app/provider/user_model.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:provider/provider.dart';
 
-import '../common.dart';
 
-class CartDetailCount extends StatelessWidget with CommonInterface{
+class CartDetailCount extends StatelessWidget {
   GoodsModel item;
 
   CartDetailCount(this.item);
@@ -42,7 +42,7 @@ class CartDetailCount extends StatelessWidget with CommonInterface{
   Widget _reduceBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        loadReduce(context,item.orderId,item.countNum-1,cToken(context));
+        loadReduce(context,item.orderId,item.countNum-1,AppConfig.token);
       },
       child: Container(
         width:AppSize.width(55),
@@ -70,7 +70,7 @@ class CartDetailCount extends StatelessWidget with CommonInterface{
     }else{
 
       Routes.instance.navigateTo(context, Routes.login_page);
-      Provider.of<UserModle>(context).token  = '';
+      AppConfig.token  = '';
       DialogUtil.buildToast("请求失败~");
     }
 
@@ -80,7 +80,7 @@ class CartDetailCount extends StatelessWidget with CommonInterface{
   Widget _addBtn(BuildContext context){
     return InkWell(
       onTap: (){
-        addCart(context,item.id,1,cToken(context));
+        addCart(context,item.id,1,AppConfig.token);
       },
       child: Container(
         width:AppSize.width(55),
@@ -107,7 +107,7 @@ class CartDetailCount extends StatelessWidget with CommonInterface{
       DialogUtil.buildToast(entity.cartModel.msg);
     }else{
       Routes.instance.navigateTo(context, Routes.login_page);
-      Provider.of<UserModle>(context).token  = '';
+      AppConfig.token  = '';
       DialogUtil.buildToast("请求失败~");
 
     }

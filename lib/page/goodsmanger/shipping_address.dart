@@ -6,7 +6,7 @@ import 'package:flutter_app/common.dart';
 import 'package:flutter_app/dao/shipping_address_dao.dart';
 import 'package:flutter_app/models/shipping_entity.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
-import 'package:flutter_app/provider/user_model.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -16,14 +16,14 @@ import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:provider/provider.dart';
 
-import '../../global.dart';
+
 
 class ShippingAddressPage extends StatefulWidget {
   @override
   _ShippingAddressPageState createState() => _ShippingAddressPageState();
 }
 
-class _ShippingAddressPageState extends State<ShippingAddressPage> with CommonInterface{
+class _ShippingAddressPageState extends State<ShippingAddressPage> {
   LoadState _layoutState = LoadState.State_Loading;
   List<ShippingAddressModel> shippingAddress = List();
   bool _isLoading = false;
@@ -42,7 +42,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> with CommonIn
 
   void loadData() async {
     ShippingAddresEntry entity =
-        await ShippingAddressDao.fetch(cToken(context));
+        await ShippingAddressDao.fetch(AppConfig.token);
 
     if (entity?.shippingAddressModels != null) {
       if (entity.shippingAddressModels.length > 0) {
@@ -71,7 +71,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> with CommonIn
       }
     } else {
       if (mounted) {
-        Provider.of<UserModle>(context).token  = '';
+        AppConfig.token  = '';
          DialogUtil.buildToast('token失败');
          Routes.instance.navigateTo(context, Routes.login_page);
 
@@ -91,7 +91,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> with CommonIn
   Widget _btnBottom() {
     return InkWell(
       onTap: () {
-        if(cToken(context).isNotEmpty)  {
+        if(AppConfig.token.isNotEmpty)  {
           Routes.instance.navigateTo(context, Routes.new_address_page);
         }
       },

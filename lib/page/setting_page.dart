@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/common.dart';
 
 import 'package:flutter_app/dao/file_upload_dao.dart';
 import 'package:flutter_app/dao/save_sex_dao.dart';
-import 'package:flutter_app/global.dart';
+
 import 'package:flutter_app/models/file_upload_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
-import 'package:flutter_app/provider/user_model.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/routes/routes.dart';
@@ -25,7 +26,7 @@ import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_luban/flutter_luban.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
@@ -33,7 +34,7 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> with CommonInterface{
+class _SettingPageState extends State<SettingPage> {
   String imgUrl =
       "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
   File primaryFile;
@@ -42,7 +43,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => cAvatar(context));
+
   }
 
   @override
@@ -55,7 +56,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
   Widget _buildModifyName() {
     return InkWell(
         onTap: () {
-          Map<String, String> p = {"name": cNickName(context)};
+          Map<String, String> p = {"name": AppConfig.nickName};
           Routes.instance
               .navigateToParams(context, Routes.modify_name_page, params: p);
         },
@@ -85,7 +86,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
                         ),
                         Padding(
                             padding: EdgeInsets.only(right: 3.0),
-                            child: Text(cNickName(context),
+                            child: Text(AppConfig.nickName,
                                 style: TextStyle(
                                     color: Colours.text_gray,
                                     fontSize: 14,
@@ -208,10 +209,10 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
                   onItemClickListener: (index) {
                     if (index == 0) {
                       Navigator.pop(context);
-                      loadSexSave("male", cToken(context));
+                      loadSexSave("male", AppConfig.token);
                     } else if (index == 2) {
                       Navigator.pop(context);
-                      loadSexSave("female", cToken(context));
+                      loadSexSave("female", AppConfig.token);
                     }
                   },
                 );
@@ -244,9 +245,9 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
                         Padding(
                             padding: EdgeInsets.only(right: 3.0),
                             child: Text(
-                                cGender(context).isEmpty
+                                AppConfig.gender.isEmpty
                                     ? "请选择"
-                                    : getGender( cGender(context)),
+                                    : getGender(  AppConfig.gender),
                                 style: TextStyle(
                                     color: Colours.text_gray,
                                     fontSize: 14,
@@ -268,7 +269,8 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
     if (entity?.msgModel != null) {
       if (entity.msgModel.code == 20000) {
         setState(() {
-          Provider.of<UserModle>(context).gender = sex;
+          AppConfig.gender=sex;
+
 
         });
       }
@@ -292,8 +294,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
     // TODO: implement build
     AppSize.init(context);
     _listen();
-    String avtar=cAvatar(context);
-    print(avtar);
+
     return Scaffold(
       appBar: MyAppBar(
           preferredSize: Size.fromHeight(AppSize.height(160)),
@@ -338,7 +339,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
               child: Text('确定'),
               onPressed: () async {
                 Navigator.of(context).pop();
-                Provider.of<UserModle>(context).token = '';
+                AppConfig.token='';
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString("token", "");
                 Routes.instance.navigateTo(context,Routes.ROOT);
@@ -384,7 +385,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
 
   ///头像是否为空
   Widget _buildIsHasHead() {
-    if (cAvatar(context) == null || cAvatar(context).isEmpty) {
+    if (AppConfig.avatar.isEmpty) {
       return Image.asset(
         "images/icon_user.png",
         width: 28.0,
@@ -392,7 +393,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
       );
     } else {
       return CircleAvatar(
-          radius: 16, backgroundImage: NetworkImage(imgUrl + cAvatar(context)));
+          radius: 16, backgroundImage: NetworkImage(imgUrl + AppConfig.avatar));
     }
   }
 
@@ -504,7 +505,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
         "name": "logo.jpg",
         "type": "image/jpeg"
       };
-      loadSave(param,cToken(context));
+      loadSave(param,AppConfig.token);
     });
   }
 
@@ -512,7 +513,7 @@ class _SettingPageState extends State<SettingPage> with CommonInterface{
     FileEntity entity = await FileUploadDao.fetch(param, token);
     if (entity?.msgModel != null) {
       setState(() {
-        Provider.of<UserModle>(context).avatar = entity.msgModel.avatar;
+        AppConfig.avatar = entity.msgModel.avatar;
       });
     }
     Navigator.pop(context);

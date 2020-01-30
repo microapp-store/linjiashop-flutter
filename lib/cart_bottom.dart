@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
+import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'receiver/event_bus.dart';
 class CartBottom extends StatelessWidget {
@@ -18,7 +19,7 @@ class CartBottom extends StatelessWidget {
               children: <Widget>[
                 selectAllBtn(),
                 allPriceArea(),
-                goButton()
+                goButton(context)
               ],
             )
 
@@ -46,10 +47,10 @@ class CartBottom extends StatelessWidget {
       ),
     );
   }
-
+  double allPrice=0;
   // 合计区域
   Widget allPriceArea(){
-    double allPrice=0;
+
     list.forEach((el){
       if(el.isCheck){
         allPrice=allPrice+ el.countNum*(el.price/100);
@@ -92,7 +93,7 @@ class CartBottom extends StatelessWidget {
   }
 
   //结算按钮
-  Widget goButton(){
+  Widget goButton(BuildContext context){
     int  allGoodsCount=0;
     int isAll=0;
     list.forEach((el){
@@ -109,7 +110,11 @@ class CartBottom extends StatelessWidget {
       width:AppSize.width(360),
       padding: EdgeInsets.only(left: 30),
       child:InkWell(
-        onTap: (){},
+        onTap: (){
+
+          Map<String, String> p={"orderSn":"","totalPrice":allPrice.toStringAsFixed(2)};
+          Routes.instance.navigateToParams(context,Routes.pay_page,params: p);
+        },
         child: Container(
           padding: EdgeInsets.all(10.0),
           alignment: Alignment.center,
@@ -129,5 +134,6 @@ class CartBottom extends StatelessWidget {
 
 
   }
+
 
 }

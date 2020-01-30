@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
+
 import 'package:flutter_app/dao/add_goods_cart_dao.dart';
 import 'package:flutter_app/dao/cart_query_dao.dart';
 import 'package:flutter_app/dao/details_dao.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_app/models/details_entity.dart';
 import 'package:flutter_app/page/details_top_area.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/page/specifica_button.dart';
+
 import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -20,9 +22,8 @@ import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../global.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 ///
 /// 商品详情页
@@ -36,7 +37,7 @@ class ProductDetails extends StatefulWidget {
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
-class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
+class _ProductDetailsState extends State<ProductDetails>  {
   int num = 0;
   final String imgUrl =
       "http://linjiashop-mobile-api.microapp.store/file/getImgStream?idFile=";
@@ -213,7 +214,7 @@ class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
             children: <Widget>[
               InkWell(
                 onTap: () {
-                  if (cToken(context) == null || cToken(context).isEmpty) {
+                  if (AppConfig.token.isEmpty) {
                     Routes.instance.navigateTo(context, Routes.login_page);
                     return;
                   }
@@ -252,7 +253,7 @@ class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
           ),
           InkWell(
             onTap: () async {
-              if (cToken(context) == null || cToken(context).isEmpty) {
+              if (AppConfig.token.isEmpty) {
                 Routes.instance.navigateTo(context, Routes.login_page);
                 return;
               }
@@ -271,7 +272,7 @@ class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
           ),
           InkWell(
             onTap: () {
-              if (cToken(context) == null || cToken(context).isEmpty) {
+              if (AppConfig.token.isEmpty) {
                 Routes.instance.navigateTo(context, Routes.login_page);
                 return;
               }
@@ -364,10 +365,10 @@ class _ProductDetailsState extends State<ProductDetails> with CommonInterface {
                             highlightColor: ThemeColor.appBarBottomBg,
                             onPressed: () {
                               if (skuModel.listModels.length == 0) {
-                                addCart(widget.id, 1, "", cToken(context));
+                                addCart(widget.id, 1, "", AppConfig.token);
                               } else {
                                 addCart(
-                                    widget.id, 1, model.id, cToken(context));
+                                    widget.id, 1, model.id, AppConfig.token);
                               }
                             },
                             shape: RoundedRectangleBorder(
