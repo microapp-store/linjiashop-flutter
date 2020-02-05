@@ -12,7 +12,7 @@ import 'package:flutter_app/receiver/event_bus.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
-import 'package:provider/provider.dart';
+
 
 
 class CartDetailCount extends StatelessWidget {

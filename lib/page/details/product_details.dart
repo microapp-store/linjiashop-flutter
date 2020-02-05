@@ -5,20 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/common.dart';
 
 import 'package:flutter_app/dao/add_goods_cart_dao.dart';
+import 'package:flutter_app/dao/add_like_dao.dart';
 import 'package:flutter_app/dao/cart_query_dao.dart';
 import 'package:flutter_app/dao/details_dao.dart';
+import 'package:flutter_app/dao/is_like_dao.dart';
+import 'package:flutter_app/dao/sendsms_dao.dart';
 import 'package:flutter_app/models/cart_entity.dart';
 import 'package:flutter_app/models/cart_goods_query_entity.dart';
 import 'package:flutter_app/models/details_entity.dart';
+import 'package:flutter_app/models/msg_entity.dart';
+import 'package:flutter_app/models/msg_like_entity.dart';
 import 'package:flutter_app/page/details_top_area.dart';
 import 'package:flutter_app/page/load_state_layout.dart';
 import 'package:flutter_app/page/specifica_button.dart';
 
 import 'package:flutter_app/receiver/event_bus.dart';
+import 'package:flutter_app/res/colours.dart';
 import 'package:flutter_app/routes/routes.dart';
 import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
+import 'package:flutter_app/view/custom_view.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -49,7 +56,11 @@ class _ProductDetailsState extends State<ProductDetails>  {
 
   @override
   void initState() {
-    if (mounted) loadData();
+    isLike=false;
+    if (mounted) {
+      loadData();
+      loadLike();
+    }
     super.initState();
   }
 
@@ -58,6 +69,20 @@ class _ProductDetailsState extends State<ProductDetails>  {
     super.dispose();
     _spcSubscription.cancel();
   }
+  void loadLike() async{
+    if(AppConfig.token.isNotEmpty) {
+      MsgLikeEntity entityLike = await LikeDao.fetch(AppConfig.token,widget.id);
+      if (entityLike != null) {
+        setState(() {
+          isLike = entityLike.msgModel.data;
+        });
+
+      } else {
+        DialogUtil.buildToast("失败");
+      }
+    }
+}
+
 
   ///监听Bus events
   void _listen() {
@@ -72,27 +97,31 @@ class _ProductDetailsState extends State<ProductDetails>  {
       }
     });
   }
+  bool isLike ;
 
   void loadData() async {
-    DetailsEntity entity = await DetailsDao.fetch(widget.id.toString());
-    if (entity?.goods != null) {
-      goodsModel = entity.goods.goodsModelDetail;
-      urls.clear();
-      if (goodsModel.gallery.contains(",")) {
-        urls = goodsModel.gallery.split(",");
+    if (mounted) {
+      DetailsEntity entity = await DetailsDao.fetch(widget.id.toString());
+      if (entity?.goods != null) {
+        goodsModel = entity.goods.goodsModelDetail;
+        urls.clear();
+        if (goodsModel.gallery.contains(",")) {
+          urls = goodsModel.gallery.split(",");
+          setState(() {
+            _loadStateDetails = LoadState.State_Success;
+          });
+        }
+        skuModel = entity.goods.skuModel;
+        if (skuModel.listModels.length > 0) {
+          model = skuModel.listModels[0];
+        }
+      } else {
         setState(() {
-          _loadStateDetails = LoadState.State_Success;
+          _loadStateDetails = LoadState.State_Error;
         });
       }
-      skuModel = entity.goods.skuModel;
-      if (skuModel.listModels.length > 0) {
-        model = skuModel.listModels[0];
-      }
-    } else {
-      setState(() {
-        _loadStateDetails = LoadState.State_Error;
-      });
     }
+
   }
 
   List<String> urls = List();
@@ -100,6 +129,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
   @override
   Widget build(BuildContext context) {
     _listen();
+    AppSize.init(context);
     return Scaffold(
         appBar: MyAppBar(
           preferredSize: Size.fromHeight(AppSize.height(160)),
@@ -199,7 +229,20 @@ class _ProductDetailsState extends State<ProductDetails>  {
       return _getBody();
     }
   }
+  void addLike(String idGoods, String token) async {
+    MsgEntity entity = await AddLikeDao.fetch(token, idGoods);
+    if (entity?.msgModel != null) {
+      if (entity.msgModel.code == 20000) {
+        DialogUtil.buildToast("收藏成功");
+        setState(() {
+          isLike = true;
+        });
+      }
 
+    } else {
+      DialogUtil.buildToast("收藏失败");
+    }
+  }
   /**
    * 底部详情
    */
@@ -214,7 +257,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
             children: <Widget>[
               InkWell(
                 onTap: () {
-                  if (AppConfig.token.isEmpty) {
+                  if (AppConfig.token==null||AppConfig.token.isEmpty) {
                     Routes.instance.navigateTo(context, Routes.login_page);
                     return;
                   }
@@ -231,6 +274,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
                   ),
                 ),
               ),
+
               num == 0
                   ? Container()
                   : Positioned(
@@ -251,9 +295,32 @@ class _ProductDetailsState extends State<ProductDetails>  {
                     )
             ],
           ),
+          Container(
+            width: AppSize.width(1),
+            height: AppSize.height(160),
+            color: ThemeColor.subTextColor,
+          ),
+          InkWell(
+            onTap: (){
+              if(!isLike){
+                  if (AppConfig.token==null||AppConfig.token.isEmpty) {
+                  Routes.instance.navigateTo(context, Routes.login_page);
+                  return;
+                  }
+                  addLike(widget.id,AppConfig.token);
+                  }
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: AppSize.width(30)),
+              child: IconBtn(Icons.star_border,text: '收藏',textStyle:
+                  isLike?ThemeTextStyle.priceStyle: ThemeTextStyle.orderContentStyle,
+             iconColor: isLike?Colours.lable_clour:ThemeColor.subTextColor
+              ),
+            ) ,
+          ),
           InkWell(
             onTap: () async {
-              if (AppConfig.token.isEmpty) {
+              if (AppConfig.token==null||AppConfig.token.isEmpty) {
                 Routes.instance.navigateTo(context, Routes.login_page);
                 return;
               }
@@ -261,7 +328,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
             },
             child: Container(
               alignment: Alignment.center,
-              width: AppSize.width(400),
+              width: AppSize.width(350),
               height: AppSize.height(160),
               color: Colors.green,
               child: Text(
@@ -281,7 +348,7 @@ class _ProductDetailsState extends State<ProductDetails>  {
             },
             child: Container(
               alignment: Alignment.center,
-              width: AppSize.width(400),
+              width: AppSize.width(350),
               height: AppSize.height(160),
               color: Colors.red,
               child: Text(

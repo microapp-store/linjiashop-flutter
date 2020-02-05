@@ -12,7 +12,7 @@ import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/theme_ui.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:provider/provider.dart';
+
 
 class CartItem extends StatelessWidget {
   final  List<GoodsModel> goodsModels;

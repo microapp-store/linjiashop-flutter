@@ -17,7 +17,7 @@ import 'package:flutter_app/utils/app_size.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
+
 import 'load_state_layout.dart';
 
 ///

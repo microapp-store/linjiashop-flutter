@@ -11,7 +11,7 @@ import 'package:flutter_app/utils/dialog_utils.dart';
 import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/theme_ui.dart';
-import 'package:provider/provider.dart';
+
 
 class ModifyNamePage extends StatefulWidget {
   String name;

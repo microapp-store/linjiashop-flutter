@@ -4,6 +4,7 @@ import 'package:flutter_app/models/cart_entity.dart';
 import 'package:flutter_app/models/details_entity.dart';
 import 'package:flutter_app/models/login_entity.dart';
 import 'package:flutter_app/models/msg_entity.dart';
+import 'package:flutter_app/models/msg_like_entity.dart';
 import 'package:flutter_app/models/order_detail_entity.dart';
 import 'package:flutter_app/models/order_entity.dart';
 import 'package:flutter_app/models/shipping_entity.dart';
@@ -54,7 +55,9 @@ class EntityFactory {
       return TopicDetailsEntity.fromJson(json) as T;
     }else if (T.toString() == "FileEntity"){
       return FileEntity.fromJson(json) as T;
-    }
+    }else if (T.toString() == "MsgLikeEntity"){
+  return MsgLikeEntity.fromJson(json) as T;
+  }
     else {
       return null;
     }
