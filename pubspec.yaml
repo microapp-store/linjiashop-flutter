@@ -26,24 +26,25 @@ dependencies:
   flutter_swiper: ^1.1.6
 
   #需要申请权限(IOS)
-  image_picker: ^0.6.2+3
+  image_picker: ^0.6.3+4
 
-  path_provider: ^1.5.1
+  path_provider: ^1.6.5
   flutter_luban: ^0.1.7
   flutter_screenutil: ^0.7.0
   flutter_staggered_grid_view: ^0.3.0
   fluro: ^1.5.1
   flutter_statusbarcolor: ^0.2.3
   dio: ^3.0.7
-  flutter_easyrefresh: ^2.0.8
+  flutter_easyrefresh: ^2.1.0
   flutter_html: ^0.11.1
-  fluttertoast: ^3.0.4
-  shared_preferences: ^0.5.6
+  fluttertoast: ^4.0.0
+  shared_preferences: ^0.5.6+3
   event_bus: ^1.0.1
   flutter_slidable: ^0.5.4
   url_launcher: ^5.1.2
-  city_pickers: ^0.1.29
-  webview_flutter: ^0.3.18+1
+  city_pickers: ^0.1.30
+  webview_flutter: ^0.3.19+9
+  fluwx: ^2.0.0
 
 
 

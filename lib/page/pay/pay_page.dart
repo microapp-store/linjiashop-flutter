@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_app/utils/dialog_utils.dart';
+import 'package:fluwx/fluwx.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/utils/app_size.dart';
@@ -7,7 +10,8 @@ import 'package:flutter_app/view/app_topbar.dart';
 import 'package:flutter_app/view/customize_appbar.dart';
 import 'package:flutter_app/view/my_icons.dart.dart';
 import 'package:flutter_app/view/theme_ui.dart';
-
+import 'package:fluwx/fluwx.dart' as fluwx;
+import 'dart:io' as H;
 class PayPage extends StatefulWidget {
   final String orderSn;
   final String totalPrice;
@@ -20,6 +24,14 @@ class PayPage extends StatefulWidget {
 
 class _PayPageState extends State<PayPage> {
   int _radioGroupPay = 0;
+  String _url = "https://wxpay.wxutil.com/pub_v2/app/app_pay.php";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _initFluwx();
+  }
+
 
   void _handleRadioValueChanged(int value) {
     setState(() {
@@ -55,7 +67,7 @@ class _PayPageState extends State<PayPage> {
   Widget _btnBottom() {
     return InkWell(
       onTap: () {
-        _launchAlipayURL();
+        _launchPayURL();
       },
       child: Container(
         alignment: Alignment.center,
@@ -69,7 +81,15 @@ class _PayPageState extends State<PayPage> {
       ),
     );
   }
-
+  _initFluwx() async {
+    await registerWxApi(
+        appId: "wxd930ea5d5a258f4f",
+        doOnAndroid: true,
+        doOnIOS: true,
+        universalLink: "https://your.univerallink.com/link/");
+    var result = await isWeChatInstalled;
+    print("is installed $result");
+  }
   Widget _myListTileIcon(Icon con, int index) {
     return Container(
       height: AppSize.height(180.0),
@@ -144,21 +164,35 @@ class _PayPageState extends State<PayPage> {
         body: _getContent());
   }
 
-  _launchAlipayURL() async {
-    if (Platform.isAndroid) {
-      String urlAndroid = "alipays://platformapi/startapp?appId=20000123";
-      if (await canLaunch(urlAndroid)) {
-        await launch(urlAndroid);
-      } else {
-        throw 'Could not launch $urlAndroid';
-      }
-    } else {
-      String urlIos = "taobao://item.taobao.com/item.html?id=41700658839";
-      if (await canLaunch(urlIos)) {
-        await launch(urlIos);
-      } else {
-        throw 'Could not launch $urlIos';
-      }
+  _launchPayURL()  async {
+    if(_radioGroupPay==0){
+      var h = H.HttpClient();
+      h.badCertificateCallback = (cert, String host, int port) {
+        return true;
+      };
+      var request = await h.getUrl(Uri.parse(_url));
+      var response = await request.close();
+      var data = await Utf8Decoder().bind(response).join();
+      Map<String, dynamic> result = json.decode(data);
+      print(result['appid']);
+      print(result["timestamp"]);
+      fluwx.payWithWeChat(
+        appId: result['appid'].toString(),
+        partnerId: result['partnerid'].toString(),
+        prepayId: result['prepayid'].toString(),
+        packageValue: result['package'].toString(),
+        nonceStr: result['noncestr'].toString(),
+        timeStamp: result['timestamp'],
+        sign: result['sign'].toString(),
+      )
+          .then((data) {
+        print("---》$data");
+      });
+
+
+    }else{
+      DialogUtil.buildToast("正在开发");
     }
+
   }
 }
