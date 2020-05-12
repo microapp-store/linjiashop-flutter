@@ -1,11 +1,7 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-
-
 import 'page/index_page.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

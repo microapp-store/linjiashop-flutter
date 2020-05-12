@@ -182,6 +182,10 @@ class MemberPage extends StatelessWidget {
           {
             Routes.instance.navigateTo(context, Routes.address_page);
           }),
+          _myListTile(title:'我的收藏',con:Icon(Icons.star_border),onGoMineCallback:()
+          {
+            Routes.instance.navigateTo(context, Routes.like_goods_page);
+          }),
           _myListTile(title:'我的积分',con:Icon(MyIcons.jifenholder),onGoMineCallback:()
           {
             Routes.instance.navigateTo(context, Routes.address_page);

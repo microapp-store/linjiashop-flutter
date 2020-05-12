@@ -14,6 +14,7 @@ import 'package:flutter_app/page/pay/pay_page.dart';
 import 'package:flutter_app/page/reg_and_login.dart';
 import 'package:flutter_app/page/setting_page.dart';
 import 'package:flutter_app/page/web_page.dart';
+import 'package:flutter_app/page/like_goods_page.dart';
 class Routes {
   static final Router router = new Router();
   static const ROOT = '/';
@@ -32,6 +33,7 @@ class Routes {
   static const setting_page = '/setting';
   static const modify_name_page = '/modify_name';
   static const modify_pwd_page = '/modify_pwd';
+  static const like_goods_page = '/like_goods';
   void _config() {
     router.define(
         ROOT, handler: Handler(handlerFunc: (context, params) => IndexPage()));
@@ -68,6 +70,9 @@ class Routes {
     router.define(
         modify_pwd_page, handler: Handler(handlerFunc: (context, params) =>
     ModifyPwdPage()));
+    router.define(
+        like_goods_page, handler: Handler(handlerFunc: (context, params) =>
+        LikePage()));
   }
 
   /**

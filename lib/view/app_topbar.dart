@@ -161,3 +161,59 @@ class CustomBackBar extends StatelessWidget {
     );
   }
 }
+class CustomRightBar extends StatelessWidget{
+  final String title;
+  final String menu;
+  final Function onBack;
+  final Function onMenu;
+
+  CustomRightBar({
+    @required this.title,
+    this.onBack,
+    this.onMenu,
+    this.menu
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: <Widget>[
+        InkWell(
+          onTap: onBack,
+          child:
+          Container(
+                width:AppSize.width(120) ,
+                padding: EdgeInsets.only(left: AppSize.width(10)),
+                child: Icon(IconFonts.arrow_left,color: Colors.white,size: AppSize.height(60)),
+              )
+            ),
+        Container(
+            width:AppSize.width(750) ,
+            padding: EdgeInsets.only(left: AppSize.width(100)),
+            child: Text(title,
+            softWrap: true,
+            textAlign: TextAlign.center,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: TextStyle(color: Colors.white,fontSize: AppSize.sp(52)))),
+
+        InkWell(
+          onTap: onMenu,
+          child:
+          Container(
+            width:AppSize.width(120) ,
+                padding: EdgeInsets.only(right: AppSize.width(10)),
+                child: Text(menu,
+                    softWrap: true,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(color: Colors.white,fontSize: AppSize.sp(52))),
+              )
+
+        )
+      ],
+    );
+  }
+
+}
