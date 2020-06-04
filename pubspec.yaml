@@ -42,9 +42,10 @@ dependencies:
   event_bus: ^1.0.1
   flutter_slidable: ^0.5.4
   url_launcher: ^5.1.2
+
   city_pickers: ^0.1.30
   webview_flutter: ^0.3.19+9
-  fluwx: ^2.0.0
+  fluwx: ^2.1.0
 
 
 
@@ -108,10 +109,10 @@ flutter:
         - asset: fonts/iconfont2.ttf
     - family:  MyIcons3
       fonts:
-          - asset: fonts/iconfont3.ttf
+        - asset: fonts/iconfont3.ttf
     - family:  IconFont
       fonts:
         - asset: fonts/iconfont.ttf
     - family:  MyIcons4
       fonts:
-         - asset: fonts/iconpay.ttf
+        - asset: fonts/iconpay.ttf
