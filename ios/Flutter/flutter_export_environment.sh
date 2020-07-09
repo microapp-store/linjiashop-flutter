@@ -1,7 +1,11 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=C:\flutter"
+<<<<<<< HEAD
 export "FLUTTER_APPLICATION_PATH=D:\andriodproject\linjiashop-flutter"
+=======
+export "FLUTTER_APPLICATION_PATH=D:\linjiashop-flutter-master"
+>>>>>>> 05c9c92688203eb5ecae47bace9dc108336c205c
 export "FLUTTER_TARGET=lib\main.dart"
 export "FLUTTER_BUILD_DIR=build"
 export "SYMROOT=${SOURCE_ROOT}/../build\ios"
