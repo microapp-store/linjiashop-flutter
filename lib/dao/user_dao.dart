@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_app/common.dart';
 import 'package:flutter_app/models/entity_factory.dart';
 import 'package:flutter_app/models/login_entity.dart';
 import 'package:flutter_app/models/user_entity.dart';
@@ -15,11 +16,13 @@ class UserDao{
       Response response = await Dio().get(USER_URL,options: options);
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<UserEntity>(response.data);
+      }else if(response.statusCode==401){
+        AppConfig.token  = '';
       }else{
         throw Exception("StatusCode: ${response.statusCode}");
       }
     } catch (e) {
-      print(e);
+//      print(e);
       return null;
     }
   }

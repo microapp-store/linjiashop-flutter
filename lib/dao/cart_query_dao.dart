@@ -4,6 +4,7 @@ import 'package:flutter_app/models/entity_factory.dart';
 
 import 'dart:async';
 
+import '../common.dart';
 import 'config.dart';
 
 const CART_URL = '$SERVER_HOST/user/cart/queryByUser';
@@ -15,6 +16,8 @@ class CartQueryDao{
       Response response = await Dio().get(CART_URL,options: options);
       if(response.statusCode == 200){
         return EntityFactory.generateOBJ<CartGoodsQueryEntity>(response.data);
+      }else if(response.statusCode == 401){
+        AppConfig.token  = '';
       }else{
         throw Exception("StatusCode: ${response.statusCode}");
       }

@@ -186,6 +186,7 @@ class _CartPageState extends State<CartPage>  {
       return;
     }
     tokenStr=prefs.getString("token");
+
     CartGoodsQueryEntity entity = await CartQueryDao.fetch(tokenStr);
     if (entity?.goods != null) {
       if (entity.goods.length > 0) {
@@ -203,12 +204,15 @@ class _CartPageState extends State<CartPage>  {
         }
       } else {
         if (mounted) {
-          setState(() {
-            goodsModels.clear();
+          if(AppConfig.token.isEmpty){
+            setState(() {
+              goodsModels.clear();
 
-            _isLoading = false;
-            _layoutState = LoadState.State_Success;
-          });
+              _isLoading = false;
+              _layoutState = LoadState.State_Success;
+            });
+          }
+
         }
       }
     } else {

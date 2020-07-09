@@ -150,6 +150,15 @@ class _IndexPageState extends State<IndexPage>  with AutomaticKeepAliveClientMix
       AppConfig.mobile=entity.userInfoModel.mobile;
       AppConfig.avatar=entity.userInfoModel.avatar;
       AppConfig.gender=entity.userInfoModel.gender;
+    }else{
+      SharedPreferences prefs = await SharedPreferences
+          .getInstance();
+      if (null == prefs.getString("token")||prefs.getString("token").isEmpty) {
+        Routes.instance.navigateTo(context, Routes.login_page);
+        DialogUtil.buildToast("token失效~");
+        return;
+      }
+
 
 
     }
