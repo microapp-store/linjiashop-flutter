@@ -58,5 +58,5 @@
 ## 在线文档
 - [http://microapp.gitee.io/linjiashop](http://microapp.gitee.io/linjiashop)
 ## 技术交流
-- QQ群：254059156
+- QQ群：909904351
 - 微信：myenilu,添加请备注：邻家小铺
